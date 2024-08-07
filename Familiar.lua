@@ -2341,322 +2341,322 @@ end
 
 --local evaluate_playref = G.FUNCS.evaluate_play
 --G.FUNCS.evaluate_play = function(e)
-    local result = evaluate_playref(e)
-    local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
-    
-    G.GAME.hands[text].played = G.GAME.hands[text].played + 1
-    G.GAME.hands[text].played_this_round = G.GAME.hands[text].played_this_round + 1
-    G.GAME.last_hand_played = text
-    set_hand_usage(text)
-    G.GAME.hands[text].visible = true
-
-    --Add all the pure bonus cards to the scoring hand
-    local pures = {}
-    for i=1, #G.play.cards do
-        if next(find_joker('Splash')) then
-            if G.play.cards[i].ability.suitless then
-                scoring_hand[i] = G.play.cards[i]
-            end
-        else
-            if G.play.cards[i].ability.suitless then
-                local inside = false
-                for j=1, #scoring_hand do
-                    if scoring_hand[j] == G.play.cards[i] then
-                        inside = true
-                    end
-                end
-                if not inside then table.insert(pures, G.play.cards[i]) end
-            end
-        end
-    end
-    for i=1, #pures do
-        table.insert(scoring_hand, pures[i])
-    end
-    table.sort(scoring_hand, function (a, b) return a.T.x < b.T.x end )
-    delay(0.2)
-    for i=1, #scoring_hand do
-        --Highlight all the cards used in scoring and play a sound indicating highlight
-        highlight_card(scoring_hand[i],(i-0.999)/5,'up')
-    end
-
-    local percent = 0.3
-    local percent_delta = 0.08
-
-    if G.GAME.current_round.current_hand.handname ~= disp_text then delay(0.3) end
-    update_hand_text({sound = G.GAME.current_round.current_hand.handname ~= disp_text and 'button' or nil, volume = 0.4, immediate = true, nopulse = nil,
-                delay = G.GAME.current_round.current_hand.handname ~= disp_text and 0.4 or 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
-
-    if not G.GAME.blind:debuff_hand(scoring_hand, poker_hands, text) then
-        mult = mod_mult(G.GAME.hands[text].mult)
-        hand_chips = mod_chips(G.GAME.hands[text].chips)
-
-        check_for_unlock({type = 'hand', handname = text, disp_text = non_loc_disp_text, scoring_hand = scoring_hand, full_hand = scoring_hand})
-
-        delay(0.4)
-
-        if G.GAME.first_used_hand_level and G.GAME.first_used_hand_level > 0 then
-            level_up_hand(G.deck.cards[1], text, nil, G.GAME.first_used_hand_level)
-            G.GAME.first_used_hand_level = nil
-        end
-
-        mult = mod_mult(G.GAME.hands[text].mult)
-        hand_chips = mod_chips(G.GAME.hands[text].chips)
-
-        local modded = false
-
-        mult, hand_chips, modded = G.GAME.blind:modify_hand(scoring_hand, poker_hands, text, mult, hand_chips)
-        mult, hand_chips = mod_mult(mult), mod_chips(hand_chips)
-        if modded then update_hand_text({sound = 'chips2', modded = modded}, {chips = hand_chips, mult = mult}) end
-        for i=1, #scoring_hand do
-            --add cards played to list
-            if scoring_hand[i].ability.suitless then 
-                G.GAME.cards_played[scoring_hand[i].base.value].total = G.GAME.cards_played[scoring_hand[i].base.value].total + 1
-                G.GAME.cards_played[scoring_hand[i].base.value].suits[scoring_hand[i].base.suit] = true 
-            end
-            --if card is debuffed
-            if scoring_hand[i].debuff then
-                G.GAME.blind.triggered = true
-                G.E_MANAGER:add_event(Event({
-                    trigger = 'immediate',
-                    func = (function() G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_1'):juice_up(0.3, 0)
-                        G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_2'):juice_up(0.3, 0)
-                        G.GAME.blind:juice_up();return true end)
-                }))
-                card_eval_status_text(scoring_hand[i], 'debuff')
-            else
-                --Check for play doubling
-                local reps = {1}
-                
-                --From Red seal
-                local eval = eval_card(scoring_hand[i], {repetition_only = true,cardarea = G.play, full_hand = scoring_hand, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, repetition = true})
-                if next(eval) then 
-                    for h = 1, eval.seals.repetitions do
-                        reps[#reps+1] = eval
-                    end
-                end
-                --From jokers
-                for j=1, #G.jokers.cards do
-                    --calculate the joker effects
-                    local eval = eval_card(G.jokers.cards[j], {cardarea = G.play, full_hand = scoring_hand, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, other_card = scoring_hand[i], repetition = true})
-                    if next(eval) and eval.jokers then 
-                        for h = 1, eval.jokers.repetitions do
-                            reps[#reps+1] = eval
-                        end
-                    end
-                end
-                for j=1,#reps do
-                    percent = percent + percent_delta
-                    if reps[j] ~= 1 then
-                        card_eval_status_text((reps[j].jokers or reps[j].seals).card, 'jokers', nil, nil, nil, (reps[j].jokers or reps[j].seals))
-                    end
-                    
-                    --calculate the hand effects
-                    local effects = {eval_card(scoring_hand[i], {cardarea = G.play, full_hand = scoring_hand, scoring_hand = scoring_hand, poker_hand = text})}
-                    for k=1, #G.jokers.cards do
-                        --calculate the joker individual card effects
-                        local eval = G.jokers.cards[k]:calculate_joker({cardarea = G.play, full_hand = scoring_hand, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, other_card = scoring_hand[i], individual = true})
-                        if eval then 
-                            table.insert(effects, eval)
-                        end
-                    end
-                    scoring_hand[i].lucky_trigger = nil
-
-                    for ii = 1, #effects do
-                        --If chips added, do chip add event and add the chips to the total
-                        if effects[ii].chips then 
-                            if effects[ii].card then juice_card(effects[ii].card) end
-                            hand_chips = mod_chips(hand_chips + effects[ii].chips)
-                            update_hand_text({delay = 0}, {chips = hand_chips})
-                            card_eval_status_text(scoring_hand[i], 'chips', effects[ii].chips, percent)
-                        end
-
-                        --If mult added, do mult add event and add the mult to the total
-                        if effects[ii].mult then 
-                            if effects[ii].card then juice_card(effects[ii].card) end
-                            mult = mod_mult(mult + effects[ii].mult)
-                            update_hand_text({delay = 0}, {mult = mult})
-                            card_eval_status_text(scoring_hand[i], 'mult', effects[ii].mult, percent)
-                        end
-
-                        --If play dollars added, add dollars to total
-                        if effects[ii].p_dollars then 
-                            if effects[ii].card then juice_card(effects[ii].card) end
-                            ease_dollars(effects[ii].p_dollars)
-                            card_eval_status_text(scoring_hand[i], 'dollars', effects[ii].p_dollars, percent)
-                        end
-
-                        --If dollars added, add dollars to total
-                        if effects[ii].dollars then 
-                            if effects[ii].card then juice_card(effects[ii].card) end
-                            ease_dollars(effects[ii].dollars)
-                            card_eval_status_text(scoring_hand[i], 'dollars', effects[ii].dollars, percent)
-                        end
-
-                        --Any extra effects
-                        if effects[ii].extra then 
-                            if effects[ii].card then juice_card(effects[ii].card) end
-                            local extras = {mult = false, hand_chips = false}
-                            if effects[ii].extra.mult_mod then mult =mod_mult( mult + effects[ii].extra.mult_mod);extras.mult = true end
-                            if effects[ii].extra.chip_mod then hand_chips = mod_chips(hand_chips + effects[ii].extra.chip_mod);extras.hand_chips = true end
-                            if effects[ii].extra.swap then 
-                                local old_mult = mult
-                                mult = mod_mult(hand_chips)
-                                hand_chips = mod_chips(old_mult)
-                                extras.hand_chips = true; extras.mult = true
-                            end
-                            update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult})
-                            card_eval_status_text(scoring_hand[i], 'extra', nil, percent, nil, effects[ii].extra)
-                        end
-
-                        --If x_mult added, do mult add event and mult the mult to the total
-                        if effects[ii].x_mult then 
-                            if effects[ii].card then juice_card(effects[ii].card) end
-                            mult = mod_mult(mult*effects[ii].x_mult)
-                            update_hand_text({delay = 0}, {mult = mult})
-                            card_eval_status_text(scoring_hand[i], 'x_mult', effects[ii].x_mult, percent)
-                        end
-
-                        --calculate the card edition effects
-                        if effects[ii].edition then
-                            hand_chips = mod_chips(hand_chips + (effects[ii].edition.chip_mod or 0))
-                            mult = mult + (effects[ii].edition.mult_mod or 0)
-                            mult = mod_mult(mult*(effects[ii].edition.x_mult_mod or 1))
-                            update_hand_text({delay = 0}, {
-                                chips = effects[ii].edition.chip_mod and hand_chips or nil,
-                                mult = (effects[ii].edition.mult_mod or effects[ii].edition.x_mult_mod) and mult or nil,
-                            })
-                            card_eval_status_text(scoring_hand[i], 'extra', nil, percent, nil, {
-                                message = (effects[ii].edition.chip_mod and localize{type='variable',key='a_chips',vars={effects[ii].edition.chip_mod}}) or
-                                        (effects[ii].edition.mult_mod and localize{type='variable',key='a_mult',vars={effects[ii].edition.mult_mod}}) or
-                                        (effects[ii].edition.x_mult_mod and localize{type='variable',key='a_xmult',vars={effects[ii].edition.x_mult_mod}}),
-                                chip_mod =  effects[ii].edition.chip_mod,
-                                mult_mod =  effects[ii].edition.mult_mod,
-                                x_mult_mod =  effects[ii].edition.x_mult_mod,
-                                colour = G.C.DARK_EDITION,
-                                edition = true})
-                        end
-                    end
-                end
-            end
-        end
-
-        local nu_chip, nu_mult = G.GAME.selected_back:trigger_effect{context = 'final_scoring_step', chips = hand_chips, mult = mult}
-        mult = mod_mult(nu_mult or mult)
-        hand_chips = mod_chips(nu_chip or hand_chips)
-
-        local cards_destroyed = {}
-        for i=1, #scoring_hand do
-            local destroyed = nil
-            --un-highlight all cards
-            highlight_card(scoring_hand[i],(i-0.999)/(#scoring_hand-0.998),'down')
-
-            for j = 1, #G.jokers.cards do
-                destroyed = G.jokers.cards[j]:calculate_joker({destroying_card = scoring_hand[i], full_hand = scoring_hand})
-                if destroyed then break end
-            end
-
-            if scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra then 
-                destroyed = true
-            end
-
-            if destroyed then 
-                if scoring_hand[i].ability.name == 'Glass Card' then 
-                    scoring_hand[i].shattered = true
-                else 
-                    scoring_hand[i].destroyed = true
-                end 
-                cards_destroyed[#cards_destroyed+1] = scoring_hand[i]
-            end
-        end
-        for j=1, #G.jokers.cards do
-            eval_card(G.jokers.cards[j], {cardarea = G.jokers, remove_playing_cards = true, removed = cards_destroyed})
-        end
-
-        local glass_shattered = {}
-        for k, v in ipairs(cards_destroyed) do
-            if v.shattered then glass_shattered[#glass_shattered+1] = v end
-        end
-
-        check_for_unlock{type = 'shatter', shattered = glass_shattered}
-        
-        for i=1, #cards_destroyed do
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    if cards_destroyed[i].ability.name == 'Glass Card' then 
-                        cards_destroyed[i]:shatter()
-                    else
-                        cards_destroyed[i]:start_dissolve()
-                    end
-                  return true
-                end
-              }))
-        end
-    else
-        mult = mod_mult(0)
-        hand_chips = mod_chips(0)
-        G.E_MANAGER:add_event(Event({
-            trigger = 'immediate',
-            func = (function()
-                G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_1'):juice_up(0.3, 0)
-                G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_2'):juice_up(0.3, 0)
-                G.GAME.blind:juice_up()
-                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
-                    play_sound('tarot2', 0.76, 0.4);return true end}))
-                play_sound('tarot2', 1, 0.4)
-                return true
-            end)
-        }))
-
-        play_area_status_text("Not Allowed!")--localize('k_not_allowed_ex'), true)
-    end
-    G.E_MANAGER:add_event(Event({
-        trigger = 'after',delay = 0.4,
-        func = (function()  update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = math.floor(hand_chips*mult), level = '', handname = ''});play_sound('button', 0.9, 0.6);return true end)
-      }))
-      check_and_set_high_score('hand', hand_chips*mult)
-
-      check_for_unlock({type = 'chip_score', chips = math.floor(hand_chips*mult)})
-   
-    if hand_chips*mult > 0 then 
-        delay(0.8)
-        G.E_MANAGER:add_event(Event({
-        trigger = 'immediate',
-        func = (function() play_sound('chips2');return true end)
-        }))
-    end
-    G.E_MANAGER:add_event(Event({
-      trigger = 'ease',
-      blocking = false,
-      ref_table = G.GAME,
-      ref_value = 'chips',
-      ease_to = G.GAME.chips + math.floor(hand_chips*mult),
-      delay =  0.5,
-      func = (function(t) return math.floor(t) end)
-    }))
-    G.E_MANAGER:add_event(Event({
-      trigger = 'ease',
-      blocking = true,
-      ref_table = G.GAME.current_round.current_hand,
-      ref_value = 'chip_total',
-      ease_to = 0,
-      delay =  0.5,
-      func = (function(t) return math.floor(t) end)
-    }))
-    G.E_MANAGER:add_event(Event({
-      trigger = 'immediate',
-      func = (function() G.GAME.current_round.current_hand.handname = '';return true end)
-    }))
-    delay(0.3)
-
-    G.E_MANAGER:add_event(Event({
-        trigger = 'immediate',
-        func = (function()     
-            if G.GAME.modifiers.debuff_played_cards then 
-                for k, v in ipairs(scoring_hand) do v.ability.perma_debuff = true end
-            end
-        return true end)
-      }))
-    return result
+--    local result = evaluate_playref(e)
+--    local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)
+--    
+--    G.GAME.hands[text].played = G.GAME.hands[text].played + 1
+--    G.GAME.hands[text].played_this_round = G.GAME.hands[text].played_this_round + 1
+--    G.GAME.last_hand_played = text
+--    set_hand_usage(text)
+--    G.GAME.hands[text].visible = true
+--
+--    --Add all the pure bonus cards to the scoring hand
+--    local pures = {}
+--    for i=1, #G.play.cards do
+--        if next(find_joker('Splash')) then
+--            if G.play.cards[i].ability.suitless then
+--                scoring_hand[i] = G.play.cards[i]
+--            end
+--        else
+--            if G.play.cards[i].ability.suitless then
+--                local inside = false
+--                for j=1, #scoring_hand do
+--                    if scoring_hand[j] == G.play.cards[i] then
+--                        inside = true
+--                    end
+--                end
+--                if not inside then table.insert(pures, G.play.cards[i]) end
+--            end
+--        end
+--    end
+--    for i=1, #pures do
+--        table.insert(scoring_hand, pures[i])
+--    end
+--    table.sort(scoring_hand, function (a, b) return a.T.x < b.T.x end )
+--    delay(0.2)
+--    for i=1, #scoring_hand do
+--        --Highlight all the cards used in scoring and play a sound indicating highlight
+--        highlight_card(scoring_hand[i],(i-0.999)/5,'up')
+--    end
+--
+--    local percent = 0.3
+--    local percent_delta = 0.08
+--
+--    if G.GAME.current_round.current_hand.handname ~= disp_text then delay(0.3) end
+--    update_hand_text({sound = G.GAME.current_round.current_hand.handname ~= disp_text and 'button' or nil, volume = 0.4, immediate = true, nopulse = nil,
+--                delay = G.GAME.current_round.current_hand.handname ~= disp_text and 0.4 or 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
+--
+--    if not G.GAME.blind:debuff_hand(scoring_hand, poker_hands, text) then
+--        mult = mod_mult(G.GAME.hands[text].mult)
+--        hand_chips = mod_chips(G.GAME.hands[text].chips)
+--
+--        check_for_unlock({type = 'hand', handname = text, disp_text = non_loc_disp_text, scoring_hand = scoring_hand, full_hand = scoring_hand})
+--
+--        delay(0.4)
+--
+--        if G.GAME.first_used_hand_level and G.GAME.first_used_hand_level > 0 then
+--            level_up_hand(G.deck.cards[1], text, nil, G.GAME.first_used_hand_level)
+--            G.GAME.first_used_hand_level = nil
+--        end
+--
+--        mult = mod_mult(G.GAME.hands[text].mult)
+--        hand_chips = mod_chips(G.GAME.hands[text].chips)
+--
+--        local modded = false
+--
+--        mult, hand_chips, modded = G.GAME.blind:modify_hand(scoring_hand, poker_hands, text, mult, hand_chips)
+--        mult, hand_chips = mod_mult(mult), mod_chips(hand_chips)
+--        if modded then update_hand_text({sound = 'chips2', modded = modded}, {chips = hand_chips, mult = mult}) end
+--        for i=1, #scoring_hand do
+--            --add cards played to list
+--            if scoring_hand[i].ability.suitless then 
+--                G.GAME.cards_played[scoring_hand[i].base.value].total = G.GAME.cards_played[scoring_hand[i].base.value].total + 1
+--                G.GAME.cards_played[scoring_hand[i].base.value].suits[scoring_hand[i].base.suit] = true 
+--            end
+--            --if card is debuffed
+--            if scoring_hand[i].debuff then
+--                G.GAME.blind.triggered = true
+--                G.E_MANAGER:add_event(Event({
+--                    trigger = 'immediate',
+--                    func = (function() G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_1'):juice_up(0.3, 0)
+--                        G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_2'):juice_up(0.3, 0)
+--                        G.GAME.blind:juice_up();return true end)
+--                }))
+--                card_eval_status_text(scoring_hand[i], 'debuff')
+--            else
+--                --Check for play doubling
+--                local reps = {1}
+--                
+--                --From Red seal
+--                local eval = eval_card(scoring_hand[i], {repetition_only = true,cardarea = G.play, full_hand = scoring_hand, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, repetition = true})
+--                if next(eval) then 
+--                    for h = 1, eval.seals.repetitions do
+--                        reps[#reps+1] = eval
+--                    end
+--                end
+--                --From jokers
+--                for j=1, #G.jokers.cards do
+--                    --calculate the joker effects
+--                    local eval = eval_card(G.jokers.cards[j], {cardarea = G.play, full_hand = scoring_hand, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, other_card = scoring_hand[i], repetition = true})
+--                    if next(eval) and eval.jokers then 
+--                        for h = 1, eval.jokers.repetitions do
+--                            reps[#reps+1] = eval
+--                        end
+--                    end
+--                end
+--                for j=1,#reps do
+--                    percent = percent + percent_delta
+--                    if reps[j] ~= 1 then
+--                        card_eval_status_text((reps[j].jokers or reps[j].seals).card, 'jokers', nil, nil, nil, (reps[j].jokers or reps[j].seals))
+--                    end
+--                    
+--                    --calculate the hand effects
+--                    local effects = {eval_card(scoring_hand[i], {cardarea = G.play, full_hand = scoring_hand, scoring_hand = scoring_hand, poker_hand = text})}
+--                    for k=1, #G.jokers.cards do
+--                        --calculate the joker individual card effects
+--                        local eval = G.jokers.cards[k]:calculate_joker({cardarea = G.play, full_hand = scoring_hand, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, other_card = scoring_hand[i], individual = true})
+--                        if eval then 
+--                            table.insert(effects, eval)
+--                        end
+--                    end
+--                    scoring_hand[i].lucky_trigger = nil
+--
+--                    for ii = 1, #effects do
+--                        --If chips added, do chip add event and add the chips to the total
+--                        if effects[ii].chips then 
+--                            if effects[ii].card then juice_card(effects[ii].card) end
+--                            hand_chips = mod_chips(hand_chips + effects[ii].chips)
+--                            update_hand_text({delay = 0}, {chips = hand_chips})
+--                            card_eval_status_text(scoring_hand[i], 'chips', effects[ii].chips, percent)
+--                        end
+--
+--                        --If mult added, do mult add event and add the mult to the total
+--                        if effects[ii].mult then 
+--                            if effects[ii].card then juice_card(effects[ii].card) end
+--                            mult = mod_mult(mult + effects[ii].mult)
+--                            update_hand_text({delay = 0}, {mult = mult})
+--                            card_eval_status_text(scoring_hand[i], 'mult', effects[ii].mult, percent)
+--                        end
+--
+--                        --If play dollars added, add dollars to total
+--                        if effects[ii].p_dollars then 
+--                            if effects[ii].card then juice_card(effects[ii].card) end
+--                            ease_dollars(effects[ii].p_dollars)
+--                            card_eval_status_text(scoring_hand[i], 'dollars', effects[ii].p_dollars, percent)
+--                        end
+--
+--                        --If dollars added, add dollars to total
+--                        if effects[ii].dollars then 
+--                            if effects[ii].card then juice_card(effects[ii].card) end
+--                            ease_dollars(effects[ii].dollars)
+--                            card_eval_status_text(scoring_hand[i], 'dollars', effects[ii].dollars, percent)
+--                        end
+--
+--                        --Any extra effects
+--                        if effects[ii].extra then 
+--                            if effects[ii].card then juice_card(effects[ii].card) end
+--                            local extras = {mult = false, hand_chips = false}
+--                            if effects[ii].extra.mult_mod then mult =mod_mult( mult + effects[ii].extra.mult_mod);extras.mult = true end
+--                            if effects[ii].extra.chip_mod then hand_chips = mod_chips(hand_chips + effects[ii].extra.chip_mod);extras.hand_chips = true end
+--                            if effects[ii].extra.swap then 
+--                                local old_mult = mult
+--                                mult = mod_mult(hand_chips)
+--                                hand_chips = mod_chips(old_mult)
+--                                extras.hand_chips = true; extras.mult = true
+--                            end
+--                            update_hand_text({delay = 0}, {chips = extras.hand_chips and hand_chips, mult = extras.mult and mult})
+--                            card_eval_status_text(scoring_hand[i], 'extra', nil, percent, nil, effects[ii].extra)
+--                        end
+--
+--                        --If x_mult added, do mult add event and mult the mult to the total
+--                        if effects[ii].x_mult then 
+--                            if effects[ii].card then juice_card(effects[ii].card) end
+--                            mult = mod_mult(mult*effects[ii].x_mult)
+--                            update_hand_text({delay = 0}, {mult = mult})
+--                            card_eval_status_text(scoring_hand[i], 'x_mult', effects[ii].x_mult, percent)
+--                        end
+--
+--                        --calculate the card edition effects
+--                        if effects[ii].edition then
+--                            hand_chips = mod_chips(hand_chips + (effects[ii].edition.chip_mod or 0))
+--                            mult = mult + (effects[ii].edition.mult_mod or 0)
+--                            mult = mod_mult(mult*(effects[ii].edition.x_mult_mod or 1))
+--                            update_hand_text({delay = 0}, {
+--                                chips = effects[ii].edition.chip_mod and hand_chips or nil,
+--                                mult = (effects[ii].edition.mult_mod or effects[ii].edition.x_mult_mod) and mult or nil,
+--                            })
+--                            card_eval_status_text(scoring_hand[i], 'extra', nil, percent, nil, {
+--                                message = (effects[ii].edition.chip_mod and localize{type='variable',key='a_chips',vars={effects[ii].edition.chip_mod}}) or
+--                                        (effects[ii].edition.mult_mod and localize{type='variable',key='a_mult',vars={effects[ii].edition.mult_mod}}) or
+--                                        (effects[ii].edition.x_mult_mod and localize{type='variable',key='a_xmult',vars={effects[ii].edition.x_mult_mod}}),
+--                                chip_mod =  effects[ii].edition.chip_mod,
+--                                mult_mod =  effects[ii].edition.mult_mod,
+--                                x_mult_mod =  effects[ii].edition.x_mult_mod,
+--                                colour = G.C.DARK_EDITION,
+--                                edition = true})
+--                        end
+--                    end
+--                end
+--            end
+--        end
+--
+--        local nu_chip, nu_mult = G.GAME.selected_back:trigger_effect{context = 'final_scoring_step', chips = hand_chips, mult = mult}
+--        mult = mod_mult(nu_mult or mult)
+--        hand_chips = mod_chips(nu_chip or hand_chips)
+--
+--        local cards_destroyed = {}
+--        for i=1, #scoring_hand do
+--            local destroyed = nil
+--            --un-highlight all cards
+--            highlight_card(scoring_hand[i],(i-0.999)/(#scoring_hand-0.998),'down')
+--
+--            for j = 1, #G.jokers.cards do
+--                destroyed = G.jokers.cards[j]:calculate_joker({destroying_card = scoring_hand[i], full_hand = scoring_hand})
+--                if destroyed then break end
+--            end
+--
+--            if scoring_hand[i].ability.name == 'Glass Card' and not scoring_hand[i].debuff and pseudorandom('glass') < G.GAME.probabilities.normal/scoring_hand[i].ability.extra then 
+--                destroyed = true
+--            end
+--
+--            if destroyed then 
+--                if scoring_hand[i].ability.name == 'Glass Card' then 
+--                    scoring_hand[i].shattered = true
+--                else 
+--                    scoring_hand[i].destroyed = true
+--                end 
+--                cards_destroyed[#cards_destroyed+1] = scoring_hand[i]
+--            end
+--        end
+--        for j=1, #G.jokers.cards do
+--            eval_card(G.jokers.cards[j], {cardarea = G.jokers, remove_playing_cards = true, removed = cards_destroyed})
+--        end
+--
+--        local glass_shattered = {}
+--        for k, v in ipairs(cards_destroyed) do
+--            if v.shattered then glass_shattered[#glass_shattered+1] = v end
+--        end
+--
+--        check_for_unlock{type = 'shatter', shattered = glass_shattered}
+--        
+--        for i=1, #cards_destroyed do
+--            G.E_MANAGER:add_event(Event({
+--                func = function()
+--                    if cards_destroyed[i].ability.name == 'Glass Card' then 
+--                        cards_destroyed[i]:shatter()
+--                    else
+--                        cards_destroyed[i]:start_dissolve()
+--                    end
+--                  return true
+--                end
+--              }))
+--        end
+--    else
+--        mult = mod_mult(0)
+--        hand_chips = mod_chips(0)
+--        G.E_MANAGER:add_event(Event({
+--            trigger = 'immediate',
+--            func = (function()
+--                G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_1'):juice_up(0.3, 0)
+--                G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff_2'):juice_up(0.3, 0)
+--                G.GAME.blind:juice_up()
+--                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
+--                    play_sound('tarot2', 0.76, 0.4);return true end}))
+--                play_sound('tarot2', 1, 0.4)
+--                return true
+--            end)
+--        }))
+--
+--        play_area_status_text("Not Allowed!")--localize('k_not_allowed_ex'), true)
+--    end
+--    G.E_MANAGER:add_event(Event({
+--        trigger = 'after',delay = 0.4,
+--        func = (function()  update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = math.floor(hand_chips*mult), level = '', handname = ''});play_sound('button', 0.9, 0.6);return true end)
+--      }))
+--      check_and_set_high_score('hand', hand_chips*mult)
+--
+--      check_for_unlock({type = 'chip_score', chips = math.floor(hand_chips*mult)})
+--   
+--    if hand_chips*mult > 0 then 
+--        delay(0.8)
+--        G.E_MANAGER:add_event(Event({
+--        trigger = 'immediate',
+--        func = (function() play_sound('chips2');return true end)
+--        }))
+--    end
+--    G.E_MANAGER:add_event(Event({
+--      trigger = 'ease',
+--      blocking = false,
+--      ref_table = G.GAME,
+--      ref_value = 'chips',
+--      ease_to = G.GAME.chips + math.floor(hand_chips*mult),
+--      delay =  0.5,
+--      func = (function(t) return math.floor(t) end)
+--    }))
+--    G.E_MANAGER:add_event(Event({
+--      trigger = 'ease',
+--      blocking = true,
+--      ref_table = G.GAME.current_round.current_hand,
+--      ref_value = 'chip_total',
+--      ease_to = 0,
+--      delay =  0.5,
+--      func = (function(t) return math.floor(t) end)
+--    }))
+--    G.E_MANAGER:add_event(Event({
+--      trigger = 'immediate',
+--      func = (function() G.GAME.current_round.current_hand.handname = '';return true end)
+--    }))
+--    delay(0.3)
+--
+--    G.E_MANAGER:add_event(Event({
+--        trigger = 'immediate',
+--        func = (function()     
+--            if G.GAME.modifiers.debuff_played_cards then 
+--                for k, v in ipairs(scoring_hand) do v.ability.perma_debuff = true end
+--            end
+--        return true end)
+--      }))
+--    return result
 --end
 
 local card_drawref = Card.draw
