@@ -187,6 +187,7 @@ SMODS.Joker {
     },
     rarity = 3,
     cost = 7,
+    blueprint_compat = false,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,
@@ -216,7 +217,7 @@ SMODS.Joker {
         return { vars = { card.ability.extra.mult, card.ability.extra.mult_mod} }
     end,
     calculate = function(self, card, context)
-        if context.after then
+        if context.after and not context.blueprint then
             if card.ability.extra.mult - card.ability.extra.mult_mod <= 0 then 
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -333,6 +334,7 @@ SMODS.Joker {
     },
     rarity = 2,
     cost = 3,
+    blueprint_compat = false,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,
@@ -411,7 +413,7 @@ SMODS.Joker {
         return { vars = { card.ability.extra.chips, card.ability.extra.chip_mod } }
     end,
     calculate = function(self, card, context)
-        if context.skipping_booster then
+        if context.skipping_booster and not context.blueprint then
             card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
             G.E_MANAGER:add_event(Event({
                 func = function() 
@@ -451,6 +453,7 @@ SMODS.Joker {
     },
     rarity = 2,
     cost = 7,
+    blueprint_compat = false,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,
@@ -688,6 +691,7 @@ SMODS.Joker {
     },
     rarity = 2,
     cost = 8,
+    blueprint_compat = false,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,
@@ -713,6 +717,7 @@ SMODS.Joker {
     },
     rarity = 4,
     cost = 20,
+    blueprint_compat = false,
     soul_pos = {x = 7, y = 9},
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
@@ -757,7 +762,7 @@ SMODS.Joker {
         return { vars = { card.ability.extra.mult, card.ability.extra.mult_mod, card.ability.extra.chips, card.ability.extra.chip_mod, card.ability.extra.money, card.ability.extra.money_mod} }
     end,
     calculate = function(self, card, context)
-        if context.after then
+        if context.after and not context.blueprint then
             if card.ability.extra.mult - card.ability.extra.mult_mod <= 0 or card.ability.extra.chips - card.ability.extra.chip_mod <= 0 or card.ability.extra.money - card.ability.extra.money_mod <= 0 then 
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -2325,16 +2330,21 @@ function copy_card(other, new_card, card_scale, playing_card, strip_edition)
 
     if other.ability.suitless then
         new_card.ability.suitless = true
+        set_sprite_suits(new_card, false)
     elseif other.ability.is_club then
         new_card.ability.is_club = true
+        set_sprite_suits(new_card, false)
     elseif other.ability.is_diamond then
         new_card.ability.is_diamond = true
+        set_sprite_suits(new_card, false)
     elseif other.ability.is_spade then
         new_card.ability.is_spade = true
+        set_sprite_suits(new_card, false)
     elseif other.ability.is_heart then
         new_card.ability.is_heart = true
+        set_sprite_suits(new_card, false)
     end
-    set_sprite_suits(new_card, false)
+    
 
     return new_card
 end
