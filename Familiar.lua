@@ -1164,6 +1164,30 @@ SMODS.Consumable{
             create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_queen'}) 
         elseif G.GAME.last_tarot_planet == "c_lovers" then
             create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_wed'}) 
+        elseif G.GAME.last_tarot_planet == "c_ceres" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_demeter'}) 
+        elseif G.GAME.last_tarot_planet == "c_earth" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_terra'}) 
+        elseif G.GAME.last_tarot_planet == "c_eris" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_discordia'}) 
+        elseif G.GAME.last_tarot_planet == "c_jupiter" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_zeus'}) 
+        elseif G.GAME.last_tarot_planet == "c_mars" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_ares'}) 
+        elseif G.GAME.last_tarot_planet == "c_mercury" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_hermes'}) 
+        elseif G.GAME.last_tarot_planet == "c_neptune" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_poseidon'}) 
+        elseif G.GAME.last_tarot_planet == "c_planet_x" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_hecate'}) 
+        elseif G.GAME.last_tarot_planet == "c_pluto" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_hades'}) 
+        elseif G.GAME.last_tarot_planet == "c_saturn" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_cronus'}) 
+        elseif G.GAME.last_tarot_planet == "c_uranus" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_caelus'}) 
+        elseif G.GAME.last_tarot_planet == "c_venus" then
+            create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_aphrodite'}) 
         end
     end,
 }
@@ -1672,6 +1696,342 @@ SMODS.Consumable{
 }
 
 -- Familiar Planets
+SMODS.Consumable{
+    key = 'hermes',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Pair", xmult = 1.1, xchips = 1.3} },
+    atlas = 'Consumables',
+    pos = { x = 0, y = 3 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Hermes",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'aphrodite',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Three of a Kind", xmult = 1.1, xchips = 1.5} },
+    atlas = 'Consumables',
+    pos = { x = 1, y = 3 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Aphrodite",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'terra',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Full House", xmult = 1.2, xchips = 1.7} },
+    atlas = 'Consumables',
+    pos = { x = 2, y = 3 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Terra",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'ares',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Four of a Kind", xmult = 1.25, xchips = 1.75} },
+    atlas = 'Consumables',
+    pos = { x = 3, y = 3 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Ares",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'zeus',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Flush", xmult = 1.2, xchips = 1.3} },
+    atlas = 'Consumables',
+    pos = { x = 4, y = 3 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Zeus",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'cronus',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Straight", xmult = 1.25, xchips = 1.75} },
+    atlas = 'Consumables',
+    pos = { x = 5, y = 3 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Cronus",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'caelus',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Two Pair", xmult = 1.1, xchips = 1.5} },
+    atlas = 'Consumables',
+    pos = { x = 6, y = 3 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Caelus",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'poseidon',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Straight Flush", xmult = 1.3, xchips = 1.8} },
+    atlas = 'Consumables',
+    pos = { x = 7, y = 3 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Poseidon",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'hades',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "High Card", xmult = 1.1, xchips = 1.2} },
+    atlas = 'Consumables',
+    pos = { x = 8, y = 3 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Hades",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'hecate',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Five of a Kind", xmult = 1.25, xchips = 1.75} },
+    atlas = 'Consumables',
+    pos = { x = 9, y = 2 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Hecate",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'demeter',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Flush House", xmult = 1.3, xchips = 1.8} },
+    atlas = 'Consumables',
+    pos = { x = 8, y = 2 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Demeter",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
+SMODS.Consumable{
+    key = 'discordia',
+    set = 'Familiar_Planets',
+    config = { extra = {hand = "Flush Five", xmult = 1.25, xchips = 2} },
+    atlas = 'Consumables',
+    pos = { x = 3, y = 2 },
+    cost = 5,
+    loc_txt = {
+        ['en-us'] = {
+            name = "Discordia",
+            text = {
+                "(lvl:#1#+i) Imaginary Level Up",
+                "{C:attention}#4#",
+                "{C:red}X#2#{} Mult and",
+                "{C:blue}X#3#{} chips",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+    end,
+    can_use = function(self, card, area, copier)
+        return true 
+    end,
+    use = function(self, card)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+    end,
+}
 
 -- Familiar Spectrals 
 SMODS.Consumable{
@@ -1883,8 +2243,8 @@ SMODS.Booster{
         ['en-us'] = {
             name = "Fortune Booster Pack",
             text = {
-                "Choose {C:attention}#1#{} of up to",
-				"{C:attention}#2#{} Fortune Cards"
+                "Choose {C:attention}#2#{} of up to",
+				"{C:attention}#3#{} Fortune Cards"
             }
         }
     },
@@ -2049,6 +2409,82 @@ SMODS.Booster{
 	end,
 	create_card = function(self, card)
 		return create_card("Familiar_Tarots", G.pack_cards, nil, nil, true, true, nil, 'fam_forture')
+	end,
+    update_pack = function(self, dt)
+        if G.buttons then self.buttons:remove(); G.buttons = nil end
+        if G.shop then G.shop.alignment.offset.y = G.ROOM.T.y+11 end
+        
+        if not G.STATE_COMPLETE then
+            G.STATE_COMPLETE = true
+            G.CONTROLLER.interrupt.focus = true
+            G.E_MANAGER:add_event(Event({
+                trigger = 'immediate',
+                func = function()
+                    if self.sparkles then
+                        G.booster_pack_sparkles = Particles(1, 1, 0,0, {
+                            timer = self.sparkles.timer or 0.015,
+                            scale = self.sparkles.scale or 0.1,
+                            initialize = true,
+                            lifespan = self.sparkles.lifespan or 3,
+                            speed = self.sparkles.speed or 0.2,
+                            padding = self.sparkles.padding or -1,
+                            attach = G.ROOM_ATTACH,
+                            colours = self.sparkles.colours or {G.C.WHITE, lighten(G.C.GOLD, 0.2)},
+                            fill = true
+                        })
+                    end
+                    G.booster_pack = UIBox{
+                        definition = self:pack_uibox(),
+                        config = {align="tmi", offset = {x=0,y=G.ROOM.T.y + 9}, major = G.hand, bond = 'Weak'}
+                    }
+                    G.booster_pack.alignment.offset.y = -2.2
+                    G.ROOM.jiggle = G.ROOM.jiggle + 3
+                    self:ease_background_colour()
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'immediate',
+                        func = function()
+                            G.FUNCS.draw_from_deck_to_hand()
+        
+                            G.E_MANAGER:add_event(Event({
+                                trigger = 'after',
+                                delay = 0.5,
+                                func = function()
+                                    G.CONTROLLER:recall_cardarea_focus('pack_cards')
+                                    return true
+                                end}))
+                            return true
+                        end
+                    }))  
+                    return true
+                end
+            }))  
+        end
+    end,
+}
+SMODS.Booster{
+	name = "Pantheon Pack",
+	key = "pantheon_booster_1",
+    group_key = "pantheon_booster",
+	atlas = 'Booster',
+	pos = {x = 0, y = 1},
+    loc_txt = {
+        ['en-us'] = {
+            name = "Pantheon Booster Pack",
+            text = {
+                "Choose {C:attention}#2#{} of up to",
+				"{C:attention}#3#{} Pantheon Cards"
+            }
+        }
+    },
+	weight = 0.5 * 4,
+	cost = 6,
+	config = {draw_hand = true, extra = 3, choose = 1},
+	discovered = true,
+	loc_vars = function(self, info_queue, card)
+		return { vars = {card.draw_hand, card.config.center.config.choose, card.ability.extra} }
+	end,
+	create_card = function(self, card)
+		return create_card("Familiar_Planets", G.pack_cards, nil, nil, true, true, nil, 'fam_pantheon')
 	end,
     update_pack = function(self, dt)
         if G.buttons then self.buttons:remove(); G.buttons = nil end
@@ -2709,6 +3145,41 @@ SMODS.current_mod.credits_tab = function()
             {n = G.UIT.T, config = { text = "humplydinkle, potted_plant., dnolife, and con_artistssbu", scale = 0.5, colour = G.C.GREEN}},
         }},
     }}
+end
+
+function mult_level_up_hand(card, hand, instant, XMult, XChips)
+    G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level)
+    G.GAME.hands[hand].mult = math.max((XMult * G.GAME.hands[hand].mult), 1)
+    G.GAME.hands[hand].chips = math.max((XChips * G.GAME.hands[hand].chips), 0)
+    G.GAME.hands[hand].l_chips = math.max((XChips * G.GAME.hands[hand].l_chips), 0)
+    G.GAME.hands[hand].l_mult = math.max((XMult * G.GAME.hands[hand].l_mult), 1)
+    if not instant then 
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('tarot1')
+            if card then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
+        update_hand_text({delay = 0}, {mult = G.GAME.hands[hand].mult, StatusText = true})
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+            play_sound('tarot1')
+            if card then card:juice_up(0.8, 0.5) end
+            return true end }))
+        update_hand_text({delay = 0}, {chips = G.GAME.hands[hand].chips, StatusText = true})
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+            play_sound('tarot1')
+            if card then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = nil
+            return true end }))
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=G.GAME.hands[hand].level})
+        delay(1.3)
+        update_hand_text({delay = 0}, {mult = 0, StatusText = true})
+        update_hand_text({delay = 0}, {chips = 0, StatusText = true})
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=""})
+    end
+    G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = (function() check_for_unlock{type = 'upgrade_hand', hand = hand, level = G.GAME.hands[hand].level} return true end)
+    }))
 end
 
 local get_idref = Card.get_id
