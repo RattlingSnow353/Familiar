@@ -8,7 +8,7 @@
 --- VERSION: 1.0.0
 --- PREFIX: fam
 
-----------------------------------------------
+---------------------------------------------- G.Game
 ------------MOD CODE -------------------------
 
 -- You're not supposed to be here
@@ -103,6 +103,10 @@ local function create_joker(card_type,tag,message,extra, rarity)
     end)}))
 end
 
+function SMODS.current_mod.process_loc_text()
+    G.localization.misc.v_dictionary.fam_penalty = "-#1# Chips"
+end
+
 SMODS.Atlas { key = 'Joker', path = 'JokersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Consumables', path = 'TarotsFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Enhancers', path = 'EnhancersFam.png', px = 71, py = 95 }
@@ -117,7 +121,7 @@ SMODS.ConsumableType {
     primary_colour = HEX("2e3530"),
     secondary_colour = HEX("2e3530"),
     loc_txt = {
-        collection = 'Fortune',
+        collection = 'Fortune Cards',
         name = 'Fortune',
         label = 'Fortune',
         undiscovered = {
@@ -140,12 +144,40 @@ SMODS.UndiscoveredSprite {
 	}
 }
 SMODS.ConsumableType { 
+    key = 'Familiar_Planets',
+    collection_rows = { 6,6 },
+    primary_colour = HEX("675baa"),
+    secondary_colour = HEX("675baa"),
+    loc_txt = {
+        collection = 'Pantheon Cards',
+        name = 'Pantheon',
+        label = 'Pantheon',
+        undiscovered = {
+			name = "Not Discovered",
+			text = {
+				"Purchase or use",
+                "this card in an",
+                "unseeded run to",
+                "learn what it does"
+			},
+		},
+    },
+}
+SMODS.UndiscoveredSprite {
+	key = "Familiar_Planets",
+	atlas = "Consumables",
+	pos = {
+		x = 7,
+		y = 2,
+	}
+}
+SMODS.ConsumableType { 
     key = 'Familiar_Spectrals',
     collection_rows = { 4,5 },
     primary_colour = HEX("e16363"),
     secondary_colour = HEX("e16363"),
     loc_txt = {
-        collection = 'Mementos',
+        collection = 'Memento Cards',
         name = 'Mementos',
         label = 'Mementos',
         undiscovered = {
@@ -183,6 +215,7 @@ SMODS.UndiscoveredSprite {
 --                "Store {C:red}half{} of cash-out money,",
 --                "earn {C:money}$1{} more interest every {C:money}$#3#",
 --                "sell to retrieve money",
+--                "{C:inactive}(Currently {C:blue}+#1#{} {C:inactive}Chips)",
 --            }
 --        }
 --    },
@@ -197,12 +230,10 @@ SMODS.UndiscoveredSprite {
 --            local tempint = G.GAME.interest_amount
 --        end
 --        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
---            if card.ability.extra.money % card.ability.extra.mod == 0 and card.ability.extra.money ~= 0 then
---                card.ability.extra.interest = card.ability.extra.money/card.ability.extra.mod
---            end
---            card.ability.extra.money = card.ability.extra.money + G.GAME.interest_amount/2
---            G.GAME.interest_amount = G.GAME.interest_amount/2
---            G.GAME.interest_amount = G.GAME.interest_amount + card.ability.extra.interest
+--            card.ability.extra.interest = card.ability.extra.money/card.ability.extra.mod
+--            card.ability.extra.money = card.ability.extra.money + G.GAME.current_round.dollars/2
+--            G.GAME.current_round.dollars = G.GAME.current_round.dollars/2
+--            G.GAME.interest_amount = tempint + card.ability.extra.interest
 --        end
 --        if context.selling_self then
 --            G.GAME.interest_amount = tempint
@@ -538,6 +569,39 @@ SMODS.Joker {
     end,
     calculate = function(self, card, context)
         
+    end
+}
+SMODS.Joker {
+    key = 'perfect_ballot',
+    config = {
+        extra = {},
+    },
+    atlas = 'Joker',
+    pos = { x = 9, y = 6 },
+    loc_txt = {
+        ['en-us'] = {
+            name = 'Perfect Ballot',
+            text = {
+                "Retrigger {C:attention}all{} played",
+                "cards used in scoring",
+                "{C:attention}once",
+            }
+        }
+    },
+    rarity = 2,
+    cost = 5,
+    blueprint_compat = false,
+    loc_vars = function(self, info_queue, card)
+        return { vars = {  } }
+    end,
+    calculate = function(self, card, context)
+        if context.repetition and context.cardarea == G.play then
+            return {
+                message = localize('k_again_ex'),
+                repetitions = 1,
+                card = card
+            }
+        end
     end
 }
 SMODS.Joker {
@@ -1092,6 +1156,14 @@ SMODS.Consumable{
             create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_galaxy'}) 
         elseif G.GAME.last_tarot_planet == "c_sun" then
             create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_daylight'}) 
+        elseif G.GAME.last_tarot_planet == "c_tower" then
+            create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_pit'}) 
+        elseif G.GAME.last_tarot_planet == "c_heirophant" then
+            create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_bishop'}) 
+        elseif G.GAME.last_tarot_planet == "c_empress" then
+            create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_queen'}) 
+        elseif G.GAME.last_tarot_planet == "c_lovers" then
+            create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_wed'}) 
         end
     end,
 }
@@ -1139,6 +1211,72 @@ SMODS.Consumable{
     end,
 }
 SMODS.Consumable{
+    key = 'the_queen',
+    set = 'Familiar_Tarots',
+    config = { mod_conv = 'm_fam_div', max_highlighted = 2 },
+    atlas = 'Consumables',
+    pos = { x = 3, y = 0 },
+    cost = 3,
+    loc_txt = {
+        ['en-us'] = {
+            name = "The Queen",
+            text = {
+                "Enhances {C:attention}2{} selected card",
+                "into a {C:attention}Div Card{}.",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_fam_div
+
+        return {vars = {self.config.max_highlighted}}
+    end,
+}
+SMODS.Consumable{
+    key = 'the_bishop',
+    set = 'Familiar_Tarots',
+    config = { mod_conv = 'm_fam_penalty', max_highlighted = 2 },
+    atlas = 'Consumables',
+    pos = { x = 5, y = 0 },
+    cost = 3,
+    loc_txt = {
+        ['en-us'] = {
+            name = "The Bishop",
+            text = {
+                "Enhances {C:attention}2{} selected card",
+                "into a {C:attention}Penalty Card{}.",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_fam_penalty
+
+        return {vars = {self.config.max_highlighted}}
+    end,
+}
+SMODS.Consumable{
+    key = 'the_wed',
+    set = 'Familiar_Tarots',
+    config = { mod_conv = 'm_fam_split', max_highlighted = 2 },
+    atlas = 'Consumables',
+    pos = { x = 6, y = 0 },
+    cost = 3,
+    loc_txt = {
+        ['en-us'] = {
+            name = "The Wed",
+            text = {
+                "Enhances {C:attention}2{} selected card",
+                "into a {C:attention}Split Card{}.",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_fam_split
+
+        return {vars = {self.config.max_highlighted}}
+    end,
+}
+SMODS.Consumable{
     key = 'the_cycle_of_fate',
     set = 'Familiar_Tarots',
     config = { extra = { odds = 4 } },
@@ -1171,8 +1309,9 @@ SMODS.Consumable{
                 eligibleJokers[#eligibleJokers+1] = G.jokers.cards[i] 
             end
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                local joker = math.random(1,#G.jokers.cards)
                 local edition = {negative = true}
-                G.jokers.cards[math.random(1,#G.jokers.cards)]:set_edition(edition, true)
+                G.jokers.cards[joker]:set_edition(edition, true)
                 card:juice_up(0.3, 0.5)
             return true end }))
         else
@@ -1531,6 +1670,8 @@ SMODS.Consumable{
         end
     end,
 }
+
+-- Familiar Planets
 
 -- Familiar Spectrals 
 SMODS.Consumable{
@@ -2348,7 +2489,156 @@ SMODS.Seal{
     end
 }
 
+-- Decks
+SMODS.Back {
+    key = "amethyst_deck",
+    loc_txt = {
+        ['en-us'] = {
+            name = "Amethyst Deck",
+            text = {
+                "{C:attention}+5{} hand size",
+            }
+        }
+    },
+    atlas = 'Enhancers',
+    pos = { x = 0, y = 0 },
+    config = {},
+    apply = function(self, card, context)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.hand:change_size(5)
+                return true
+            end
+        }))
+    end
+}
+SMODS.Back {
+    key = "ruby_deck",
+    loc_txt = {
+        ['en-us'] = {
+            name = "Ruby Deck",
+            text = {
+                "Start with 2 copies of Playback,",
+                "+2 discards every round.",
+            }
+        }
+    },
+    atlas = 'Enhancers',
+    pos = { x = 2, y = 2 },
+    config = {},
+    apply = function(self, card, context)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.round_resets.discards = G.GAME.round_resets.discards + 2
+                ease_discard(2)
+                
+                create_consumable("Familiar_Spectrals", nil, nil, {forced_key='c_fam_playback'})
+                create_consumable("Familiar_Spectrals", nil, nil, {forced_key='c_fam_playback'})
+                return true
+            end
+        }))
+    end
+}
+SMODS.Back {
+    key = "silver_deck",
+    loc_txt = {
+        ['en-us'] = {
+            name = "Silver Deck",
+            text = {
+                "{C:attention}+2{} joker slots,",
+                "{C:blue}-1{} hand every round,",
+                "{C:red}-1{} discard every round",
+            }
+        }
+    },
+    atlas = 'Enhancers',
+    pos = { x = 3, y = 2 },
+    config = {},
+    apply = function(self, card, context)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.round_resets.discards = G.GAME.round_resets.discards - 1
+                ease_discard(-1)
+                
+                G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 2
+                G.jokers.config.card_limit = G.jokers.config.card_limit + 2
+
+                G.GAME.starting_params.hands = G.GAME.starting_params.hands - 1
+                G.GAME.round_resets.hands = G.GAME.starting_params.hands
+                G.GAME.current_round.hands_left = G.GAME.starting_params.hands
+                return true
+            end
+        }))
+    end
+}
+
 -- Enhancements
+SMODS.Enhancement {
+    key = 'penalty',
+    loc_txt = {
+        name = 'Penalty',
+        text = {
+            "{C:red}+#1#{} Mult",
+            "{C:blue}-#2#{} Chips",
+        }
+    },
+    pos = {x = 1, y = 1}, 
+    atlas = 'Enhancers', 
+    config = { extra = {mult = 20, chips = 20} },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {self.config.extra.mult, self.config.extra.chips} }
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.play then
+            SMODS.eval_this(card, {mult_mod = card.ability.extra.mult, message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}}} )
+            delay(0.2)
+            if G.GAME.current_round.current_hand.chips >= 20 then
+                SMODS.eval_this(card, {chip_mod = -card.ability.extra.chips, message = localize{type='variable',key='fam_penalty',vars={card.ability.extra.chips}}} )
+            else
+                SMODS.eval_this(card, {chip_mod = -(G.GAME.current_round.current_hand.chips), message = localize{type='variable',key='fam_penalty',vars={card.ability.extra.chips}}} )
+            end
+        end
+    end
+}
+SMODS.Enhancement {
+    key = 'div',
+    loc_txt = {
+        name = 'Div',
+        text = {
+            "{C:red}X#1#{} Mult",
+            "{C:blue}+#2#{} Chips",
+        }
+    },
+    pos = {x = 2, y = 1}, 
+    atlas = 'Enhancers', 
+    config = { extra = {mult = 0.9, chips = 100} },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {self.config.extra.mult, self.config.extra.chips} }
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.play then
+            SMODS.eval_this(card, {chip_mod = card.ability.extra.chips, message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}}} )
+            delay(0.2)
+            SMODS.eval_this(card, {Xmult_mod = card.ability.extra.mult, message = localize{type='variable',key='a_xmult',vars={card.ability.extra.mult}}} )
+        end
+    end
+}
+SMODS.Enhancement {
+    key = 'split',
+    loc_txt = {
+        name = 'Split',
+        text = {
+            "copies suit to its right",
+            "copies rank to its left",
+        }
+    },
+    pos = {x = 3, y = 1}, 
+    atlas = 'Enhancers', 
+    config = { extra = {mult = 0.9, chips = 100} },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {self.config.extra.mult, self.config.extra.chips} }
+    end
+}
 SMODS.Enhancement {
     key = 'gilded',
     loc_txt = {
@@ -2366,6 +2656,16 @@ SMODS.Enhancement {
     loc_vars = function(self, info_queue, card)
         return { vars = {self.config.extra.p_dollars, self.config.extra.dollar_mod} }
     end,
+    calculate = function(self, card, context)
+        if context.end_of_round then
+            if self.ability.extra.p_dollars <= 0 then
+                self.config.center = G.P_CENTERS.m_steel
+            else
+                ease_dollars(self.ability.extra.p_dollars)
+                self.ability.extra.p_dollars = self.ability.extra.p_dollars - self.ability.extra.dollar_mod
+            end
+        end
+    end
 }
 
 SMODS.current_mod.credits_tab = function()
@@ -2411,29 +2711,23 @@ SMODS.current_mod.credits_tab = function()
     }}
 end
 
-card_cal_seal = Card.calculate_seal
-function Card:calculate_seal(context)
-    local ret = card_cal_seal(self,context)
-    if self.debuff then return nil end
-    if context.end_of_round then
-        if self.config.center == G.P_CENTERS.m_fam_gilded then
-            if self.ability.extra.p_dollars <= 0 then
-                self.config.center = G.P_CENTERS.m_steel
-            else
-                ease_dollars(self.ability.extra.p_dollars)
-                self.ability.extra.p_dollars = self.ability.extra.p_dollars - self.ability.extra.dollar_mod
-            end
-        end
-    end
-    return ret
-end
-
 local get_idref = Card.get_id
 function Card:get_id(base)
     get_idref(self, base)
     local id = self.base.id
     if base == true then
         return self.base.id
+    end
+    if self.config.center == G.P_CENTERS.m_fam_split then
+        for i = 1, #G.hand.highlighted do
+            if G.hand.highlighted[i] == self then
+                if i ~= 1 then
+                    return G.hand.highlighted[i-1]:get_id(base)
+                else
+                    return 0
+                end
+            end
+        end
     end
     for i = 1, #G.jokers.cards do
         if G.jokers.cards[i].ability.name == "j_fam_smudged_jester" then
@@ -2452,6 +2746,17 @@ end
 local is_suitref = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
     is_suitref(self)
+    if self.config.center == G.P_CENTERS.m_fam_split then
+        for i = 1, #G.hand.highlighted do
+            if G.hand.highlighted[i] == self then
+                if i ~= #G.hand.highlighted then
+                    return G.hand.highlighted[i+1]:is_suit(suit, bypass_debuff, flush_calc)
+                else
+                    return false
+                end
+            end
+        end
+    end
     if self.ability.suitless == true then
         return false
     end
