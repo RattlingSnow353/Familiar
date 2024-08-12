@@ -3115,7 +3115,7 @@ SMODS.current_mod.credits_tab = function()
         }},
 
         {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
-            {n = G.UIT.T, config = { text = "Art for suitless & multisuited cards", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
+            {n = G.UIT.T, config = { text = "Art for suitless, multisuited cards, and Pantheon cards", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
         }},
         {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
             {n = G.UIT.T, config = { text = "by: ", scale = 0.5, colour = G.C.UI.TEXT_LIGHT}},
