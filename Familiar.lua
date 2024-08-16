@@ -8,7 +8,7 @@
 --- VERSION: 1.0.0
 --- PREFIX: fam
 
----------------------------------------------- G.Game
+---------------------------------------------- 
 ------------MOD CODE -------------------------
 
 -- You're not supposed to be here
@@ -105,6 +105,7 @@ end
 
 function SMODS.current_mod.process_loc_text()
     G.localization.misc.v_dictionary.fam_penalty = "-#1# Chips"
+    G.localization.misc.labels.unstable = "Unstable"
 end
 
 SMODS.Atlas { key = 'Joker', path = 'JokersFam.png', px = 71, py = 95 }
@@ -113,6 +114,8 @@ SMODS.Atlas { key = 'Enhancers', path = 'EnhancersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'SuitEffects', path = 'Double_Suit_CardsFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Booster', path = 'BoostersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Tags', path = 'TagsFam.png', px = 34, py = 34 }
+SMODS.Atlas { key = 'Stickers', path = 'StickersFam.png', px = 71, py = 95 }
+SMODS.Atlas { key = 'Voucher', path = 'VouchersFam.png', px = 71, py = 95 }
 
 
 SMODS.ConsumableType { 
@@ -171,11 +174,12 @@ SMODS.UndiscoveredSprite {
 		y = 2,
 	}
 }
-SMODS.ConsumableType { 
+local MenmentosType = SMODS.ConsumableType { 
     key = 'Familiar_Spectrals',
     collection_rows = { 4,5 },
     primary_colour = HEX("e16363"),
     secondary_colour = HEX("e16363"),
+    shop_rate = 0,
     loc_txt = {
         collection = 'Memento Cards',
         name = 'Mementos',
@@ -625,6 +629,7 @@ SMODS.Joker {
     },
     rarity = 3,
     cost = 7,
+    blueprint_compat = false,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.money } }
     end,
@@ -1327,13 +1332,13 @@ SMODS.Consumable{
         end
     end,
     use = function(self, card)
-        if pseudorandom('cycle_of_fate') < G.GAME.probabilities.normal/card.ability.extra.odds then
-            local eligibleJokers = {}
-            for i = 1, #G.jokers.cards do
-                eligibleJokers[#eligibleJokers+1] = G.jokers.cards[i] 
-            end
+        local eligibleJokers = {}
+        for i = 1, #G.jokers.cards do
+            eligibleJokers[#eligibleJokers+1] = G.jokers.cards[i] 
+        end
+        local joker = math.random(1,#G.jokers.cards)
+        if pseudorandom('cycle_of_fate') < G.GAME.probabilities.normal/card.ability.extra.odds and joker.edition ~= 'negative' then
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
-                local joker = math.random(1,#G.jokers.cards)
                 local edition = {negative = true}
                 G.jokers.cards[joker]:set_edition(edition, true)
                 card:juice_up(0.3, 0.5)
@@ -2241,7 +2246,7 @@ SMODS.Booster{
 	pos = {x = 0, y = 0},
     loc_txt = {
         ['en-us'] = {
-            name = "Fortune Booster Pack",
+            name = "Fortune Pack",
             text = {
                 "Choose {C:attention}#2#{} of up to",
 				"{C:attention}#3#{} Fortune Cards"
@@ -2469,7 +2474,7 @@ SMODS.Booster{
 	pos = {x = 0, y = 1},
     loc_txt = {
         ['en-us'] = {
-            name = "Pantheon Booster Pack",
+            name = "Pantheon Pack",
             text = {
                 "Choose {C:attention}#2#{} of up to",
 				"{C:attention}#3#{} Pantheon Cards"
@@ -2545,7 +2550,7 @@ SMODS.Booster{
 	pos = {x = 0, y = 4},
     loc_txt = {
         ['en-us'] = {
-            name = "Ethereal Booster Pack",
+            name = "Ethereal Pack",
             text = {
                 "Choose {C:attention}#1#{} of up to",
 				"{C:attention}#2#{} Memento Cards"
@@ -2766,39 +2771,113 @@ SMODS.Booster{
     end,
 }
 
---Tags
---SMODS.Tag {
---    atlas = "Tags",
---    pos = { x = 3, y = 3},
---    config = {type = 'new_blind_choice'},
---    key = "specter_tag",
---    min_ante = 2,
+-- Tags
+SMODS.Tag {
+    atlas = "Tags",
+    pos = { x = 3, y = 3},
+    config = {type = 'new_blind_choice'},
+    key = "specter_tag",
+    min_ante = 2,
+    loc_txt = {
+        name = "Specter Tag",
+        text = {
+            "Gives a free",
+            "{C:red}Ethereal Pack"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = {set = "Other", key = "p_fam_ethereal_booster_1", vars = {1, 2}}
+        return {vars = {}}
+    end,
+    apply = function(self, _context)
+        if _context.type == 'new_blind_choice' then 
+            local lock = self.ID
+            G.CONTROLLER.locks[lock] = true
+            self:yep('+', G.C.red,function() 
+                local key = 'p_fam_ethereal_booster_1'
+                local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
+                G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
+                card.cost = 0
+                card.from_tag = true
+                G.FUNCS.use_card({config = {ref_table = card}})
+                card:start_materialize()
+                G.CONTROLLER.locks[lock] = nil
+                return true
+            end)
+            self.triggered = true
+            return true
+        end
+    end,
+}
+SMODS.Tag {
+    atlas = "Tags",
+    pos = { x = 2, y = 2},
+    config = {type = 'new_blind_choice'},
+    key = "mezmerize_tag",
+    min_ante = 3,
+    loc_txt = {
+        name = "Mezmerize Tag",
+        text = {
+            "Gives a free",
+            "Fortune Collector's Chest"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = {set = "Other", key = "p_fam_forture_booster_3", vars = {2, 5}}
+        return {vars = {}}
+    end,
+    apply = function(self, _context)
+        if _context.type == 'new_blind_choice' then 
+            local lock = self.ID
+            G.CONTROLLER.locks[lock] = true
+            self:yep('+', G.C.BLACK,function() 
+                local key = 'p_fam_forture_booster_3'
+                local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
+                G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
+                card.cost = 0
+                card.from_tag = true
+                G.FUNCS.use_card({config = {ref_table = card}})
+                card:start_materialize()
+                G.CONTROLLER.locks[lock] = nil
+                return true
+            end)
+            self.triggered = true
+            return true
+        end
+    end,
+}
+
+-- Stickers
+--SMODS.Sticker{
+--    atlas = "Stickers",
+--    pos = { x = 1, y = 0},
+--    badge_colour = HEX '4f5da1',
+--    needs_enable_flag = false,
+--    config = { },
+--    key = "unstable",
+--    rate = 51,
 --    loc_txt = {
---        name = "Specter Tag",
+--        label = "Unstable",
+--        name = "Unstable",
 --        text = {
---            "Gives a free",
---            "{C:red}Ethereal Pack"
+--            "{C:green,E:1,S:1.1}1 in 3{} chance to be debuffed",
+--            "at end of next round until",
+--            "the end of next round",
 --        }
 --    },
 --    loc_vars = function(self, info_queue)
---        info_queue[#info_queue+1] = {set = "Other", key = "ethereal_booster_1"}
 --        return {vars = {}}
 --    end,
---    apply = function(tag, context)
---        if context.type == 'new_blind_choice' then
---            tag:yep('+', G.C.red,function() 
---                local key = 'ethereal_booster_1'
---                local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2, G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
---                card.cost = 0
---                card.from_tag = true
---                G.FUNCS.use_card({config = {ref_table = card}})
---                card:start_materialize()
---                return true
---            end)
---            tag.triggered = true
---            return true
+--    calculate = function(self, card, context)
+--        if context.end_of_round and context.individual then
+--            if pseudorandom('unstable') < G.GAME.probabilities.normal/3 then
+--	            card_eval_status_text(card, 'extra', nil, nil, nil, {message = localize('k_disabled_ex'),colour = G.C.FILTER, delay = 0.45})
+--	            card.debuff = true
+--            else
+--                card.debuff = false
+--            end
 --        end
---    end,
+--    end
 --}
 
 -- Seals
@@ -2860,11 +2939,15 @@ SMODS.Seal{
         return { vars = {  } }
     end,
     calculate = function(self, card, context)
-        return {
-            message = localize('k_again_ex'),
-            repetitions = 1,
-            card = G.play.cards[1]
-        }
+        if context.repetition then
+            if context.cardarea == G.play then
+                return {
+                    message = localize('k_again_ex'),
+                    repetitions = 1,
+                    card = context.scoring_hand[#context.scoring_hand]
+                }
+            end
+        end
     end
 }
 SMODS.Seal{
@@ -3007,6 +3090,23 @@ SMODS.Back {
         }))
     end
 }
+SMODS.Back {
+    key = "fleeting_deck",
+    loc_txt = {
+        ['en-us'] = {
+            name = "Fleeting Deck",
+            text = {
+                "Find {C:red}Mementos{} in the shop",
+            }
+        }
+    },
+    atlas = 'Enhancers',
+    pos = { x = 6, y = 2 },
+    config = {},
+    calculate = function(self, card, context)
+        MenmentosType.shop_rate = 35
+    end
+}
 
 -- Enhancements
 SMODS.Enhancement {
@@ -3103,6 +3203,92 @@ SMODS.Enhancement {
         end
     end
 }
+
+-- Vouchers
+--SMODS.Voucher {
+--    key = 'pickpocket',
+--    loc_txt = {
+--        name = 'Pickpocket',
+--        text = {
+--            "{C:blue}+#2#{} hand",
+--            "{C:attention}+#1#{} hand size",
+--        }
+--    },
+--    cost = 10,
+--    atlas = 'Voucher',
+--    pos = { x = 5, y = 0 },
+--    config = { extra = {hand_size = 2, hands = 1}},
+--    loc_vars = function(self, info_queue, card)
+--        return { vars = {self.config.extra.hand_size, self.config.extra.hands} }
+--    end,
+--    calculate = function(self, card, context)
+--        G.E_MANAGER:add_event(Event({
+--            func = function()
+--                G.hand:change_size(card.config.extra.hand_size)
+--
+--                G.GAME.starting_params.hands = G.GAME.starting_params.hands + card.config.extra.hands
+--                G.GAME.round_resets.hands = G.GAME.starting_params.hands
+--                G.GAME.current_round.hands_left = G.GAME.starting_params.hands
+--                return true
+--            end
+--        }))
+--    end
+--}
+--SMODS.Voucher {
+--    key = 'sleight_of_hand',
+--    loc_txt = {
+--        name = 'Sleight of Hand',
+--        text = {
+--            "{C:red}+#2#{} discard",
+--            "{C:attention}+#1#{} hand size",
+--            "{C:attention}Duplicate{} played cards every {C:blue}#3#{} hands played"
+--        }
+--    },
+--    cost = 15,
+--    atlas = 'Voucher',
+--    pos = { x = 5, y = 1 },
+--    requires = {'c_fam_pickpocket'},
+--    config = { extra = {hand_size = 4, discards = 1, hands = 3}},
+--    loc_vars = function(self, info_queue, card)
+--        return { vars = {self.config.extra.hand_size, self.config.extra.discards, self.config.extra.hands} }
+--    end,
+--    calculate = function(self, card, context)
+--        G.E_MANAGER:add_event(Event({
+--            func = function()
+--                G.hand:change_size(card.config.extra.hand_size)
+--
+--                G.GAME.round_resets.discards = G.GAME.round_resets.discards + self.config.extra.discards
+--                ease_discard(self.config.extra.discards)
+--                return true
+--            end
+--        }))
+--        if G.GAME.hands_played % card.config.extra.hands == 0 and G.GAME.hands_played ~= 0 then
+--            if context.cardarea == G.play then
+--                for i = 1, #context.full_hand do
+--                    local _card = copy_card(context.full_hand[#context.full_hand], nil, nil, G.playing_card)
+--                    _card:add_to_deck()
+--                    G.deck.config.card_limit = G.deck.config.card_limit + 1
+--                    table.insert(G.playing_cards, _card)
+--                    G.deck:emplace(_card)
+--                    _card.states.visible = nil
+--
+--                    G.E_MANAGER:add_event(Event({
+--                        func = function()
+--                            _card:start_materialize()
+--                            return true
+--                        end
+--                    })) 
+--                    return {
+--                        message = localize('k_copied_ex'),
+--                        colour = G.C.RED,
+--                        card = self,
+--                        playing_cards_created = {true}
+--                    }
+--                end
+--            end
+--        end
+--    end
+--}
 
 SMODS.current_mod.credits_tab = function()
     return {n = G.UIT.ROOT, config = {r = 0.1, align = "tm", padding = 0.1, colour = G.C.BLACK, minw = 10, minh = 6}, nodes = {
