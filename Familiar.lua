@@ -152,9 +152,9 @@ SMODS.ConsumableType {
     primary_colour = HEX("675baa"),
     secondary_colour = HEX("675baa"),
     loc_txt = {
-        collection = 'Pantheon Cards',
-        name = 'Pantheon',
-        label = 'Pantheon',
+        collection = 'Sacred Cards',
+        name = 'Sacred',
+        label = 'Sacred',
         undiscovered = {
 			name = "Not Discovered",
 			text = {
@@ -205,6 +205,73 @@ SMODS.UndiscoveredSprite {
 }
 
 -- JokersV1
+SMODS.Joker {
+    key = 'joey_j_jester',
+    config = {
+        extra = { x_chips = 1.2 },
+    },
+    atlas = 'Joker',
+    pos = { x = 0, y = 0 },
+    loc_txt = {
+        ['en-us'] = {
+            name = 'Joey. J. Jester',
+            text = {
+                "{C:blue}X#1#{} Chips",
+            }
+        }
+    },
+    rarity = 1,
+    cost = 4,
+    blueprint_compat = false,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.x_chips } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main and context.cardarea == G.jokers then
+            xChips(card.ability.extra.x_chips, card)
+            return {
+                message = "X1.2",
+                colour = G.C.CHIPS,
+            }
+        end
+    end
+}
+SMODS.Joker {
+    key = 'joyful_jester',
+    config = {
+        extra = { poker_hand = "Pair", money = 2},
+    },
+    atlas = 'Joker',
+    pos = { x = 2, y = 0 },
+    loc_txt = {
+        ['en-us'] = {
+            name = 'Joyful Jester',
+            text = {
+                "Gain {C:money}$#2#{} if played",
+                "hand contains",
+                "a {C:attention}#1#",
+            }
+        }
+    },
+    rarity = 1,
+    cost = 4,
+    blueprint_compat = false,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.poker_hand, card.ability.extra.money } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
+            ease_dollars(card.ability.extra.money)
+            G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.money
+            G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+            return {
+                message = localize('$')..card.ability.extra.money,
+                dollars = card.ability.extra.money,
+                colour = G.C.MONEY
+            }
+        end
+    end
+}
 --SMODS.Joker {
 --    key = 'debit_card',
 --    config = {
@@ -1337,7 +1404,7 @@ SMODS.Consumable{
             eligibleJokers[#eligibleJokers+1] = G.jokers.cards[i] 
         end
         local joker = math.random(1,#G.jokers.cards)
-        if pseudorandom('cycle_of_fate') < G.GAME.probabilities.normal/card.ability.extra.odds and joker.edition ~= 'negative' then
+        if pseudorandom('cycle_of_fate') < G.GAME.probabilities.normal/card.ability.extra.odds and G.jokers.cards[joker].edition ~= 'negative' then
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
                 local edition = {negative = true}
                 G.jokers.cards[joker]:set_edition(edition, true)
@@ -3090,23 +3157,23 @@ SMODS.Back {
         }))
     end
 }
-SMODS.Back {
-    key = "fleeting_deck",
-    loc_txt = {
-        ['en-us'] = {
-            name = "Fleeting Deck",
-            text = {
-                "Find {C:red}Mementos{} in the shop",
-            }
-        }
-    },
-    atlas = 'Enhancers',
-    pos = { x = 6, y = 2 },
-    config = {},
-    calculate = function(self, card, context)
-        MenmentosType.shop_rate = 35
-    end
-}
+--SMODS.Back {
+--    key = "fleeting_deck",
+--    loc_txt = {
+--        ['en-us'] = {
+--            name = "Fleeting Deck",
+--            text = {
+--                "Find {C:red}Mementos{} in the shop",
+--            }
+--        }
+--    },
+--    atlas = 'Enhancers',
+--    pos = { x = 6, y = 2 },
+--    config = {},
+--    calculate = function(self, card, context)
+--        MenmentosType.shop_rate = 35
+--    end
+--}
 
 -- Enhancements
 SMODS.Enhancement {
@@ -3293,7 +3360,7 @@ SMODS.Enhancement {
 SMODS.current_mod.credits_tab = function()
     return {n = G.UIT.ROOT, config = {r = 0.1, align = "tm", padding = 0.1, colour = G.C.BLACK, minw = 10, minh = 6}, nodes = {
         {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
-            {n = G.UIT.T, config = { text = "Art for The Broken, The Harlot, Mesmer, Sapphire Seal, Con Man and Thinktank", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
+            {n = G.UIT.T, config = { text = "Art for The Broken, The Harlot, Mesmer, Joey. J. Jester, Joyful Jester, Sapphire Seal, Con Man and Thinktank", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
         }},
         {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
             {n = G.UIT.T, config = { text = "by: ", scale = 0.5, colour = G.C.UI.TEXT_LIGHT}},
