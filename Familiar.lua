@@ -222,7 +222,6 @@ SMODS.Joker {
     },
     rarity = 1,
     cost = 4,
-    blueprint_compat = false,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.x_chips } }
     end,
@@ -255,7 +254,6 @@ SMODS.Joker {
     },
     rarity = 1,
     cost = 4,
-    blueprint_compat = false,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.poker_hand, card.ability.extra.money } }
     end,
@@ -286,7 +284,7 @@ SMODS.Joker {
 --                "Store {C:red}half{} of cash-out money,",
 --                "earn {C:money}$1{} more interest every {C:money}$#3#",
 --                "sell to retrieve money",
---                "{C:inactive}(Currently {C:blue}+#1#{} {C:inactive}Chips)",
+--                "{C:inactive}(Currently {C:money}$#2#{})",
 --            }
 --        }
 --    },
