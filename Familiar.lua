@@ -216,7 +216,7 @@ SMODS.Joker {
         ['en-us'] = {
             name = 'Joey. J. Jester',
             text = {
-                "{C:blue}X#1#{} Chips",
+                "{X:chips,C:white}X#1#{} Chips",
             }
         }
     },
@@ -3155,6 +3155,33 @@ SMODS.Back {
         }))
     end
 }
+
+SMODS.Back {
+    key = "andys_deck",
+    loc_txt = {
+        ['en-us'] = {
+            name = "Merry Andy's Deck",
+            text = {
+                "{C:attention}+3{} discards,",
+                "{C:blue}-1{} hand size."
+            }
+        }
+    },
+    atlas = 'Enhancers',
+    pos = { x = 0, y = 5 },
+    config = {},
+    apply = function(self, card, context)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.round_resets.discards = G.GAME.round_resets.discards + 3
+                ease_discard(3)
+                G.hand:change_size(-1)
+                return true
+            end
+        }))
+    end
+}
+
 --SMODS.Back {
 --    key = "fleeting_deck",
 --    loc_txt = {
