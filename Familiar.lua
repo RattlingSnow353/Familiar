@@ -216,7 +216,7 @@ SMODS.Joker {
         ['en-us'] = {
             name = 'Joey. J. Jester',
             text = {
-                "{C:blue}X#1#{} Chips",
+                "{X:chips,C:white}X#1#{} Chips",
             }
         }
     },
@@ -245,6 +245,146 @@ SMODS.Joker {
     loc_txt = {
         ['en-us'] = {
             name = 'Joyful Jester',
+            text = {
+                "Gain {C:money}$#2#{} if played",
+                "hand contains",
+                "a {C:attention}#1#",
+            }
+        }
+    },
+    rarity = 1,
+    cost = 4,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.poker_hand, card.ability.extra.money } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
+            ease_dollars(card.ability.extra.money)
+            G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.money
+            G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+            return {
+                message = localize('$')..card.ability.extra.money,
+                dollars = card.ability.extra.money,
+                colour = G.C.MONEY
+            }
+        end
+    end
+}
+SMODS.Joker {
+    key = 'peppy_jester',
+    config = {
+        extra = { poker_hand = "Three of a Kind", money = 4},
+    },
+    atlas = 'Joker',
+    pos = { x = 3, y = 0 },
+    loc_txt = {
+        ['en-us'] = {
+            name = 'Peppy Jester',
+            text = {
+                "Gain {C:money}$#2#{} if played",
+                "hand contains",
+                "a {C:attention}#1#",
+            }
+        }
+    },
+    rarity = 1,
+    cost = 4,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.poker_hand, card.ability.extra.money } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
+            ease_dollars(card.ability.extra.money)
+            G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.money
+            G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+            return {
+                message = localize('$')..card.ability.extra.money,
+                dollars = card.ability.extra.money,
+                colour = G.C.MONEY
+            }
+        end
+    end
+}
+SMODS.Joker {
+    key = 'mirthful_jester',
+    config = {
+        extra = { poker_hand = "Two Pair", money = 3},
+    },
+    atlas = 'Joker',
+    pos = { x = 4, y = 0 },
+    loc_txt = {
+        ['en-us'] = {
+            name = 'Mirthful Jester',
+            text = {
+                "Gain {C:money}$#2#{} if played",
+                "hand contains",
+                "a {C:attention}#1#",
+            }
+        }
+    },
+    rarity = 1,
+    cost = 4,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.poker_hand, card.ability.extra.money } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
+            ease_dollars(card.ability.extra.money)
+            G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.money
+            G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+            return {
+                message = localize('$')..card.ability.extra.money,
+                dollars = card.ability.extra.money,
+                colour = G.C.MONEY
+            }
+        end
+    end
+}
+SMODS.Joker {
+    key = 'cheerful_jester',
+    config = {
+        extra = { poker_hand = "Straight", money = 4},
+    },
+    atlas = 'Joker',
+    pos = { x = 5, y = 0 },
+    loc_txt = {
+        ['en-us'] = {
+            name = 'Cheerful Jester',
+            text = {
+                "Gain {C:money}$#2#{} if played",
+                "hand contains",
+                "a {C:attention}#1#",
+            }
+        }
+    },
+    rarity = 1,
+    cost = 4,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.poker_hand, card.ability.extra.money } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
+            ease_dollars(card.ability.extra.money)
+            G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.money
+            G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+            return {
+                message = localize('$')..card.ability.extra.money,
+                dollars = card.ability.extra.money,
+                colour = G.C.MONEY
+            }
+        end
+    end
+}
+SMODS.Joker {
+    key = 'delightful_jester',
+    config = {
+        extra = { poker_hand = "Flush", money = 3},
+    },
+    atlas = 'Joker',
+    pos = { x = 6, y = 0 },
+    loc_txt = {
+        ['en-us'] = {
+            name = 'Delightful Jester',
             text = {
                 "Gain {C:money}$#2#{} if played",
                 "hand contains",
@@ -311,6 +451,40 @@ SMODS.Joker {
 --    end
 --}
 SMODS.Joker {
+    key = 'flag_of_surrender',
+    config = {
+        extra = {mult = 10, mult_mod = 10},
+    },
+    atlas = 'Joker',
+    pos = { x = 1, y = 2 },
+    loc_txt = {
+        ['en-us'] = {
+            name = 'Flag of Surrender',
+            text = {
+                "{C:mult}+#1#{} Mult",
+                "for each played",
+                "{C:attention}hand{} this round",
+            }
+        }
+    },
+    rarity = 1,
+    cost = 5,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.mult_mod } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            card.ability.extra.mult = (G.GAME.current_round.hands_played + 1) * card.ability.extra.mult_mod
+            return {
+                message = localize{type='variable', key='a_mult', vars={card.ability.extra.mult}},
+                mult_mod = card.ability.extra.mult, 
+                colour = G.C.MULT,
+                card = self
+            }
+        end
+    end
+}
+SMODS.Joker {
     key = 'apophenia',
     config = {
         extra = { },
@@ -334,6 +508,45 @@ SMODS.Joker {
         return { vars = {  } }
     end,
     calculate = function(self, card, context)
+    end
+}
+SMODS.Joker {
+    key = 'dry-erase_board',
+    config = {
+        extra = { x_chips = 3 },
+    },
+    atlas = 'Joker',
+    pos = { x = 2, y = 10 },
+    loc_txt = {
+        ['en-us'] = {
+            name = 'Dry-Erase Board',
+            text = {
+                "{X:chips,C:white}X#1#{} Chips if",
+                "all cards scored",
+                "are {C:hearts}Hearts{} and {C:diamonds}Diamonds",
+            }
+        }
+    },
+    rarity = 2,
+    cost = 8,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.x_chips } }
+    end,
+    calculate = function(self, card, context)
+        local red_suits, all_cards = 0, 0
+        for k, v in ipairs(G.hand.cards) do
+            all_cards = all_cards + 1
+            if v:is_suit('Hearts', nil, true) or v:is_suit('Diamonds', nil, true) then
+                red_suits = red_suits + 1
+            end
+        end
+        if context.joker_main and red_suits == all_cards then
+            xChips(card.ability.extra.x_chips, card)
+            return {
+                message = "X3",
+                colour = G.C.CHIPS,
+            }
+        end
     end
 }
 SMODS.Joker {
@@ -428,9 +641,6 @@ SMODS.Joker {
                 return G.GAME.current_round.discards_used <= 0
             end
             juice_card_until(card, eval, true)
-            if context.end_of_round then
-                return
-            end
         end
         if G.GAME.current_round.discards_used <= 0 and context.discard then
             if #context.full_hand == 1 then
@@ -572,6 +782,37 @@ SMODS.Joker {
             return {
                 message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
                 chip_mod = card.ability.extra.chips
+            }
+        end
+    end
+}
+SMODS.Joker {
+    key = 'trapeze_artist',
+    config = {
+        extra = { x_chips = 3 },
+    },
+    atlas = 'Joker',
+    pos = { x = 2, y = 1 },
+    loc_txt = {
+        ['en-us'] = {
+            name = 'Trapeze Artist',
+            text = {
+                "{X:chips,C:white}X#1#{} Chips on {C:attention}first",
+                "{C:attention}hand{} of round",
+            }
+        }
+    },
+    rarity = 2,
+    cost = 8,
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.x_chips } }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main and G.GAME.current_round.hands_played == 0 then
+            xChips(card.ability.extra.x_chips, card)
+            return {
+                message = "X3",
+                colour = G.C.CHIPS,
             }
         end
     end
@@ -2837,6 +3078,49 @@ SMODS.Booster{
 }
 
 -- Tags
+SMODS.Tag { 
+    key = 'aureate', 
+    loc_txt = {
+        name = "Aureate Pin",
+        text = {
+            'Next base edition shop',
+            'Joker is free and',
+            'becomes {C:dark_edition}Aureate'
+        }
+    },
+    pos = { x = 0, y = 4},
+    atlas = 'Tags',
+
+    config = {type = 'store_joker_modify', edition = 'fam_aureate', odds = 4},
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = G.P_CENTERS.e_fam_aureate
+        return {}
+    end,
+
+    apply = function(tag, context)
+        if context.type == 'store_joker_modify' then
+            local applied = nil
+            if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
+                local lock = tag.ID
+                G.CONTROLLER.locks[lock] = true
+
+                context.card.temp_edition = true
+                tag:yep('+', G.C.DARK_EDITION,function()
+                    context.card:set_edition({fam_aureate = true}, true)
+                    context.card.ability.couponed = true
+                    context.card:set_cost()
+                    context.card.temp_edition = nil
+                    G.CONTROLLER.locks[lock] = nil
+                    return true
+                end)
+                applied = true
+
+                tag.triggered = true
+            end
+            return applied
+        end
+    end,
+}
 SMODS.Tag {
     atlas = "Tags",
     pos = { x = 3, y = 3},
@@ -2844,7 +3128,7 @@ SMODS.Tag {
     key = "specter_tag",
     min_ante = 2,
     loc_txt = {
-        name = "Specter Tag",
+        name = "Specter Pin",
         text = {
             "Gives a free",
             "{C:red}Ethereal Pack"
@@ -2881,7 +3165,7 @@ SMODS.Tag {
     key = "mezmerize_tag",
     min_ante = 3,
     loc_txt = {
-        name = "Mezmerize Tag",
+        name = "Mezmerize Pin",
         text = {
             "Gives a free",
             "Fortune Collector's Chest"
@@ -3167,11 +3451,40 @@ SMODS.Back {
 --    },
 --    atlas = 'Enhancers',
 --    pos = { x = 6, y = 2 },
---    config = {},
---    calculate = function(self, card, context)
---        MenmentosType.shop_rate = 35
---    end
+--    config = {shop_rate = 35, name = "fleeting_deck"},
 --}
+SMODS.Back {
+    key = "aureate_deck",
+    loc_txt = {
+        ['en-us'] = {
+            name = "Aureate Deck",
+            text = {
+                "{C:attention}+2{} joker slots,",
+                "{C:blue}-1{} hand every round,",
+                "{C:red}-1{} discard every round",
+            }
+        }
+    },
+    atlas = 'Enhancers',
+    pos = { x = 5, y = 2 },
+    config = {fam_force_edition = "fam_aureate"},
+    apply = function(self, card, context)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.round_resets.discards = G.GAME.round_resets.discards - 1
+                ease_discard(-1)
+                
+                G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 2
+                G.jokers.config.card_limit = G.jokers.config.card_limit + 2
+
+                G.GAME.starting_params.hands = G.GAME.starting_params.hands - 1
+                G.GAME.round_resets.hands = G.GAME.starting_params.hands
+                G.GAME.current_round.hands_left = G.GAME.starting_params.hands
+                return true
+            end
+        }))
+    end
+}
 
 -- Enhancements
 SMODS.Enhancement {
@@ -3269,91 +3582,178 @@ SMODS.Enhancement {
     end
 }
 
--- Vouchers
---SMODS.Voucher {
---    key = 'pickpocket',
+-- Shaders
+SMODS.Shader({key = 'statics', path = 'statics.fs'})
+SMODS.Shader({key = 'aureate', path = 'aureate.fs'})
+SMODS.Shader({key = 'speckle', path = 'speckled.fs'})
+
+--SMODS.Edition{
+--    key = 'statics', 
 --    loc_txt = {
---        name = 'Pickpocket',
+--        name = "Static",
+--        label = "Static",
 --        text = {
---            "{C:blue}+#2#{} hand",
---            "{C:attention}+#1#{} hand size",
+--            "{X:chips,C:white} X#1# {} Chips"
 --        }
 --    },
---    cost = 10,
---    atlas = 'Voucher',
---    pos = { x = 5, y = 0 },
---    config = { extra = {hand_size = 2, hands = 1}},
---    loc_vars = function(self, info_queue, card)
---        return { vars = {self.config.extra.hand_size, self.config.extra.hands} }
+--    config = { x_chips = 1.5 },
+--    loc_vars = function(self, info_queue)
+--        return {vars = {self.config.x_chips}}
 --    end,
---    calculate = function(self, card, context)
---        G.E_MANAGER:add_event(Event({
---            func = function()
---                G.hand:change_size(card.config.extra.hand_size)
---
---                G.GAME.starting_params.hands = G.GAME.starting_params.hands + card.config.extra.hands
---                G.GAME.round_resets.hands = G.GAME.starting_params.hands
---                G.GAME.current_round.hands_left = G.GAME.starting_params.hands
---                return true
---            end
---        }))
---    end
---}
---SMODS.Voucher {
---    key = 'sleight_of_hand',
---    loc_txt = {
---        name = 'Sleight of Hand',
---        text = {
---            "{C:red}+#2#{} discard",
---            "{C:attention}+#1#{} hand size",
---            "{C:attention}Duplicate{} played cards every {C:blue}#3#{} hands played"
---        }
---    },
---    cost = 15,
---    atlas = 'Voucher',
---    pos = { x = 5, y = 1 },
---    requires = {'c_fam_pickpocket'},
---    config = { extra = {hand_size = 4, discards = 1, hands = 3}},
---    loc_vars = function(self, info_queue, card)
---        return { vars = {self.config.extra.hand_size, self.config.extra.discards, self.config.extra.hands} }
---    end,
---    calculate = function(self, card, context)
---        G.E_MANAGER:add_event(Event({
---            func = function()
---                G.hand:change_size(card.config.extra.hand_size)
---
---                G.GAME.round_resets.discards = G.GAME.round_resets.discards + self.config.extra.discards
---                ease_discard(self.config.extra.discards)
---                return true
---            end
---        }))
---        if G.GAME.hands_played % card.config.extra.hands == 0 and G.GAME.hands_played ~= 0 then
---            if context.cardarea == G.play then
---                for i = 1, #context.full_hand do
---                    local _card = copy_card(context.full_hand[#context.full_hand], nil, nil, G.playing_card)
---                    _card:add_to_deck()
---                    G.deck.config.card_limit = G.deck.config.card_limit + 1
---                    table.insert(G.playing_cards, _card)
---                    G.deck:emplace(_card)
---                    _card.states.visible = nil
---
---                    G.E_MANAGER:add_event(Event({
---                        func = function()
---                            _card:start_materialize()
---                            return true
---                        end
---                    })) 
---                    return {
---                        message = localize('k_copied_ex'),
---                        colour = G.C.RED,
---                        card = self,
---                        playing_cards_created = {true}
---                    }
---                end
---            end
+--    calculate = function(self, context)
+--        if context.edition or (context.cardarea == G.play and self.playing_card) then
+--            xChips(self.config.x_chips, self)
+--            return {
+--                message = "X1.5",
+--                colour = G.C.CHIPS,
+--            }
 --        end
---    end
+--    end,
+--
+--    in_shop = true,
+--    weight = 7,
+--    extra_cost = 5,
+--    get_weight = function(self)
+--        return G.GAME.edition_rate * self.weight
+--    end,
+--
+--    shader = 'statics'
 --}
+SMODS.Edition{
+    key = 'aureate', 
+    loc_txt = {
+        name = "Aureate",
+        label = "Aureate",
+        text = {
+            "{X:money,C:white}$#1#{}"
+        }
+    },
+    config = { p_dollars = 5 },
+    loc_vars = function(self, info_queue)
+        return {vars = {self.config.p_dollars}}
+    end,
+
+    in_shop = true,
+    weight = 15,
+    extra_cost = 2,
+    get_weight = function(self)
+        return G.GAME.edition_rate * self.weight
+    end,
+
+    shader = 'aureate'
+}
+--SMODS.Edition{
+--    key = 'speckle', 
+--    loc_txt = {
+--        name = "Speckled",
+--        label = "Speckled",
+--        text = {
+--            "{C:red}+#1#{} Mult",
+--            "{C:blue}+#2#{} Chips"
+--        }
+--    },
+--    config = { mult = math.random(0,7), chips = math.random(0,37) },
+--    loc_vars = function(self, info_queue)
+--        return {vars = {self.config.mult, self.config.chips}}
+--    end,
+--
+--    in_shop = true,
+--    weight = 12,
+--    extra_cost = 2,
+--    get_weight = function(self)
+--        return G.GAME.edition_rate * self.weight
+--    end,
+--
+--    shader = 'speckle'
+--}
+
+-- Vouchers
+SMODS.Voucher {
+    key = 'pickpocket',
+    loc_txt = {
+        name = 'Pickpocket',
+        text = {
+            "{C:blue}+#2#{} hand",
+            "{C:attention}+#1#{} hand size",
+        }
+    },
+    cost = 10,
+    atlas = 'Voucher',
+    pos = { x = 5, y = 0 },
+    config = { extra = {hand_size = 2, hands = 1}},
+    loc_vars = function(self, info_queue, card)
+        return { vars = {self.config.extra.hand_size, self.config.extra.hands} }
+    end,
+    redeem = function(self, card, context)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.hand:change_size(card.ability.extra.hand_size)
+
+                G.GAME.starting_params.hands = G.GAME.starting_params.hands + card.ability.extra.hands
+                G.GAME.round_resets.hands = G.GAME.starting_params.hands
+                G.GAME.current_round.hands_left = G.GAME.starting_params.hands
+                return true
+            end
+        }))
+        G.GAME.pool_flags.pickpocket_redeemed = true
+    end
+}
+SMODS.Voucher {
+    key = 'sleight_of_hand',
+    loc_txt = {
+        name = 'Sleight of Hand',
+        text = {
+            "{C:red}+#2#{} discard",
+            "{C:attention}+#1#{} hand size",
+        }
+    },
+    cost = 15,
+    atlas = 'Voucher',
+    pos = { x = 5, y = 1 },
+    config = { extra = {hand_size = 3, discards = 1}},
+    loc_vars = function(self, info_queue, card)
+        return { vars = {self.config.extra.hand_size, self.config.extra.discards} }
+    end,
+    requires={'v_fam_pickpocket'},
+    redeem = function(self, card, context)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.hand:change_size(card.ability.extra.hand_size)
+
+                G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.extra.discards
+                ease_discard(card.ability.extra.discards)
+                return true
+            end
+        }))
+        G.GAME.pool_flags.sleight_of_hand_redeemed = true
+    end
+}
+
+local Backapply_to_runRef = Back.apply_to_run
+function Back.apply_to_run(self)
+    Backapply_to_runRef(self)
+    if self.effect.config.fam_force_edition then
+        G.GAME.modifiers.fam_force_edition = self.effect.config.fam_force_edition
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                for c = #G.playing_cards, 1, -1 do
+                    local ed_table = {}
+                    ed_table[self.effect.config.fam_force_edition] = true
+                    G.playing_cards[c]:set_edition(ed_table, true, true);
+                end
+            
+                return true
+            end
+        }))
+    end
+    local se = Card.set_edition
+    function Card:set_edition(edition, y, z)
+        return se(self, G.GAME.modifiers.fam_force_edition and {[G.GAME.modifiers.fam_force_edition]=true} or edition, y, z)
+    end
+    if self.effect.config.shop_rate then
+        MenmentosType.shop_rate = self.effect.config.shop_rate
+    end
+end
 
 SMODS.current_mod.credits_tab = function()
     return {n = G.UIT.ROOT, config = {r = 0.1, align = "tm", padding = 0.1, colour = G.C.BLACK, minw = 10, minh = 6}, nodes = {
@@ -3631,10 +4031,23 @@ function copy_card(other, new_card, card_scale, playing_card, strip_edition)
     return new_card
 end
 
+--local create_cardref = create_card
+--function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+--    card = create_cardref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+--    if G.GAME.modifiers.fam_force_edition then 
+--        card:set_edition(G.GAME.modifiers.fam_force_edition, true)
+--    end
+--    return card
+--end
+
 function xChips(num,card)
     hand_chips = mod_chips(hand_chips * (num or 1))
     update_hand_text(
         {delay = 0.2},
+        {chips = "X".. num}
+    )
+    update_hand_text(
+        {delay = 0.7},
         {chips = hand_chips}
     )
 end
