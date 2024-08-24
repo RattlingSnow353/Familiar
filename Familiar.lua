@@ -213,7 +213,7 @@ SMODS.UndiscoveredSprite {
 SMODS.Joker {
     key = 'joey_j_jester',
     config = {
-        extra = { x_chips = 1.2 },
+        extra = { fam_x_chips = 1.2 },
     },
     atlas = 'Joker',
     pos = { x = 0, y = 0 },
@@ -229,13 +229,13 @@ SMODS.Joker {
     cost = 4,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips } }
+        return { vars = { card.ability.extra.fam_x_chips } }
     end,
     calculate = function(self, card, context)
         if context.joker_main and context.cardarea == G.jokers then
             return {
-                message = "X"..number_format(card.ability.extra.x_chips),
-                Xchip_mod = card.ability.extra.x_chips,
+                message = "X"..number_format(card.ability.extra.fam_x_chips),
+                fam_Xchip_mod = card.ability.extra.fam_x_chips,
                 colour = G.C.CHIPS
             }
         end
@@ -525,7 +525,7 @@ SMODS.Joker {
 SMODS.Joker {
     key = 'dry-erase_board',
     config = {
-        extra = { x_chips = 3 },
+        extra = { fam_x_chips = 3 },
     },
     atlas = 'Joker',
     pos = { x = 2, y = 10 },
@@ -543,7 +543,7 @@ SMODS.Joker {
     cost = 8,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips } }
+        return { vars = { card.ability.extra.fam_x_chips } }
     end,
     calculate = function(self, card, context)
         local red_suits, all_cards = 0, 0
@@ -555,8 +555,8 @@ SMODS.Joker {
         end
         if context.joker_main and red_suits == all_cards then
             return {
-                message = "X"..number_format(card.ability.extra.x_chips),
-                Xchip_mod = card.ability.extra.x_chips,
+                message = "X"..number_format(card.ability.extra.fam_x_chips),
+                fam_Xchip_mod = card.ability.extra.fam_x_chips,
                 colour = G.C.CHIPS
             }
         end
@@ -806,7 +806,7 @@ SMODS.Joker {
 SMODS.Joker {
     key = 'trapeze_artist',
     config = {
-        extra = { x_chips = 3 },
+        extra = { fam_x_chips = 3 },
     },
     atlas = 'Joker',
     pos = { x = 2, y = 1 },
@@ -823,13 +823,13 @@ SMODS.Joker {
     cost = 8,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips } }
+        return { vars = { card.ability.extra.fam_x_chips } }
     end,
     calculate = function(self, card, context)
         if context.joker_main and G.GAME.current_round.hands_played == 0 then
             return {
-                message = "X"..number_format(card.ability.extra.x_chips),
-                Xchip_mod = card.ability.extra.x_chips,
+                message = "X"..number_format(card.ability.extra.fam_x_chips),
+                fam_Xchip_mod = card.ability.extra.fam_x_chips,
                 colour = G.C.CHIPS
             }
         end
@@ -1050,7 +1050,7 @@ SMODS.Joker {
 SMODS.Joker {
     key = 'the_twins',
     config = {
-        extra = {poker_hand = "Pair", x_chips = 2},
+        extra = {poker_hand = "Pair", fam_x_chips = 2},
     },
     atlas = 'Joker',
     pos = { x = 5, y = 4 },
@@ -1068,13 +1068,13 @@ SMODS.Joker {
     cost = 8,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
+        return { vars = { card.ability.extra.fam_x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
     end,
     calculate = function(self, card, context)
         if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
             return {
-                message = "X"..number_format(card.ability.extra.x_chips),
-                Xchip_mod = card.ability.extra.x_chips,
+                message = "X"..number_format(card.ability.extra.fam_x_chips),
+                fam_Xchip_mod = card.ability.extra.fam_x_chips,
                 colour = G.C.CHIPS
             }
         end
@@ -1083,7 +1083,7 @@ SMODS.Joker {
 SMODS.Joker {
     key = 'the_triplets',
     config = {
-        extra = {poker_hand = "Three of a Kind", x_chips = 3},
+        extra = {poker_hand = "Three of a Kind", fam_x_chips = 3},
     },
     atlas = 'Joker',
     pos = { x = 6, y = 4 },
@@ -1101,13 +1101,13 @@ SMODS.Joker {
     cost = 8,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
+        return { vars = { card.ability.extra.fam_x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
     end,
     calculate = function(self, card, context)
         if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
             return {
-                message = "X"..number_format(card.ability.extra.x_chips),
-                Xchip_mod = card.ability.extra.x_chips,
+                message = "X"..number_format(card.ability.extra.fam_x_chips),
+                fam_Xchip_mod = card.ability.extra.fam_x_chips,
                 colour = G.C.CHIPS
             }
         end
@@ -1116,7 +1116,7 @@ SMODS.Joker {
 SMODS.Joker {
     key = 'the_tetrad',
     config = {
-        extra = {poker_hand = "Four of a Kind", x_chips = 4},
+        extra = {poker_hand = "Four of a Kind", fam_x_chips = 4},
     },
     atlas = 'Joker',
     pos = { x = 7, y = 4 },
@@ -1134,13 +1134,13 @@ SMODS.Joker {
     cost = 8,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
+        return { vars = { card.ability.extra.fam_x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
     end,
     calculate = function(self, card, context)
         if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
             return {
-                message = "X"..number_format(card.ability.extra.x_chips),
-                Xchip_mod = card.ability.extra.x_chips,
+                message = "X"..number_format(card.ability.extra.fam_x_chips),
+                fam_Xchip_mod = card.ability.extra.fam_x_chips,
                 colour = G.C.CHIPS
             }
         end
@@ -1149,7 +1149,7 @@ SMODS.Joker {
 SMODS.Joker {
     key = 'the_class',
     config = {
-        extra = {poker_hand = "Straight", x_chips = 3},
+        extra = {poker_hand = "Straight", fam_x_chips = 3},
     },
     atlas = 'Joker',
     pos = { x = 8, y = 4 },
@@ -1167,13 +1167,13 @@ SMODS.Joker {
     cost = 8,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
+        return { vars = { card.ability.extra.fam_x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
     end,
     calculate = function(self, card, context)
         if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
             return {
-                message = "X"..number_format(card.ability.extra.x_chips),
-                Xchip_mod = card.ability.extra.x_chips,
+                message = "X"..number_format(card.ability.extra.fam_x_chips),
+                fam_Xchip_mod = card.ability.extra.fam_x_chips,
                 colour = G.C.CHIPS
             }
         end
@@ -1182,7 +1182,7 @@ SMODS.Joker {
 SMODS.Joker {
     key = 'the_kingdom',
     config = {
-        extra = {poker_hand = "Flush", x_chips = 2},
+        extra = {poker_hand = "Flush", fam_x_chips = 2},
     },
     atlas = 'Joker',
     pos = { x = 9, y = 4 },
@@ -1200,13 +1200,13 @@ SMODS.Joker {
     cost = 8,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
+        return { vars = { card.ability.extra.fam_x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
     end,
     calculate = function(self, card, context)
         if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
             return {
-                message = "X"..number_format(card.ability.extra.x_chips),
-                Xchip_mod = card.ability.extra.x_chips,
+                message = "X"..number_format(card.ability.extra.fam_x_chips),
+                fam_Xchip_mod = card.ability.extra.fam_x_chips,
                 colour = G.C.CHIPS
             }
         end
@@ -3120,7 +3120,7 @@ SMODS.Tag {
         name = "Aureate Pin",
         text = {
             'Next base edition shop',
-            'Joker is free and',
+            'Jester is free and',
             'becomes {C:dark_edition}Aureate'
         }
     },
@@ -3143,6 +3143,92 @@ SMODS.Tag {
                 context.card.temp_edition = true
                 tag:yep('+', G.C.DARK_EDITION,function()
                     context.card:set_edition({fam_aureate = true}, true)
+                    context.card.ability.couponed = true
+                    context.card:set_cost()
+                    context.card.temp_edition = nil
+                    G.CONTROLLER.locks[lock] = nil
+                    return true
+                end)
+                applied = true
+
+                tag.triggered = true
+            end
+            return applied
+        end
+    end,
+}
+SMODS.Tag { 
+    key = 'speckle', 
+    loc_txt = {
+        name = "Speckled Pin",
+        text = {
+            'Next base edition shop',
+            'Jester is free and',
+            'becomes {C:dark_edition}Speckled'
+        }
+    },
+    pos = { x = 3, y = 0},
+    atlas = 'Tags',
+
+    config = {type = 'store_joker_modify', edition = 'fam_speckle', odds = 4},
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = G.P_CENTERS.e_fam_speckle
+        return {}
+    end,
+
+    apply = function(tag, context)
+        if context.type == 'store_joker_modify' then
+            local applied = nil
+            if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
+                local lock = tag.ID
+                G.CONTROLLER.locks[lock] = true
+
+                context.card.temp_edition = true
+                tag:yep('+', G.C.DARK_EDITION,function()
+                    context.card:set_edition({fam_speckle = true}, true)
+                    context.card.ability.couponed = true
+                    context.card:set_cost()
+                    context.card.temp_edition = nil
+                    G.CONTROLLER.locks[lock] = nil
+                    return true
+                end)
+                applied = true
+
+                tag.triggered = true
+            end
+            return applied
+        end
+    end,
+}
+SMODS.Tag { 
+    key = 'statics', 
+    loc_txt = {
+        name = "Static Pin",
+        text = {
+            'Next base edition shop',
+            'Jester is free and',
+            'becomes {C:dark_edition}Static'
+        }
+    },
+    pos = { x = 0, y = 1},
+    atlas = 'Tags',
+
+    config = {type = 'store_joker_modify', edition = 'fam_statics', odds = 4},
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = G.P_CENTERS.e_fam_statics
+        return {}
+    end,
+
+    apply = function(tag, context)
+        if context.type == 'store_joker_modify' then
+            local applied = nil
+            if not context.card.edition and not context.card.temp_edition and context.card.ability.set == 'Joker' then
+                local lock = tag.ID
+                G.CONTROLLER.locks[lock] = true
+
+                context.card.temp_edition = true
+                tag:yep('+', G.C.DARK_EDITION,function()
+                    context.card:set_edition({fam_statics = true}, true)
                     context.card.ability.couponed = true
                     context.card:set_cost()
                     context.card.temp_edition = nil
@@ -3771,9 +3857,9 @@ SMODS.Edition{
             "{X:chips,C:white} X#1# {} Chips"
         }
     },
-    config = { x_chips = 1.5 },
+    config = { fam_x_chips = 1.5 },
     loc_vars = function(self, info_queue)
-        return {vars = {self.config.x_chips}}
+        return {vars = {self.config.fam_x_chips}}
     end,
 
     in_shop = true,
@@ -4182,8 +4268,8 @@ fam_msgs = {
 function Card:get_chip_x_bonus()
     if self.debuff then return 0 end
     if self.ability.set == 'Joker' then return 0 end
-    if self.ability.x_chips <= 1 then return 0 end
-    return self.ability.x_chips
+    if self.ability.fam_x_chips <= 1 then return 0 end
+    return self.ability.fam_x_chips
 end
 
 local card_drawref = Card.draw

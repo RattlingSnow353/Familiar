@@ -3,14 +3,14 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
-# x_chips - Borrowed from Talisman 
+# fam_x_chips - Borrowed from Talisman 
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
 pattern = "if effects.jokers.Xmult_mod then mult = mod_mult(mult*effects.jokers.Xmult_mod);extras.mult = true  end"
 position = "after"
 payload = '''
-if effects.jokers.Xchip_mod then hand_chips = mod_chips(hand_chips*effects.jokers.Xchip_mod);extras.hand_chips = true end
+if effects.jokers.fam_Xchip_mod then hand_chips = mod_chips(hand_chips*effects.jokers.fam_Xchip_mod);extras.hand_chips = true end
 '''
 match_indent = true
 
@@ -20,7 +20,7 @@ target = "functions/state_events.lua"
 pattern = "if effect.Xmult_mod then mult = mod_mult(mult*effect.Xmult_mod);extras.mult = true  end"
 position = "after"
 payload = '''
-if effect.Xchip_mod then hand_chips = mod_chips(hand_chips*effect.Xchip_mod);extras.hand_chips = true end
+if effect.fam_Xchip_mod then hand_chips = mod_chips(hand_chips*effect.fam_Xchip_mod);extras.hand_chips = true end
 '''
 match_indent = true
 
@@ -30,7 +30,7 @@ target = "card.lua"
 pattern = "x_mult = center.config.Xmult or 1,"
 position = "after"
 payload = '''
-x_chips = center.config.Xchips or 0,
+fam_x_chips = center.config.Xchips or 0,
 '''
 match_indent = true
 
@@ -40,9 +40,9 @@ target = "functions/common_events.lua"
 pattern = "local p_dollars = card:get_p_dollars()"
 position = "before"
 payload = '''
-local x_chips = card:get_chip_x_bonus()
-if x_chips > 0 then
-	ret.x_chips = x_chips
+local fam_x_chips = card:get_chip_x_bonus()
+if fam_x_chips > 0 then
+	ret.fam_x_chips = fam_x_chips
 end
 '''
 match_indent = true
@@ -53,7 +53,7 @@ target = "functions/common_events.lua"
 pattern = "elseif eval_type == 'dollars' then"
 position = "before"
 payload = '''
-elseif eval_type == 'x_chips' then 
+elseif eval_type == 'fam_x_chips' then 
 	sound = 'talisman_xchip'
 	amt = amt
 	text = 'X' .. amt
@@ -69,11 +69,11 @@ target = "functions/state_events.lua"
 pattern = "if effects[ii].message then"
 position = "before"
 payload = '''
-if effects[ii].x_chips then
+if effects[ii].fam_x_chips then
 	mod_percent = true
-	hand_chips = mod_chips(hand_chips*effects[ii].x_chips)
+	hand_chips = mod_chips(hand_chips*effects[ii].fam_x_chips)
 	update_hand_text({delay = 0}, {chips = hand_chips})
-	card_eval_status_text(G.hand.cards[i], 'x_chips', effects[ii].x_chips, percent)
+	card_eval_status_text(G.hand.cards[i], 'fam_x_chips', effects[ii].fam_x_chips, percent)
 end
 '''
 match_indent = true
@@ -84,7 +84,7 @@ match_indent = true
 target = "functions/common_events.lua"
 pattern = "sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or 'generic1'"
 position = "at"
-payload = '''sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or extra.Xchip_mod and 'talisman_xchip' or 'generic1'
+payload = '''sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or extra.fam_Xchip_mod and 'talisman_xchip' or 'generic1'
 '''
 match_indent = true
 
@@ -94,12 +94,12 @@ target = "functions/state_events.lua"
 pattern = "--calculate the card edition effects"
 position = "before"
 payload = '''
-if effects[ii].x_chips then
+if effects[ii].fam_x_chips then
 	mod_percent = true
 	if effects[ii].card then juice_card(effects[ii].card) end
-	hand_chips = mod_chips(hand_chips*effects[ii].x_chips)
+	hand_chips = mod_chips(hand_chips*effects[ii].fam_x_chips)
 	update_hand_text({delay = 0}, {chips = hand_chips})
-	card_eval_status_text(scoring_hand[i], 'x_chips', effects[ii].x_chips, percent)
+	card_eval_status_text(scoring_hand[i], 'fam_x_chips', effects[ii].fam_x_chips, percent)
 end
 if effects[ii].ranchips then
 	mod_percent = true
@@ -130,13 +130,13 @@ payload = '''
 if scoring_hand and scoring_hand[i] and scoring_hand[i].edition then
 	local trg = scoring_hand[i]
 	local edi = trg.edition
-	if edi.x_chips then
-		hand_chips = mod_chips(hand_chips * edi.x_chips)
+	if edi.fam_x_chips then
+		hand_chips = mod_chips(hand_chips * edi.fam_x_chips)
 		update_hand_text({delay = 0}, {chips = hand_chips})
 		card_eval_status_text(trg, 'extra', nil, percent, nil,
-		{message = 'X'.. edi.x_chips ..' Chips',
+		{message = 'X'.. edi.fam_x_chips ..' Chips',
 		edition = true,
-		x_chips = true})
+		fam_x_chips = true})
 	end
 	if edi.ranchips then
 		edi.ranchips = math.random(edi.cmin,edi.cmax)
@@ -169,13 +169,13 @@ payload = '''
 if G.jokers.cards and G.jokers.cards[i] and G.jokers.cards[i].edition then
 	local trg = G.jokers.cards[i]
 	local edi = trg.edition
-	if edi.x_chips then
-		hand_chips = mod_chips(hand_chips * edi.x_chips)
+	if edi.fam_x_chips then
+		hand_chips = mod_chips(hand_chips * edi.fam_x_chips)
 		update_hand_text({delay = 0}, {chips = hand_chips})
 		card_eval_status_text(trg, 'extra', nil, percent, nil,
-		{message = 'X'.. edi.x_chips ..' Chips',
+		{message = 'X'.. edi.fam_x_chips ..' Chips',
 		edition = true,
-		x_chips = true})
+		fam_x_chips = true})
 	end
 	if edi.ranchips then
 		edi.ranchips = math.random(edi.cmin,edi.cmax)
