@@ -205,35 +205,28 @@ vec4 effect(vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords)
     vec4 tex = Texel(texture, texture_coords);
     vec2 uv = (((texture_coords) * (image_details)) - texture_details.xy * texture_details.ba) / texture_details.ba;
 
-    // Adjust the transparency threshold
     if (tex.a < 0.1) {
         return tex;
     }
 
     float mod = aureate.r * 2.0;
 
-    // Enhanced Gold color tones with more contrast
     vec4 colour_1 = vec4(1.0, 0.85, 0.3, 1.0);  // Bright Gold
     vec4 colour_2 = vec4(0.95, 0.75, 0.25, 0.9);  // Mid-tone Gold
     vec4 colour_3 = vec4(0.8, 0.65, 0.15, 0.8);  // Dark Gold
 
-    // Adjusted gradient with more pronounced highlights
     vec4 grad = mix(colour_1, colour_2, uv.x + uv.y + sin(mod) * 0.6);
     grad = mix(grad, colour_3, uv.y - uv.x + cos(mod) * 0.6);
 
-    // Enhanced highlights to make the gold effect more prominent
     float highlight = abs(sin((uv.x + uv.y) * 20.0)) * 0.1;
     grad.rgb += highlight;
 
-    // Adjust the blend factor for a stronger gold effect
     vec4 golden_colour = lighten(tex, grad * 1.0);  // Increased intensity
 
-    // Fine-tuned yellow saturation for a richer gold tone
     golden_colour.r *= 1.0;
     golden_colour.g *= 1.2;
     golden_colour.b *= 0.8;
 
-    // Stronger blend with the texture for a more powerful gold effect
     vec4 final_color = mix(tex, golden_colour, 0.65);  // Increased blend factor
 
     return dissolve_mask(final_color, texture_coords, uv);

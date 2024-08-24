@@ -202,39 +202,26 @@ vec4 lighten(vec4 colour1, vec4 colour2) {
 
 vec4 effect(vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords)
 {
-    // Get the texture color at the specified texture coordinates
     vec4 tex = Texel(texture, texture_coords);
-    
-    // Calculate UV coordinates with image details
     vec2 uv = (((texture_coords) * (image_details)) - texture_details.xy * texture_details.ba) / texture_details.ba;
 
-    // Use the 'statics' variable to influence the noise
-    float mod = statics.r * 2.0; // Modify based on the 'statics' variable
-    
-    // Create high and low frequency noise
-    float noise = cnoise(vec3(uv * 100.0, mod)); // High-frequency noise
-    float noise2 = cnoise(vec3(uv * 50.0, mod + 1.0)); // Low-frequency noise
+    float mod = statics.r * time * 0.5;
 
-    // Combine noise to create a more varied static effect
+    float noise = cnoise(vec3(uv * 100.0, mod));
+    float noise2 = cnoise(vec3(uv * 100.0, mod + 1.0));
+    float noise3 = cnoise(vec3(uv * 100.0, mod + 2.0));
+
     float combined_noise = mix(noise, noise2, 0.5);
-
-    // Create static color based on combined noise
+    combined_noise = mix(combined_noise, noise3, 0.5);
+    
     vec4 static_color = vec4(combined_noise, combined_noise, combined_noise, 1.0);
 
-    // Control the intensity of the static
-    float statics_amount = 0.5; // 0.0 - no static, 1.0 - maximum static
-
-    // Only blend the static color with the original texture where the texture is opaque
+    float statics_amount = 0.5;
     vec4 final_color = mix(tex, static_color, statics_amount);
-    
-    // Preserve the alpha of the original texture to avoid black showing through
+
+    final_color.rgb = mix(final_color.rgb, vec3(1.0), 0.5); 
     final_color.a = tex.a;
 
-    // Apply brightness adjustment to the static effect
-    float statics_brightness = 1.5;
-    final_color.rgb *= statics_brightness;
-
-    // Return the final color with the dissolve mask applied
     return dissolve_mask(final_color, texture_coords, uv);
 }
 

@@ -202,36 +202,27 @@ vec4 lighten(vec4 colour1, vec4 colour2) {
 
 vec4 effect(vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords)
 {
-    // Fetch the texture color
     vec4 texColor = Texel(texture, texture_coords);
 
-    // Calculate the UV coordinates
     vec2 uv = (((texture_coords) * (image_details)) - texture_details.xy * texture_details.ba) / texture_details.ba;
 
-    // Generate star-like points
     float starIntensity = smoothstep(0.85, 1.0, cnoise(vec3(uv * 30.0, speckle.x * 10.0)));
     vec4 starColor = vec4(1.0, 1.0, 1.0, 1.0) * starIntensity;
 
-    // Create a simple background fade effect
     float fade = smoothstep(0.0, 1.0, 1.0 - length(uv - 0.5) * 2.0); // Adjust fade strength and position as needed
 
-    // Combine the stars with the background fade
     vec4 backgroundColor = vec4(0.0, 0.0, 0.0, 1.0) * fade;
     vec4 finalColor = backgroundColor + starColor * 1.2;
 
-    // Use the transparency from the original texture
     finalColor.a = texColor.a;
 
-    // Avoid applying the effect to fully transparent pixels
     if (texColor.a < 0.1)
     {
         return texColor;
     }
 
-    // Combine the texture color with the final effect
     vec4 combinedColor = mix(texColor, finalColor, 0.7);
 
-    // Apply the dissolve mask
     return dissolve_mask(combinedColor, texture_coords, uv);
 }
 

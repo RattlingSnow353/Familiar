@@ -1,0 +1,304 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# x_chips - Borrowed from Talisman 
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if effects.jokers.Xmult_mod then mult = mod_mult(mult*effects.jokers.Xmult_mod);extras.mult = true  end"
+position = "after"
+payload = '''
+if effects.jokers.Xchip_mod then hand_chips = mod_chips(hand_chips*effects.jokers.Xchip_mod);extras.hand_chips = true end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if effect.Xmult_mod then mult = mod_mult(mult*effect.Xmult_mod);extras.mult = true  end"
+position = "after"
+payload = '''
+if effect.Xchip_mod then hand_chips = mod_chips(hand_chips*effect.Xchip_mod);extras.hand_chips = true end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "x_mult = center.config.Xmult or 1,"
+position = "after"
+payload = '''
+x_chips = center.config.Xchips or 0,
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "local p_dollars = card:get_p_dollars()"
+position = "before"
+payload = '''
+local x_chips = card:get_chip_x_bonus()
+if x_chips > 0 then
+	ret.x_chips = x_chips
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif eval_type == 'dollars' then"
+position = "before"
+payload = '''
+elseif eval_type == 'x_chips' then 
+	sound = 'talisman_xchip'
+	amt = amt
+	text = 'X' .. amt
+	colour = G.C.CHIPS
+	config.type = 'fade'
+	config.scale = 0.7
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if effects[ii].message then"
+position = "before"
+payload = '''
+if effects[ii].x_chips then
+	mod_percent = true
+	hand_chips = mod_chips(hand_chips*effects[ii].x_chips)
+	update_hand_text({delay = 0}, {chips = hand_chips})
+	card_eval_status_text(G.hand.cards[i], 'x_chips', effects[ii].x_chips, percent)
+end
+'''
+match_indent = true
+
+# sfx
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or 'generic1'"
+position = "at"
+payload = '''sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or extra.Xchip_mod and 'talisman_xchip' or 'generic1'
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "--calculate the card edition effects"
+position = "before"
+payload = '''
+if effects[ii].x_chips then
+	mod_percent = true
+	if effects[ii].card then juice_card(effects[ii].card) end
+	hand_chips = mod_chips(hand_chips*effects[ii].x_chips)
+	update_hand_text({delay = 0}, {chips = hand_chips})
+	card_eval_status_text(scoring_hand[i], 'x_chips', effects[ii].x_chips, percent)
+end
+if effects[ii].ranchips then
+	mod_percent = true
+	ranchips = math.random(effects[ii].cmin,effects[ii].cmax)
+	if effects[ii].card then juice_card(effects[ii].card) end
+	hand_chips = mod_chips(hand_chips + ranchips)
+	update_hand_text({delay = 0}, {chips = hand_chips})
+	card_eval_status_text(scoring_hand[i], 'ranchips', effects[ii].ranchips, percent)
+end
+if effects[ii].ranmult then
+	mod_percent = true
+	ranmult = math.random(effects[ii].mmin,effects[ii].mmax)
+	if effects[ii].card then juice_card(effects[ii].card) end
+	mult = mod_mult(mult + ranmult)
+	update_hand_text({delay = 0}, {mult = mult})
+	card_eval_status_text(scoring_hand[i], 'ranmult', effects[ii].ranmult, percent)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = 'if effects[ii].edition then'
+position = 'after'
+match_indent = true
+payload = '''
+if scoring_hand and scoring_hand[i] and scoring_hand[i].edition then
+	local trg = scoring_hand[i]
+	local edi = trg.edition
+	if edi.x_chips then
+		hand_chips = mod_chips(hand_chips * edi.x_chips)
+		update_hand_text({delay = 0}, {chips = hand_chips})
+		card_eval_status_text(trg, 'extra', nil, percent, nil,
+		{message = 'X'.. edi.x_chips ..' Chips',
+		edition = true,
+		x_chips = true})
+	end
+	if edi.ranchips then
+		edi.ranchips = math.random(edi.cmin,edi.cmax)
+		hand_chips = mod_chips(hand_chips + edi.ranchips )
+		update_hand_text({delay = 0}, {chips = hand_chips})
+		card_eval_status_text(trg, 'extra', nil, percent, nil,
+		{message = '+'.. edi.ranchips ..' Chips',
+		edition = true,
+		ranchips = true})
+	end
+	if edi.ranmult then
+		edi.ranmult = math.random(edi.mmin,edi.mmax)
+		mult = mod_mult(mult + edi.ranmult )
+		update_hand_text({delay = 0}, {mult = mult})
+		card_eval_status_text(trg, 'extra', nil, percent, nil,
+		{message = '+'.. edi.ranmult ..' Mult',
+		edition = true,
+		ranmult = true})
+	end
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = 'if edition_effects.jokers.x_mult_mod then'
+position = 'before'
+match_indent = true
+payload = '''
+if G.jokers.cards and G.jokers.cards[i] and G.jokers.cards[i].edition then
+	local trg = G.jokers.cards[i]
+	local edi = trg.edition
+	if edi.x_chips then
+		hand_chips = mod_chips(hand_chips * edi.x_chips)
+		update_hand_text({delay = 0}, {chips = hand_chips})
+		card_eval_status_text(trg, 'extra', nil, percent, nil,
+		{message = 'X'.. edi.x_chips ..' Chips',
+		edition = true,
+		x_chips = true})
+	end
+	if edi.ranchips then
+		edi.ranchips = math.random(edi.cmin,edi.cmax)
+		hand_chips = mod_chips(hand_chips + edi.ranchips )
+		update_hand_text({delay = 0}, {chips = hand_chips})
+		card_eval_status_text(trg, 'extra', nil, percent, nil,
+		{message = '+'.. edi.ranchips ..' Chips',
+		edition = true,
+		ranchips = true})
+	end
+	if edi.ranmult then
+		edi.ranmult = math.random(edi.mmin,edi.mmax)
+		mult = mod_mult(mult + edi.ranmult )
+		update_hand_text({delay = 0}, {mult = mult})
+		card_eval_status_text(trg, 'extra', nil, percent, nil,
+		{message = '+'.. edi.ranmult ..' Mult',
+		edition = true,
+		ranmult = true})
+	end
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = "if G.play.cards[i].ability.effect == 'Stone Card' then"
+position = 'before'
+match_indent = true
+payload = '''
+if G.play.cards[i].ability.suitless == true then
+    local inside = false
+    for j=1, #scoring_hand do
+        if scoring_hand[j] == G.play.cards[i] then
+            inside = true
+        end
+    end
+    if not inside then table.insert(pures, G.play.cards[i]) end
+end
+'''
+
+# Misprint-like description
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.edition.type == 'negative' and self.ability.consumeable then"
+position = "before"
+payload = '''
+if self.config.ranmult then
+    self.loc_vars = {
+        {n=G.UIT.O, config={object = DynaText({string = fam_operators, colours = {G.C.DARK_EDITION,},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.30, scale = 0.32, min_cycle_time = 0})}},
+        {n=G.UIT.O, config={object = DynaText({string = fam_numbers, colours = {G.C.DARK_EDITION,},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.33, scale = 0.32, min_cycle_time = 0})}},
+        {n=G.UIT.O, config={object = DynaText({string = fam_msgs,
+        colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.4011, scale = 0.32, min_cycle_time = 0})}},
+    }
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "elseif self.ability.name == 'Blueprint' then"
+position = "before"
+payload = '''
+elseif self.ability.name == 'j_fam_crimsonotype' then
+    self.ability.blueprint_compat_ui = self.ability.blueprint_compat_ui or ''; self.ability.blueprint_compat_check = nil
+    main_end = (self.area and self.area == G.jokers) and {
+        {n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
+            {n=G.UIT.C, config={ref_table = self, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
+                {n=G.UIT.T, config={ref_table = self.ability, ref_value = 'blueprint_compat_ui',colour = G.C.UI.TEXT_LIGHT, scale = 0.32*0.8}},
+            }}
+        }}
+    } or nil
+elseif self.ability.name == 'j_fam_thinktank' then
+    self.ability.blueprint_compat_ui = self.ability.blueprint_compat_ui or ''; self.ability.blueprint_compat_check = nil
+    main_end = (self.area and self.area == G.jokers) and {
+        {n=G.UIT.C, config={align = "bm", minh = 0.4}, nodes={
+            {n=G.UIT.C, config={ref_table = self, align = "m", colour = G.C.JOKER_GREY, r = 0.05, padding = 0.06, func = 'blueprint_compat'}, nodes={
+                {n=G.UIT.T, config={ref_table = self.ability, ref_value = 'blueprint_compat_ui',colour = G.C.UI.TEXT_LIGHT, scale = 0.32*0.8}},
+            }}
+        }}
+    } or nil
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'Blueprint' or self.ability.name == 'Brainstorm' then"
+position = "before"
+payload = '''
+if self.ability.name == 'j_fam_crimsonotype' or self.ability.name == 'j_fam_thinktank' then
+	local other_joker = nil
+    if self.ability.name == 'j_fam_thinktank' then
+        other_joker = G.jokers.cards[#G.jokers.cards]
+    elseif self.ability.name == 'j_fam_crimsonotype' then
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i] == self then other_joker = G.jokers.cards[i-1] end
+        end
+    end
+    if other_joker and other_joker ~= self and other_joker.config.center.blueprint_compat then
+        self.ability.blueprint_compat = 'compatible'
+    else
+        self.ability.blueprint_compat = 'incompatible'
+    end
+end
+'''
+match_indent = true
+
+# Show edition on Edition Decks
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.children.back:draw(overlay)"
+position = "after"
+payload = '''
+local currentBack = self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back
+if currentBack.effect.config.fam_force_edition then
+    self.children.back:draw_shader(currentBack.effect.config.fam_force_edition , nil, self.ARGS.send_to_shader, true)
+end
+if currentBack.effect.config.fam_force_edition == 'negative' then
+    self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader, true)
+    self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader, true)
+end
+'''
+match_indent = true
