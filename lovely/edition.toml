@@ -54,7 +54,7 @@ pattern = "elseif eval_type == 'dollars' then"
 position = "before"
 payload = '''
 elseif eval_type == 'fam_x_chips' then 
-	sound = 'talisman_xchip'
+	sound = 'fam_xchip'
 	amt = amt
 	text = 'X' .. amt
 	colour = G.C.CHIPS
@@ -84,7 +84,7 @@ match_indent = true
 target = "functions/common_events.lua"
 pattern = "sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or 'generic1'"
 position = "at"
-payload = '''sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or extra.fam_Xchip_mod and 'talisman_xchip' or 'generic1'
+payload = '''sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or extra.fam_Xchip_mod and 'fam_xchip' or 'generic1'
 '''
 match_indent = true
 
