@@ -9,7 +9,7 @@
 --- PREFIX: fam
 
 ---------------------------------------------- 
-------------MOD CODE -------------------------
+------------MOD CODE ------------------------- 
 
 -- You're not supposed to be here
 function Card:get_suit()
@@ -33,7 +33,7 @@ function shakecard(self)
     }))
 end
 
-local function create_consumable(card_type,tag,messae,extra, thing1, thing2)
+function create_consumable(card_type,tag,messae,extra, thing1, thing2)
     extra=extra or {}
     
     G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
@@ -108,6 +108,30 @@ function SMODS.current_mod.process_loc_text()
     G.localization.misc.labels.unstable = "Unstable"
 end
 
+fam_operators = {"+"}
+fam_numbers = {"0","1","2","3","4","5","6","7","8","9","10","25","m","nan","nil","???"}
+fam_msgs_mult = {
+	{string = 'rand()', colour = G.C.UI.TEXT_INACTIVE},
+	{string = 'Mult'},
+	{string = 'Mult'},
+    {string = 'Mult'},
+    {string = 'Mult'},
+    {string = 'Mult'},
+    {string = 'Mult'},
+	{string = "#@"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1,1) or 'D'), colour = G.C.RED},
+}
+fam_msgs_chips = {
+	{string = 'rand()', colour = G.C.UI.TEXT_INACTIVE},
+	{string = 'Chips'},
+	{string = 'Chips'},
+	{string = 'Chips'},
+    {string = 'Chips'},
+    {string = 'Chips'},
+    {string = 'Chips'},
+	{string = "#@"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1,1) or 'D'), colour = G.C.BLUE},
+}
+
+
 SMODS.Atlas { key = 'Joker', path = 'JokersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Consumables', path = 'TarotsFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Enhancers', path = 'EnhancersFam.png', px = 71, py = 95 }
@@ -116,12 +140,7 @@ SMODS.Atlas { key = 'Booster', path = 'BoostersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Tags', path = 'TagsFam.png', px = 34, py = 34 }
 SMODS.Atlas { key = 'Stickers', path = 'StickersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Voucher', path = 'VouchersFam.png', px = 71, py = 95 }
-
--- Borrowed from Talisman 
-SMODS.Sound({
-	key = "xchip",
-	path = "MultiplicativeChips.wav"
-})
+SMODS.Atlas { key = 'modicon', path = 'ModIcon.png', px = 18, py = 18 }
 
 SMODS.ConsumableType { 
     key = 'Familiar_Tarots',
@@ -1618,28 +1637,28 @@ SMODS.Consumable{
         return {vars = {self.config.max_highlighted}}
     end,
 }
-SMODS.Consumable{
-    key = 'the_wed',
-    set = 'Familiar_Tarots',
-    config = { mod_conv = 'm_fam_split', max_highlighted = 2 },
-    atlas = 'Consumables',
-    pos = { x = 6, y = 0 },
-    cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "The Wed",
-            text = {
-                "Enhances {C:attention}2{} selected card",
-                "into a {C:attention}Split Card{}.",
-            }
-        }
-    },
-    loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = G.P_CENTERS.m_fam_split
-
-        return {vars = {self.config.max_highlighted}}
-    end,
-}
+--SMODS.Consumable{
+--    key = 'the_wed',
+--    set = 'Familiar_Tarots',
+--    config = { mod_conv = 'm_fam_split', max_highlighted = 2 },
+--    atlas = 'Consumables',
+--    pos = { x = 6, y = 0 },
+--    cost = 3,
+--    loc_txt = {
+--        ['en-us'] = {
+--            name = "The Wed",
+--            text = {
+--                "Enhances {C:attention}2{} selected card",
+--                "into a {C:attention}Split Card{}.",
+--            }
+--        }
+--    },
+--    loc_vars = function(self, info_queue)
+--        info_queue[#info_queue+1] = G.P_CENTERS.m_fam_split
+--
+--        return {vars = {self.config.max_highlighted}}
+--    end,
+--}
 SMODS.Consumable{
     key = 'the_cycle_of_fate',
     set = 'Familiar_Tarots',
@@ -1764,7 +1783,7 @@ SMODS.Consumable{
         return { vars = { } }
     end,
     can_use = function(self, card, area, copier, context)
-        if G.hand and not G.shop then
+        if (G.hand and not G.shop) or (G.hand) then
             return true 
         end
     end,
@@ -2377,7 +2396,7 @@ SMODS.Consumable{
 SMODS.Consumable{
     key = 'forge',
     set = 'Familiar_Spectrals',
-    config = { extra = {mod_conv = "s_fam_gilded_seal"} },
+    config = { extra = {mod_conv = "fam_gilded_seal"} },
     atlas = 'Consumables',
     pos = { x = 3, y = 4 },
     in_shop = true,
@@ -2392,7 +2411,7 @@ SMODS.Consumable{
         }
     },
     loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = G.P_CENTERS.s_fam_sapphire_seal
+        info_queue[#info_queue+1] = G.P_CENTERS.fam_sapphire_seal
         return { vars = { } }
     end,
     can_use = function(self, card, area, copier)
@@ -2408,7 +2427,7 @@ SMODS.Consumable{
         
         G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
             for i = 1, #G.hand.highlighted do 
-                G.hand.highlighted[i]:set_seal("s_fam_gilded_seal", nil, true)
+                G.hand.highlighted[i]:set_seal("fam_gilded_seal", nil, true)
             end
             return true end }))
         
@@ -2456,7 +2475,7 @@ SMODS.Consumable{
 SMODS.Consumable{
     key = 'playback',
     set = 'Familiar_Spectrals',
-    config = { extra = {mod_conv = "s_fam_maroon_seal"} },
+    config = { extra = {mod_conv = "fam_maroon_seal"} },
     atlas = 'Consumables',
     pos = { x = 1, y = 5 },
     in_shop = true,
@@ -2471,7 +2490,7 @@ SMODS.Consumable{
         }
     },
     loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = G.P_CENTERS.s_fam_maroon_seal
+        info_queue[#info_queue+1] = G.P_CENTERS.fam_maroon_seal
         return { vars = { } }
     end,
     can_use = function(self, card, area, copier)
@@ -2487,7 +2506,7 @@ SMODS.Consumable{
             return true end }))
         
         G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
-            conv_card:set_seal("s_fam_maroon_seal", nil, true)
+            conv_card:set_seal("fam_maroon_seal", nil, true)
             return true end }))
         
         delay(0.5)
@@ -2497,7 +2516,7 @@ SMODS.Consumable{
 SMODS.Consumable{
     key = 'mesmer',
     set = 'Familiar_Spectrals',
-    config = { extra = {mod_conv = "m_fam_sapphire_seal"} },
+    config = { extra = {mod_conv = "fam_sapphire_seal"} },
     atlas = 'Consumables',
     pos = { x = 3, y = 5 },
     in_shop = true,
@@ -2528,7 +2547,7 @@ SMODS.Consumable{
             return true end }))
         
         G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
-            conv_card:set_seal("s_fam_sapphire_seal", nil, true)
+            conv_card:set_seal("fam_sapphire_seal", nil, true)
             return true end }))
         
         delay(0.5)
@@ -2538,7 +2557,7 @@ SMODS.Consumable{
 SMODS.Consumable{
     key = 'oracle',
     set = 'Familiar_Spectrals',
-    config = { extra = {mod_conv = "m_fam_familiar_seal"} },
+    config = { extra = {mod_conv = "fam_familiar_seal"} },
     atlas = 'Consumables',
     pos = { x = 4, y = 5 },
     in_shop = true,
@@ -2553,7 +2572,7 @@ SMODS.Consumable{
         }
     },
     loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = G.P_CENTERS.s_fam_familiar_seal
+        info_queue[#info_queue+1] = G.P_CENTERS.fam_familiar_seal
         return { vars = { } }
     end,
     can_use = function(self, card, area, copier)
@@ -2569,7 +2588,7 @@ SMODS.Consumable{
             return true end }))
         
         G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
-            conv_card:set_seal("s_fam_familiar_seal", nil, true)
+            conv_card:set_seal("fam_familiar_seal", nil, true)
             return true end }))
         
         delay(0.5)
@@ -2581,7 +2600,7 @@ SMODS.Consumable{
 SMODS.Booster{
 	name = "Fortune Pack",
 	key = "forture_booster_1",
-    group_key = "forture_booster",
+    group_key = "pantheon_booster",
 	atlas = 'Booster',
 	pos = {x = 0, y = 0},
     loc_txt = {
@@ -2652,6 +2671,38 @@ SMODS.Booster{
                 end
             }))  
         end
+    end,
+    pack_uibox = function(self)
+        local _size = SMODS.OPENED_BOOSTER.ability.extra
+        G.pack_cards = CardArea(
+            G.ROOM.T.x + 9 + G.hand.T.x, G.hand.T.y,
+            math.max(1,math.min(_size,5))*G.CARD_W*1.1,
+            1.05*G.CARD_H, 
+            {card_limit = _size, type = 'consumeable', highlight_limit = 1})
+
+        local t = {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+            {n=G.UIT.R, config={align = "cl", colour = G.C.CLEAR,r=0.15, padding = 0.1, minh = 2, shadow = true}, nodes={
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", r=0.2, colour = G.C.CLEAR, shadow = true}, nodes={
+                        {n=G.UIT.O, config={object = G.pack_cards}},}}}}}},
+            {n=G.UIT.R, config={align = "cm"}, nodes={}},
+            {n=G.UIT.R, config={align = "tm"}, nodes={
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05}, nodes={
+                    UIBox_dyn_container({
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, minw = 4}, nodes={
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = "Fortune Pack", colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.7, maxw = 4, pop_in = 0.5})}}}},
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = {localize('k_choose')..' '}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}},
+                                {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'pack_choices'}}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}}}},}}
+                    }),}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={
+                    {n=G.UIT.R,config={minh =0.2}, nodes={}},
+                    {n=G.UIT.R,config={align = "tm",padding = 0.2, minh = 1.2, minw = 1.8, r=0.15,colour = G.C.GREY, one_press = true, button = 'skip_booster', hover = true,shadow = true, func = 'can_skip_booster'}, nodes = {
+                        {n=G.UIT.T, config={text = localize('b_skip'), scale = 0.5, colour = G.C.WHITE, shadow = true, focus_args = {button = 'y', orientation = 'bm'}, func = 'set_button_pip'}}}}}}}}}}}}
+        return t
     end,
 }
 SMODS.Booster{
@@ -2729,6 +2780,38 @@ SMODS.Booster{
             }))  
         end
     end,
+    pack_uibox = function(self)
+        local _size = SMODS.OPENED_BOOSTER.ability.extra
+        G.pack_cards = CardArea(
+            G.ROOM.T.x + 9 + G.hand.T.x, G.hand.T.y,
+            math.max(1,math.min(_size,5))*G.CARD_W*1.1,
+            1.05*G.CARD_H, 
+            {card_limit = _size, type = 'consumeable', highlight_limit = 1})
+
+        local t = {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+            {n=G.UIT.R, config={align = "cl", colour = G.C.CLEAR,r=0.15, padding = 0.1, minh = 2, shadow = true}, nodes={
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", r=0.2, colour = G.C.CLEAR, shadow = true}, nodes={
+                        {n=G.UIT.O, config={object = G.pack_cards}},}}}}}},
+            {n=G.UIT.R, config={align = "cm"}, nodes={}},
+            {n=G.UIT.R, config={align = "tm"}, nodes={
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05}, nodes={
+                    UIBox_dyn_container({
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, minw = 4}, nodes={
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = "Fortune Tin", colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.7, maxw = 4, pop_in = 0.5})}}}},
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = {localize('k_choose')..' '}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}},
+                                {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'pack_choices'}}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}}}},}}
+                    }),}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={
+                    {n=G.UIT.R,config={minh =0.2}, nodes={}},
+                    {n=G.UIT.R,config={align = "tm",padding = 0.2, minh = 1.2, minw = 1.8, r=0.15,colour = G.C.GREY, one_press = true, button = 'skip_booster', hover = true,shadow = true, func = 'can_skip_booster'}, nodes = {
+                        {n=G.UIT.T, config={text = localize('b_skip'), scale = 0.5, colour = G.C.WHITE, shadow = true, focus_args = {button = 'y', orientation = 'bm'}, func = 'set_button_pip'}}}}}}}}}}}}
+        return t
+    end,
 }
 SMODS.Booster{
 	name = "Fortune Chest",
@@ -2805,6 +2888,38 @@ SMODS.Booster{
             }))  
         end
     end,
+    pack_uibox = function(self)
+        local _size = SMODS.OPENED_BOOSTER.ability.extra
+        G.pack_cards = CardArea(
+            G.ROOM.T.x + 9 + G.hand.T.x, G.hand.T.y,
+            math.max(1,math.min(_size,5))*G.CARD_W*1.1,
+            1.05*G.CARD_H, 
+            {card_limit = _size, type = 'consumeable', highlight_limit = 1})
+
+        local t = {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+            {n=G.UIT.R, config={align = "cl", colour = G.C.CLEAR,r=0.15, padding = 0.1, minh = 2, shadow = true}, nodes={
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", r=0.2, colour = G.C.CLEAR, shadow = true}, nodes={
+                        {n=G.UIT.O, config={object = G.pack_cards}},}}}}}},
+            {n=G.UIT.R, config={align = "cm"}, nodes={}},
+            {n=G.UIT.R, config={align = "tm"}, nodes={
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05}, nodes={
+                    UIBox_dyn_container({
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, minw = 4}, nodes={
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = "Fortune Chest", colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.7, maxw = 4, pop_in = 0.5})}}}},
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = {localize('k_choose')..' '}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}},
+                                {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'pack_choices'}}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}}}},}}
+                    }),}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={
+                    {n=G.UIT.R,config={minh =0.2}, nodes={}},
+                    {n=G.UIT.R,config={align = "tm",padding = 0.2, minh = 1.2, minw = 1.8, r=0.15,colour = G.C.GREY, one_press = true, button = 'skip_booster', hover = true,shadow = true, func = 'can_skip_booster'}, nodes = {
+                        {n=G.UIT.T, config={text = localize('b_skip'), scale = 0.5, colour = G.C.WHITE, shadow = true, focus_args = {button = 'y', orientation = 'bm'}, func = 'set_button_pip'}}}}}}}}}}}}
+        return t
+    end,
 }
 SMODS.Booster{
 	name = "Pantheon Pack",
@@ -2816,84 +2931,207 @@ SMODS.Booster{
         ['en-us'] = {
             name = "Pantheon Pack",
             text = {
-                "Choose {C:attention}#2#{} of up to",
-				"{C:attention}#3#{} Pantheon Cards"
+                "Choose {C:attention}#1#{} of up to",
+				"{C:attention}#2#{} Sacred Cards"
             }
         }
     },
 	weight = 0.5 * 4,
 	cost = 6,
-	config = {draw_hand = true, extra = 3, choose = 1},
+	config = { extra = 3, choose = 1},
 	discovered = true,
 	loc_vars = function(self, info_queue, card)
-		return { vars = {card.draw_hand, card.config.center.config.choose, card.ability.extra} }
+		return { vars = { card.config.center.config.choose, card.ability.extra} }
 	end,
 	create_card = function(self, card)
-        local _planet, _hand, _tally = nil, nil, 0
+        local _planet, _hand, _planets = nil, nil, {}
         for k, v in ipairs(G.handlist) do
-            if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
+            if G.GAME.hands[v].visible then
                 _hand = v
-                _tally = G.GAME.hands[v].played
+                
             end
-        end
-        if _hand then
             for k, v in pairs(G.P_CENTER_POOLS.Familiar_Planets) do
-                if v.config.hand_type == _hand then
+                if v.config.extra.hand == _hand then
                     _planet = v.key
+                    table.insert(_planets, _planet)
                 end
             end
         end
-		return create_card("Familiar_Planets", G.pack_cards, nil, nil, true, true, _planet, 'fam_pantheon')
+		return create_card("Familiar_Planets", G.pack_cards, nil, nil, true, true, _planets[math.random(1,#_planets)], 'fam_pantheon')
 	end,
-    update_pack = function(self, dt)
-        if G.buttons then self.buttons:remove(); G.buttons = nil end
-        if G.shop then G.shop.alignment.offset.y = G.ROOM.T.y+11 end
-        
-        if not G.STATE_COMPLETE then
-            G.STATE_COMPLETE = true
-            G.CONTROLLER.interrupt.focus = true
-            G.E_MANAGER:add_event(Event({
-                trigger = 'immediate',
-                func = function()
-                    if self.sparkles then
-                        G.booster_pack_sparkles = Particles(1, 1, 0,0, {
-                            timer = self.sparkles.timer or 0.015,
-                            scale = self.sparkles.scale or 0.1,
-                            initialize = true,
-                            lifespan = self.sparkles.lifespan or 3,
-                            speed = self.sparkles.speed or 0.2,
-                            padding = self.sparkles.padding or -1,
-                            attach = G.ROOM_ATTACH,
-                            colours = self.sparkles.colours or {G.C.WHITE, lighten(G.C.GOLD, 0.2)},
-                            fill = true
-                        })
-                    end
-                    G.booster_pack = UIBox{
-                        definition = self:pack_uibox(),
-                        config = {align="tmi", offset = {x=0,y=G.ROOM.T.y + 9}, major = G.hand, bond = 'Weak'}
-                    }
-                    G.booster_pack.alignment.offset.y = -2.2
-                    G.ROOM.jiggle = G.ROOM.jiggle + 3
-                    self:ease_background_colour()
-                    G.E_MANAGER:add_event(Event({
-                        trigger = 'immediate',
-                        func = function()
-                            G.FUNCS.draw_from_deck_to_hand()
-        
-                            G.E_MANAGER:add_event(Event({
-                                trigger = 'after',
-                                delay = 0.5,
-                                func = function()
-                                    G.CONTROLLER:recall_cardarea_focus('pack_cards')
-                                    return true
-                                end}))
-                            return true
-                        end
-                    }))  
-                    return true
+    pack_uibox = function(self)
+        local _size = SMODS.OPENED_BOOSTER.ability.extra
+        G.pack_cards = CardArea(
+            G.ROOM.T.x + 9 + G.hand.T.x, G.hand.T.y,
+            math.max(1,math.min(_size,5))*G.CARD_W*1.1,
+            1.05*G.CARD_H, 
+            {card_limit = _size, type = 'consumeable', highlight_limit = 1})
+
+        local t = {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+            {n=G.UIT.R, config={align = "cl", colour = G.C.CLEAR,r=0.15, padding = 0.1, minh = 2, shadow = true}, nodes={
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", r=0.2, colour = G.C.CLEAR, shadow = true}, nodes={
+                        {n=G.UIT.O, config={object = G.pack_cards}},}}}}}},
+            {n=G.UIT.R, config={align = "cm"}, nodes={}},
+            {n=G.UIT.R, config={align = "tm"}, nodes={
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05}, nodes={
+                    UIBox_dyn_container({
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, minw = 4}, nodes={
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = "Pantheon Pack", colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.7, maxw = 4, pop_in = 0.5})}}}},
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = {localize('k_choose')..' '}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}},
+                                {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'pack_choices'}}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}}}},}}
+                    }),}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={
+                    {n=G.UIT.R,config={minh =0.2}, nodes={}},
+                    {n=G.UIT.R,config={align = "tm",padding = 0.2, minh = 1.2, minw = 1.8, r=0.15,colour = G.C.GREY, one_press = true, button = 'skip_booster', hover = true,shadow = true, func = 'can_skip_booster'}, nodes = {
+                        {n=G.UIT.T, config={text = localize('b_skip'), scale = 0.5, colour = G.C.WHITE, shadow = true, focus_args = {button = 'y', orientation = 'bm'}, func = 'set_button_pip'}}}}}}}}}}}}
+        return t
+    end,
+}
+SMODS.Booster{
+	name = "Pantheon Tin",
+	key = "pantheon_booster_2",
+    group_key = "pantheon_booster",
+	atlas = 'Booster',
+	pos = {x = 0, y = 3},
+    loc_txt = {
+        ['en-us'] = {
+            name = "Pantheon Tin",
+            text = {
+                "Choose {C:attention}#1#{} of up to",
+				"{C:attention}#2#{} Sacred Cards"
+            }
+        }
+    },
+	weight = 0.5 * 2,
+	cost = 9,
+	config = { extra = 5, choose = 1},
+	discovered = true,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.config.center.config.choose, card.ability.extra} }
+	end,
+	create_card = function(self, card)
+        local _planet, _hand, _planets = nil, nil, {}
+        for k, v in ipairs(G.handlist) do
+            if G.GAME.hands[v].visible then
+                _hand = v
+                
+            end
+            for k, v in pairs(G.P_CENTER_POOLS.Familiar_Planets) do
+                if v.config.extra.hand == _hand then
+                    _planet = v.key
+                    table.insert(_planets, _planet)
                 end
-            }))  
+            end
         end
+		return create_card("Familiar_Planets", G.pack_cards, nil, nil, true, true, _planets[math.random(1,#_planets)], 'fam_pantheon')
+	end,
+    pack_uibox = function(self)
+        local _size = SMODS.OPENED_BOOSTER.ability.extra
+        G.pack_cards = CardArea(
+            G.ROOM.T.x + 9 + G.hand.T.x, G.hand.T.y,
+            math.max(1,math.min(_size,5))*G.CARD_W*1.1,
+            1.05*G.CARD_H, 
+            {card_limit = _size, type = 'consumeable', highlight_limit = 1})
+
+        local t = {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+            {n=G.UIT.R, config={align = "cl", colour = G.C.CLEAR,r=0.15, padding = 0.1, minh = 2, shadow = true}, nodes={
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", r=0.2, colour = G.C.CLEAR, shadow = true}, nodes={
+                        {n=G.UIT.O, config={object = G.pack_cards}},}}}}}},
+            {n=G.UIT.R, config={align = "cm"}, nodes={}},
+            {n=G.UIT.R, config={align = "tm"}, nodes={
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05}, nodes={
+                    UIBox_dyn_container({
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, minw = 4}, nodes={
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = "Pantheon Tin", colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.7, maxw = 4, pop_in = 0.5})}}}},
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = {localize('k_choose')..' '}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}},
+                                {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'pack_choices'}}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}}}},}}
+                    }),}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={
+                    {n=G.UIT.R,config={minh =0.2}, nodes={}},
+                    {n=G.UIT.R,config={align = "tm",padding = 0.2, minh = 1.2, minw = 1.8, r=0.15,colour = G.C.GREY, one_press = true, button = 'skip_booster', hover = true,shadow = true, func = 'can_skip_booster'}, nodes = {
+                        {n=G.UIT.T, config={text = localize('b_skip'), scale = 0.5, colour = G.C.WHITE, shadow = true, focus_args = {button = 'y', orientation = 'bm'}, func = 'set_button_pip'}}}}}}}}}}}}
+        return t
+    end,
+}
+SMODS.Booster{
+	name = "Pantheon Chest",
+	key = "pantheon_booster_3",
+    group_key = "pantheon_booster",
+	atlas = 'Booster',
+	pos = {x = 2, y = 3},
+    loc_txt = {
+        ['en-us'] = {
+            name = "Pantheon Chest",
+            text = {
+                "Choose {C:attention}#1#{} of up to",
+				"{C:attention}#2#{} Sacred Cards"
+            }
+        }
+    },
+	weight = 0.5 * 0.5,
+	cost = 12,
+	config = { extra = 5, choose = 2},
+	discovered = true,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.config.center.config.choose, card.ability.extra} }
+	end,
+	create_card = function(self, card)
+        local _planet, _hand, _planets = nil, nil, {}
+        for k, v in ipairs(G.handlist) do
+            if G.GAME.hands[v].visible then
+                _hand = v
+                
+            end
+            for k, v in pairs(G.P_CENTER_POOLS.Familiar_Planets) do
+                if v.config.extra.hand == _hand then
+                    _planet = v.key
+                    table.insert(_planets, _planet)
+                end
+            end
+        end
+		return create_card("Familiar_Planets", G.pack_cards, nil, nil, true, true, _planets[math.random(1,#_planets)], 'fam_pantheon')
+	end,
+    pack_uibox = function(self)
+        local _size = SMODS.OPENED_BOOSTER.ability.extra
+        G.pack_cards = CardArea(
+            G.ROOM.T.x + 9 + G.hand.T.x, G.hand.T.y,
+            math.max(1,math.min(_size,5))*G.CARD_W*1.1,
+            1.05*G.CARD_H, 
+            {card_limit = _size, type = 'consumeable', highlight_limit = 1})
+
+        local t = {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+            {n=G.UIT.R, config={align = "cl", colour = G.C.CLEAR,r=0.15, padding = 0.1, minh = 2, shadow = true}, nodes={
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", r=0.2, colour = G.C.CLEAR, shadow = true}, nodes={
+                        {n=G.UIT.O, config={object = G.pack_cards}},}}}}}},
+            {n=G.UIT.R, config={align = "cm"}, nodes={}},
+            {n=G.UIT.R, config={align = "tm"}, nodes={
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05}, nodes={
+                    UIBox_dyn_container({
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, minw = 4}, nodes={
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = "Pantheon Chest", colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.7, maxw = 4, pop_in = 0.5})}}}},
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = {localize('k_choose')..' '}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}},
+                                {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'pack_choices'}}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}}}},}}
+                    }),}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={
+                    {n=G.UIT.R,config={minh =0.2}, nodes={}},
+                    {n=G.UIT.R,config={align = "tm",padding = 0.2, minh = 1.2, minw = 1.8, r=0.15,colour = G.C.GREY, one_press = true, button = 'skip_booster', hover = true,shadow = true, func = 'can_skip_booster'}, nodes = {
+                        {n=G.UIT.T, config={text = localize('b_skip'), scale = 0.5, colour = G.C.WHITE, shadow = true, focus_args = {button = 'y', orientation = 'bm'}, func = 'set_button_pip'}}}}}}}}}}}}
+        return t
     end,
 }
 SMODS.Booster{
@@ -2971,6 +3209,38 @@ SMODS.Booster{
             }))  
         end
     end,
+    pack_uibox = function(self)
+        local _size = SMODS.OPENED_BOOSTER.ability.extra
+        G.pack_cards = CardArea(
+            G.ROOM.T.x + 9 + G.hand.T.x, G.hand.T.y,
+            math.max(1,math.min(_size,5))*G.CARD_W*1.1,
+            1.05*G.CARD_H, 
+            {card_limit = _size, type = 'consumeable', highlight_limit = 1})
+
+        local t = {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+            {n=G.UIT.R, config={align = "cl", colour = G.C.CLEAR,r=0.15, padding = 0.1, minh = 2, shadow = true}, nodes={
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", r=0.2, colour = G.C.CLEAR, shadow = true}, nodes={
+                        {n=G.UIT.O, config={object = G.pack_cards}},}}}}}},
+            {n=G.UIT.R, config={align = "cm"}, nodes={}},
+            {n=G.UIT.R, config={align = "tm"}, nodes={
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05}, nodes={
+                    UIBox_dyn_container({
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, minw = 4}, nodes={
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = "Ethereal Pack", colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.7, maxw = 4, pop_in = 0.5})}}}},
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = {localize('k_choose')..' '}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}},
+                                {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'pack_choices'}}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}}}},}}
+                    }),}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={
+                    {n=G.UIT.R,config={minh =0.2}, nodes={}},
+                    {n=G.UIT.R,config={align = "tm",padding = 0.2, minh = 1.2, minw = 1.8, r=0.15,colour = G.C.GREY, one_press = true, button = 'skip_booster', hover = true,shadow = true, func = 'can_skip_booster'}, nodes = {
+                        {n=G.UIT.T, config={text = localize('b_skip'), scale = 0.5, colour = G.C.WHITE, shadow = true, focus_args = {button = 'y', orientation = 'bm'}, func = 'set_button_pip'}}}}}}}}}}}}
+        return t
+    end,
 }
 SMODS.Booster{
 	name = "Ethereal Tin",
@@ -3046,6 +3316,38 @@ SMODS.Booster{
                 end
             }))  
         end
+    end,
+    pack_uibox = function(self)
+        local _size = SMODS.OPENED_BOOSTER.ability.extra
+        G.pack_cards = CardArea(
+            G.ROOM.T.x + 9 + G.hand.T.x, G.hand.T.y,
+            math.max(1,math.min(_size,5))*G.CARD_W*1.1,
+            1.05*G.CARD_H, 
+            {card_limit = _size, type = 'consumeable', highlight_limit = 1})
+
+        local t = {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+            {n=G.UIT.R, config={align = "cl", colour = G.C.CLEAR,r=0.15, padding = 0.1, minh = 2, shadow = true}, nodes={
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", r=0.2, colour = G.C.CLEAR, shadow = true}, nodes={
+                        {n=G.UIT.O, config={object = G.pack_cards}},}}}}}},
+            {n=G.UIT.R, config={align = "cm"}, nodes={}},
+            {n=G.UIT.R, config={align = "tm"}, nodes={
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05}, nodes={
+                    UIBox_dyn_container({
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, minw = 4}, nodes={
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = "Ethereal Tin", colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.7, maxw = 4, pop_in = 0.5})}}}},
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = {localize('k_choose')..' '}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}},
+                                {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'pack_choices'}}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}}}},}}
+                    }),}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={
+                    {n=G.UIT.R,config={minh =0.2}, nodes={}},
+                    {n=G.UIT.R,config={align = "tm",padding = 0.2, minh = 1.2, minw = 1.8, r=0.15,colour = G.C.GREY, one_press = true, button = 'skip_booster', hover = true,shadow = true, func = 'can_skip_booster'}, nodes = {
+                        {n=G.UIT.T, config={text = localize('b_skip'), scale = 0.5, colour = G.C.WHITE, shadow = true, focus_args = {button = 'y', orientation = 'bm'}, func = 'set_button_pip'}}}}}}}}}}}}
+        return t
     end,
 }
 SMODS.Booster{
@@ -3123,6 +3425,39 @@ SMODS.Booster{
             }))  
         end
     end,
+    pack_uibox = function(self)
+        local _size = SMODS.OPENED_BOOSTER.ability.extra
+        G.pack_cards = CardArea(
+            G.ROOM.T.x + 9 + G.hand.T.x, G.hand.T.y,
+            math.max(1,math.min(_size,5))*G.CARD_W*1.1,
+            1.05*G.CARD_H, 
+            {card_limit = _size, type = 'consumeable', highlight_limit = 1})
+
+        local t = {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+            {n=G.UIT.R, config={align = "cl", colour = G.C.CLEAR,r=0.15, padding = 0.1, minh = 2, shadow = true}, nodes={
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", r=0.2, colour = G.C.CLEAR, shadow = true}, nodes={
+                        {n=G.UIT.O, config={object = G.pack_cards}},}}}}}},
+            {n=G.UIT.R, config={align = "cm"}, nodes={}},
+            {n=G.UIT.R, config={align = "tm"}, nodes={
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05}, nodes={
+                    UIBox_dyn_container({
+                        {n=G.UIT.C, config={align = "cm", padding = 0.05, minw = 4}, nodes={
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = "Ethereal Chest", colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.7, maxw = 4, pop_in = 0.5})}}}},
+                            {n=G.UIT.R,config={align = "bm", padding = 0.05}, nodes={
+                                {n=G.UIT.O, config={object = DynaText({string = {localize('k_choose')..' '}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}},
+                                {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'pack_choices'}}, colours = {G.C.WHITE},shadow = true, rotate = true, bump = true, spacing =2, scale = 0.5, pop_in = 0.7})}}}},}}
+                    }),}},
+                {n=G.UIT.C,config={align = "tm", padding = 0.05, minw = 2.4}, nodes={
+                    {n=G.UIT.R,config={minh =0.2}, nodes={}},
+                    {n=G.UIT.R,config={align = "tm",padding = 0.2, minh = 1.2, minw = 1.8, r=0.15,colour = G.C.GREY, one_press = true, button = 'skip_booster', hover = true,shadow = true, func = 'can_skip_booster'}, nodes = {
+                        {n=G.UIT.T, config={text = localize('b_skip'), scale = 0.5, colour = G.C.WHITE, shadow = true, focus_args = {button = 'y', orientation = 'bm'}, func = 'set_button_pip'}}}}}}}}}}}}
+        return t
+    end,
+
 }
 
 -- Tags
@@ -3257,6 +3592,80 @@ SMODS.Tag {
 }
 SMODS.Tag {
     atlas = "Tags",
+    pos = { x = 2, y = 2},
+    config = {type = 'new_blind_choice'},
+    key = "mezmerize_tag",
+    min_ante = 3,
+    loc_txt = {
+        name = "Mezmerize Pin",
+        text = {
+            "Gives a free",
+            "Fortune Chest"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = {set = "Other", key = "p_fam_forture_booster_3", vars = {2, 5}}
+        return {vars = {}}
+    end,
+    apply = function(self, _context)
+        if _context.type == 'new_blind_choice' then 
+            local lock = self.ID
+            G.CONTROLLER.locks[lock] = true
+            self:yep('+', G.C.BLACK,function() 
+                local key = 'p_fam_forture_booster_3'
+                local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
+                G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
+                card.cost = 0
+                card.from_tag = true
+                G.FUNCS.use_card({config = {ref_table = card}})
+                card:start_materialize()
+                G.CONTROLLER.locks[lock] = nil
+                return true
+            end)
+            self.triggered = true
+            return true
+        end
+    end,
+}
+SMODS.Tag {
+    atlas = "Tags",
+    pos = { x = 3, y = 2},
+    config = {type = 'new_blind_choice'},
+    key = "Zeus_tag",
+    min_ante = 4,
+    loc_txt = {
+        name = "Pin of Zeus",
+        text = {
+            "Gives a free",
+            "Pantheon Chest"
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = {set = "Other", key = "p_fam_pantheon_booster_3", vars = {2, 5}}
+        return {vars = {}}
+    end,
+    apply = function(self, _context)
+        if _context.type == 'new_blind_choice' then 
+            local lock = self.ID
+            G.CONTROLLER.locks[lock] = true
+            self:yep('+', G.C.BLACK,function() 
+                local key = 'p_fam_pantheon_booster_3'
+                local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
+                G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
+                card.cost = 0
+                card.from_tag = true
+                G.FUNCS.use_card({config = {ref_table = card}})
+                card:start_materialize()
+                G.CONTROLLER.locks[lock] = nil
+                return true
+            end)
+            self.triggered = true
+            return true
+        end
+    end,
+}
+SMODS.Tag {
+    atlas = "Tags",
     pos = { x = 3, y = 3},
     config = {type = 'new_blind_choice'},
     key = "specter_tag",
@@ -3278,43 +3687,6 @@ SMODS.Tag {
             G.CONTROLLER.locks[lock] = true
             self:yep('+', G.C.red,function() 
                 local key = 'p_fam_ethereal_booster_1'
-                local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
-                G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
-                card.cost = 0
-                card.from_tag = true
-                G.FUNCS.use_card({config = {ref_table = card}})
-                card:start_materialize()
-                G.CONTROLLER.locks[lock] = nil
-                return true
-            end)
-            self.triggered = true
-            return true
-        end
-    end,
-}
-SMODS.Tag {
-    atlas = "Tags",
-    pos = { x = 2, y = 2},
-    config = {type = 'new_blind_choice'},
-    key = "mezmerize_tag",
-    min_ante = 3,
-    loc_txt = {
-        name = "Mezmerize Pin",
-        text = {
-            "Gives a free",
-            "Fortune Collector's Chest"
-        }
-    },
-    loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = {set = "Other", key = "p_fam_forture_booster_3", vars = {2, 5}}
-        return {vars = {}}
-    end,
-    apply = function(self, _context)
-        if _context.type == 'new_blind_choice' then 
-            local lock = self.ID
-            G.CONTROLLER.locks[lock] = true
-            self:yep('+', G.C.BLACK,function() 
-                local key = 'p_fam_forture_booster_3'
                 local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
                 G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
                 card.cost = 0
@@ -3364,43 +3736,6 @@ SMODS.Tag {
 --}
 
 -- Seals
-SMODS.Seal{
-    key = 'gilded_seal',
-    config = {
-        extra = { odds = 4 },
-    },
-    atlas = 'Enhancers',
-    pos = { x = 2, y = 0 },
-    badge_colour = HEX("caae80"),
-    loc_txt = {
-        label = 'Gilded Seal',
-        description = {
-            name = 'Gilded Seal',
-            text = {
-                '{C:money}$5{} when played, {C:green,E:1,S:1.1}#2# in #1#{} chance',
-                'that it gives {C:money}-$5{} instead.',
-            }
-        },
-    },
-    loc_vars = function(self, info_queue, card)
-        return { vars = { self.config.extra.odds, '' .. (G.GAME and G.GAME.probabilities.normal or 1) } }
-    end,
-    calculate = function(self, card, context)
-        if context.cardarea == G.play and not context.repetition and not context.blueprint then
-            if pseudorandom('gilded_seal') < G.GAME.probabilities.normal/4 then
-                ease_dollars(-5)
-                G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) - 5
-                G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
-                return
-            else
-                ease_dollars(5)
-                G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + 5
-                G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
-                return
-            end
-        end
-    end
-}
 SMODS.Seal{
     key = 'maroon_seal',
     config = {
@@ -3455,9 +3790,41 @@ SMODS.Seal{
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,
+}
+SMODS.Seal{
+    key = 'gilded_seal',
+    config = {
+        extra = { odds = 4 },
+    },
+    atlas = 'Enhancers',
+    pos = { x = 2, y = 0 },
+    badge_colour = HEX("caae80"),
+    loc_txt = {
+        label = 'Gilded Seal',
+        description = {
+            name = 'Gilded Seal',
+            text = {
+                '{C:money}$5{} when played, {C:green,E:1,S:1.1}#2# in #1#{} chance',
+                'that it gives {C:money}-$5{} instead.',
+            }
+        },
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { self.config.extra.odds, '' .. (G.GAME and G.GAME.probabilities.normal or 1) } }
+    end,
     calculate = function(self, card, context)
-        if context.end_of_round and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-            create_consumable("Spectral", nil, nil, nil)
+        if context.cardarea == G.play and not context.repetition and not context.blueprint then
+            if pseudorandom('gilded_seal') < G.GAME.probabilities.normal/4 then
+                ease_dollars(-5)
+                G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) - 5
+                G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+                return
+            else
+                ease_dollars(5)
+                G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + 5
+                G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
+                return
+            end
         end
     end
 }
@@ -3493,6 +3860,31 @@ SMODS.Seal{
 
 -- Decks
 SMODS.Back {
+    key = "andys_deck",
+    loc_txt = {
+        ['en-us'] = {
+            name = "Merry Andy's Deck",
+            text = {
+                "{C:attention}+3{} discards,",
+                "{C:blue}-1{} hand size."
+            }
+        }
+    },
+    atlas = 'Enhancers',
+    pos = { x = 7, y = 0 },
+    config = {},
+    apply = function(self, card, context)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.round_resets.discards = G.GAME.round_resets.discards + 3
+                ease_discard(3)
+                G.hand:change_size(-1)
+                return true
+            end
+        }))
+    end
+}
+SMODS.Back {
     key = "amethyst_deck",
     loc_txt = {
         ['en-us'] = {
@@ -3515,13 +3907,40 @@ SMODS.Back {
     end
 }
 SMODS.Back {
+    key = "topaz_deck",
+    loc_txt = {
+        ['en-us'] = {
+            name = "Topaz Deck",
+            text = {
+                "{C:blue}+1{} hand every round,",
+                "{C:red}+1{} discard every round",
+            }
+        }
+    },
+    atlas = 'Enhancers',
+    pos = { x = 0, y = 2 },
+    config = {},
+    apply = function(self, card, context)
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.round_resets.discards = G.GAME.round_resets.discards + 1
+                ease_discard(1)
+
+                G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
+                G.GAME.round_resets.hands = G.GAME.round_resets.hands + 1
+                return true
+            end
+        }))
+    end
+}
+SMODS.Back {
     key = "ruby_deck",
     loc_txt = {
         ['en-us'] = {
             name = "Ruby Deck",
             text = {
-                "Start with 2 copies of Playback,",
-                "+2 discards every round.",
+                "Start with {C:attention}2 copies{} of Playback,",
+                "{C:red}+2{} discards every round.",
             }
         }
     },
@@ -3566,8 +3985,47 @@ SMODS.Back {
                 G.jokers.config.card_limit = G.jokers.config.card_limit + 2
 
                 G.GAME.starting_params.hands = G.GAME.starting_params.hands - 1
-                G.GAME.round_resets.hands = G.GAME.starting_params.hands
-                G.GAME.current_round.hands_left = G.GAME.starting_params.hands
+                G.GAME.round_resets.hands = G.GAME.round_resets.hands - 1
+                return true
+            end
+        }))
+    end
+}
+SMODS.Back {
+    key = "spare_deck",
+    loc_txt = {
+        ['en-us'] = {
+            name = "Spare Deck",
+            text = {
+                "Start run with",
+                "{C:attention}no Aces{}, {C:attention}doubled Jacks",
+                "{C:attention}no queen's{}, and {C:attention}doubled 7's",
+                "{C:blue}+1{} hand, and {C:money}$13",
+            }
+        }
+    },
+    atlas = 'Enhancers',
+    pos = { x = 3, y = 3 },
+    config = { dollars = 9 },
+    apply = function(self, card, context)
+        G.E_MANAGER:add_event(Event({ 
+            func = function()
+                G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
+                G.GAME.round_resets.hands = G.GAME.round_resets.hands + 1
+                G.GAME.starting_params.dollars = self.config.dollars
+                for i = #G.playing_cards, 1, -1 do 
+                    if G.playing_cards[i]:get_id() == 14 or G.playing_cards[i]:get_id() == 12 then
+                        G.playing_cards[i]:start_dissolve(nil, true)
+                    end
+                    if G.playing_cards[i]:get_id() == 11 or G.playing_cards[i]:get_id() == 7 then
+                        G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                        local _card = copy_card(G.playing_cards[i], nil, nil, G.playing_card)
+                        _card:add_to_deck()
+                        G.deck.config.card_limit = G.deck.config.card_limit + 1
+                        table.insert(G.playing_cards, _card)
+                        G.deck:emplace(_card)
+                    end
+                end
                 return true
             end
         }))
@@ -3586,7 +4044,7 @@ SMODS.Back {
     },
     atlas = 'Enhancers',
     pos = { x = 1, y = 3 },
-    config = {},
+    config = {fam_force_dual = true},
     apply = function(self, card, context)
         G.E_MANAGER:add_event(Event({ 
             func = function()
@@ -3635,15 +4093,15 @@ SMODS.Back {
                             notsuit = "Hearts"
                         end
                         if setsuit2 == true then
-                            suit = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
-                            if suit == notsuit then
-                                while suit == notsuit do
-                                    suit = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
+                            suit2 = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
+                            if suit2 == notsuit or suit2 == notsuit then
+                                while suit2 == notsuit or suit2 == notsuit do
+                                    suit2 = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
                                 end
                             end
                             setsuit2 = false
                         end
-                        G.playing_cards[i]:change_suit(suit)
+                        G.playing_cards[i]:change_suit(suit2)
                     else
                         G.playing_cards[i]:start_dissolve(nil, true)
                     end
@@ -3764,22 +4222,22 @@ SMODS.Enhancement {
         end
     end
 }
-SMODS.Enhancement {
-    key = 'split',
-    loc_txt = {
-        name = 'Split',
-        text = {
-            "copies suit to its right",
-            "copies rank to its left",
-        }
-    },
-    pos = {x = 3, y = 1}, 
-    atlas = 'Enhancers', 
-    config = { extra = {mult = 0.9, chips = 100} },
-    loc_vars = function(self, info_queue, card)
-        return { vars = {self.config.extra.mult, self.config.extra.chips} }
-    end
-}
+--SMODS.Enhancement {
+--    key = 'split',
+--    loc_txt = {
+--        name = 'Split',
+--        text = {
+--            "copies suit to its right",
+--            "copies rank to its left",
+--        }
+--    },
+--    pos = {x = 3, y = 1}, 
+--    atlas = 'Enhancers', 
+--    config = { extra = {mult = 0.9, chips = 100} },
+--    loc_vars = function(self, info_queue, card)
+--        return { vars = {self.config.extra.mult, self.config.extra.chips} }
+--    end
+--}
 SMODS.Enhancement {
     key = 'gilded',
     loc_txt = {
@@ -3797,16 +4255,6 @@ SMODS.Enhancement {
     loc_vars = function(self, info_queue, card)
         return { vars = {self.config.extra.p_dollars, self.config.extra.dollar_mod} }
     end,
-    calculate = function(self, card, context)
-        if context.end_of_round and not context.repetition then
-            if self.ability.extra.p_dollars <= 0 then
-                self.config.center = G.P_CENTERS.m_steel
-            else
-                ease_dollars(self.ability.extra.p_dollars)
-                self.ability.extra.p_dollars = self.ability.extra.p_dollars - self.ability.extra.dollar_mod
-            end
-        end
-    end
 }
 
 -- Shaders
@@ -3816,6 +4264,8 @@ SMODS.Shader({key = 'speckle', path = 'speckled.fs'})
 
 SMODS.Edition{
     key = 'aureate', 
+    atlas = 'Joker',
+    pos = { x = 0, y = 0 },
     loc_txt = {
         name = "Aureate",
         label = "Aureate",
@@ -3839,16 +4289,19 @@ SMODS.Edition{
 }
 SMODS.Edition{
     key = 'speckle', 
+    atlas = 'Joker',
+    pos = { x = 0, y = 0 },
     loc_txt = {
         name = "Speckled",
         label = "Speckled",
         text = {
-            ""
+            "{C:blue}+rand(){} Chips",
+            "{C:red}+rand(){} Mult"
         }
     },
-    config = { ranmult = 0, ranchips = 0, mmin = 1, mmax = 5, cmin = 1, cmax = 25 },
+    config = { ranmult = 0, ranchips = 0, mmin = 1, mmax = 5, cmin = 1, cmax = 25, rantextnum =  fam_numbers[math.random(1, 15)], rantextnum2 =  fam_numbers[math.random(1, 15)] },
     loc_vars = function(self, info_queue)
-        return {vars = {self.config.ranmult, self.config.ranchips}}
+        return {vars = {self.config.ranmult, self.config.ranchips, self.config.rantextnum, self.config.rantextnum2}}
     end,
 
     in_shop = true,
@@ -3862,6 +4315,8 @@ SMODS.Edition{
 }
 SMODS.Edition{
     key = 'statics', 
+    atlas = 'Joker',
+    pos = { x = 0, y = 0 },
     loc_txt = {
         name = "Static",
         label = "Static",
@@ -3907,8 +4362,7 @@ SMODS.Voucher {
                 G.hand:change_size(card.ability.extra.hand_size)
 
                 G.GAME.starting_params.hands = G.GAME.starting_params.hands + card.ability.extra.hands
-                G.GAME.round_resets.hands = G.GAME.starting_params.hands
-                G.GAME.current_round.hands_left = G.GAME.starting_params.hands
+                G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.extra.hands
                 return true
             end
         }))
@@ -3963,6 +4417,9 @@ function Back.apply_to_run(self)
             end
         }))
     end
+    if self.effect.config.fam_force_dual then
+        G.GAME.modifiers.fam_force_dual = true
+    end
     local se = Card.set_edition
     function Card:set_edition(edition, y, z)
         return se(self, G.GAME.modifiers.fam_force_edition and {[G.GAME.modifiers.fam_force_edition]=true} or edition, y, z)
@@ -3975,7 +4432,13 @@ end
 SMODS.current_mod.credits_tab = function()
     return {n = G.UIT.ROOT, config = {r = 0.1, align = "tm", padding = 0.1, colour = G.C.BLACK, minw = 10, minh = 6}, nodes = {
         {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
-            {n = G.UIT.T, config = { text = "Art for The Broken, The Harlot, Mesmer, Joey. J. Jester, Joyful Jester, Sapphire Seal, Con Man and Thinktank", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
+            {n = G.UIT.T, config = { text = "Art for The Broken, The Harlot, Mesmer, Joey. J. Jester, Joyful Jester,", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
+        }},
+        {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
+            {n = G.UIT.T, config = { text = "Sapphire Seal, Con Man, Thinktank, Merry Andy's Deck", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
+        }},
+        {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
+            {n = G.UIT.T, config = { text = "Code for Merry Andy's Deck", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
         }},
         {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
             {n = G.UIT.T, config = { text = "by: ", scale = 0.5, colour = G.C.UI.TEXT_LIGHT}},
@@ -4248,26 +4711,6 @@ function copy_card(other, new_card, card_scale, playing_card, strip_edition)
     return new_card
 end
 
-fam_operators = {"+"}
-fam_numbers = {"0","1","2","3","4","5","6","7","8","9","10","25","m","nan","nil","???"}
-fam_msgs = {
-	{string = 'rand()', colour = G.C.RARITY["cry_exotic"]},
-	{string = 'Chips', colour = G.C.CHIPS},
-	{string = 'Chips', colour = G.C.CHIPS},
-	{string = 'Mult', colour = G.C.MULT},
-	{string = 'Chips', colour = G.C.CHIPS},
-	{string = 'Mult', colour = G.C.MULT},
-	{string = 'Mult', colour = G.C.MULT},
-	{string = 'Chips', colour = G.C.CHIPS},
-	{string = 'Mult', colour = G.C.MULT},
-	{string = 'Mult', colour = G.C.MULT},
-	{string = 'Chips', colour = G.C.CHIPS},
-	{string = 'Mult', colour = G.C.MULT},
-	{string = 'Chips', colour = G.C.CHIPS},
-	{string = "#@"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1,1) or 'D'), colour = G.C.RED},
-}
-
--- Borrowed from Talisman 
 function Card:get_chip_x_bonus()
     if self.debuff then return 0 end
     if self.ability.set == 'Joker' then return 0 end
