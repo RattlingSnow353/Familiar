@@ -227,6 +227,34 @@ SMODS.UndiscoveredSprite {
 		y = 2,
 	}
 }
+SMODS.ConsumableType { 
+    key = 'tekana',
+    collection_rows = { 5,6 },
+    primary_colour = HEX("2e3530"),
+    secondary_colour = HEX("2e3530"),
+    loc_txt = {
+        collection = 'Tekana Cards',
+        name = 'Tekana',
+        label = 'Tekana',
+        undiscovered = {
+			name = "Not Discovered",
+			text = {
+				"Purchase or use",
+                "this card in an",
+                "unseeded run to",
+                "learn what it does"
+			},
+		},
+    },
+}
+SMODS.UndiscoveredSprite {
+	key = "tekana",
+	atlas = "Consumables",
+	pos = {
+		x = 6,
+		y = 2,
+	}
+}
 
 -- JokersV1
 SMODS.Joker {
@@ -1523,6 +1551,8 @@ SMODS.Consumable{
             create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_queen'}) 
         elseif G.GAME.last_tarot_planet == "c_lovers" then
             create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_wed'}) 
+        elseif G.GAME.last_tarot_planet == "c_magician" then
+            create_consumable("Familiar_Tarots", nil, nil, {forced_key='c_fam_the_illusionist'}) 
         elseif G.GAME.last_tarot_planet == "c_ceres" then
             create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_demeter'}) 
         elseif G.GAME.last_tarot_planet == "c_earth" then
@@ -1548,6 +1578,28 @@ SMODS.Consumable{
         elseif G.GAME.last_tarot_planet == "c_venus" then
             create_consumable("Familiar_Planets", nil, nil, {forced_key='c_fam_aphrodite'}) 
         end
+    end,
+}
+SMODS.Consumable{
+    key = 'the_illusionist',
+    set = 'Familiar_Tarots',
+    config = { mod_conv = 'm_fam_charmed', max_highlighted = 2 },
+    atlas = 'Consumables',
+    pos = { x = 1, y = 0 },
+    cost = 3,
+    loc_txt = {
+        ['en-us'] = {
+            name = "The Illusionist",
+            text = {
+                "Enhances {C:attention}2{} selected card",
+                "into a {C:attention}Charmed Card{}.",
+            }
+        }
+    },
+    loc_vars = function(self, info_queue)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_fam_charmed
+
+        return {vars = {self.config.max_highlighted}}
     end,
 }
 SMODS.Consumable{
@@ -4249,6 +4301,35 @@ SMODS.Enhancement {
         return { vars = {self.config.extra.p_dollars, self.config.extra.dollar_mod} }
     end,
 }
+SMODS.Enhancement {
+    key = 'charmed',
+    loc_txt = {
+        name = 'Charmed',
+        text = {
+            "{C:green,E:1,S:1.1}#3# in #1#{} chance",
+            "for {C:blue}+#2#{} Chips",
+            "{C:green,E:1,S:1.1}#3# in #4#{} chance",
+            "for a random {C:attention}Tarot{} card",
+        }
+    },
+    pos = {x = 4, y = 1}, 
+    atlas = 'Enhancers', 
+    config = { extra = { chips = 150, odds = 5, } },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {self.config.extra.odds, self.config.extra.chips, '' .. (G.GAME and G.GAME.probabilities.normal or 1), self.config.extra.odds*2} }
+    end,
+    calculate = function(self, card, context)
+        if context.cardarea == G.play and not context.repetition then
+            if pseudorandom('charmed_prob') < G.GAME.probabilities.normal/self.config.extra.odds then
+                delay(0.2)
+                SMODS.eval_this(card, {chip_mod = card.ability.extra.chips, message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}}} )
+            end
+            if pseudorandom('charmed_prob') < G.GAME.probabilities.normal/(self.config.extra.odds*2) then
+                create_consumable("Tarot")
+            end
+        end
+    end
+}
 
 -- Shaders
 SMODS.Shader({key = 'statics', path = 'statics.fs'})
@@ -4540,7 +4621,7 @@ end
 
 local is_suitref = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
-    is_suitref(self)
+    local ref=is_suitref(self)
     if self.config.center == G.P_CENTERS.m_fam_split then
         for i = 1, #G.hand.highlighted do
             if G.hand.highlighted[i] == self then
@@ -4592,12 +4673,12 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
             end
         end
     end
-    return self.base.suit == suit
+    return (self.base.suit == suit) or ref
 end
 
 local is_faceref = Card.is_face
 function Card:is_face(from_boss)
-    is_faceref(self)
+    local ref=is_faceref(self)
     if self.debuff and not from_boss then return end
     local id = self:get_id()
     for i = 1, #G.jokers.cards do
@@ -4608,14 +4689,16 @@ function Card:is_face(from_boss)
     if id == 11 or id == 12 or id == 13 or next(find_joker("Pareidolia")) then
         return true
     end
+    return ref
 end
 
 local set_costref = Card.set_cost
 function Card:set_cost()
-    set_costref(self)
+    local ref= set_costref(self)
     if (self.ability.set == 'Tarot' or (self.ability.set == 'Booster' and self.ability.name:find('Arcana'))) and #find_joker('j_fam_taromancer') > 0 then
         self.cost = 0
     end
+    return ref
 end
 
 function set_sprite_suits(card, juice)

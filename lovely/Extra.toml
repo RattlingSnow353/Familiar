@@ -286,23 +286,25 @@ pattern = "card.T.x = self.T.x"
 position = "before"
 payload = '''
 if G.GAME.modifiers.fam_force_dual then
-    notsuit = card.base.suit
-    suit = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
-    if suit == notsuit then
-        while suit == notsuit do
-            suit = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
-        end
-    end
-    if suit == 'Spades' then
-        card.ability.is_spade = true
-    elseif suit == 'Hearts' then
-        card.ability.is_heart = true
-    elseif suit == 'Diamonds' then
-        card.ability.is_diamond = true
-    elseif suit == 'Clubs' then
-        card.ability.is_club = true
-    end
-	set_sprite_suits(card, false)
+	if not (self.ability.set == 'Joker' or self.ability.set == 'Voucher' or self.ability.consumeable) then
+		notsuit = card.base.suit
+		suit = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
+		if suit == notsuit then
+			while suit == notsuit do
+				suit = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
+			end
+		end
+		if suit == 'Spades' then
+			card.ability.is_spade = true
+		elseif suit == 'Hearts' then
+			card.ability.is_heart = true
+		elseif suit == 'Diamonds' then
+			card.ability.is_diamond = true
+		elseif suit == 'Clubs' then
+			card.ability.is_club = true
+		end
+		set_sprite_suits(card, false)
+	end
 end
 '''
 match_indent = true 
