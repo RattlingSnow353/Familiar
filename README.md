@@ -12,21 +12,22 @@ Gameplay:
 
 Credits:
 Promotional art & screenshots by: humplydinkle
-Art for The Broken, The Harlot, Mesmer, Joey. J. Jester, Joyful Jester,
 
+Art for The Broken, The Harlot, Mesmer, Joey. J. Jester, Joyful Jester,
 Sapphire Seal, Con Man, Thinktank, Merry Andy's Deck
 
 Code for Merry Andy's Deck
-
 by: humplydinkle
+
 Art for suitless, multisuited cards, and Pantheon cards
-
 by: luigicat11
+
 Art for Forged Signature
-
 by: dnolife / RattlingSnow353
-Other things
 
+Other things
 by: RattlingSnow353
+
 Playtesters: humplydinkle, potted_plant., dnolife, and con_artistssbu
+
 (disclaimer faded blueprint and echo are not from this mod there are from crytid)
