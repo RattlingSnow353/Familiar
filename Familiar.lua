@@ -3746,12 +3746,11 @@ SMODS.Seal{
     badge_colour = HEX("8a0a0a"),
     loc_txt = {
         label = 'Maroon Seal',
-        description = {
-            name = 'Maroon Seal',
-            text = {
-                'Retrigger leftmost card an additional time',
-            }
-        },
+        name = 'Maroon Seal',
+        text = {
+            'Retrigger leftmost',
+            'card {C:attention}1{} time',
+        }
     },
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
@@ -3778,14 +3777,12 @@ SMODS.Seal{
     badge_colour = HEX("0d47a0"),
     loc_txt = {
         label = 'Sapphire Seal',
-        description = {
-            name = 'Sapphire Seal',
-            text = {
-                'Creates a {C:blue}Spectral{} card',
-                'if {C:attention}held in hand{} until',
-                'the end of round',
-            }
-        },
+        name = 'Sapphire Seal',
+        text = {
+            'Creates a {C:blue}Spectral{} card',
+            'if {C:attention}held in hand{} until',
+            'the end of round',
+        }
     },
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
@@ -3801,13 +3798,11 @@ SMODS.Seal{
     badge_colour = HEX("caae80"),
     loc_txt = {
         label = 'Gilded Seal',
-        description = {
-            name = 'Gilded Seal',
-            text = {
-                '{C:money}$5{} when played, {C:green,E:1,S:1.1}#2# in #1#{} chance',
-                'that it gives {C:money}-$5{} instead.',
-            }
-        },
+        name = 'Gilded Seal',
+        text = {
+            '{C:money}$5{} when played, {C:green,E:1,S:1.1}#2# in #1#{} chance',
+            'that it gives {C:money}-$5{} instead.',
+        }
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { self.config.extra.odds, '' .. (G.GAME and G.GAME.probabilities.normal or 1) } }
@@ -3838,13 +3833,11 @@ SMODS.Seal{
     badge_colour = HEX("3c423e"),
     loc_txt = {
         label = 'Familiar Seal',
-        description = {
-            name = 'Familiar Seal',
-            text = {
-                'Creates a {C:attention}Familiar tarot{} when',
-                'only this card is {C:attention}discarded',
-            }
-        },
+        name = 'Familiar Seal',
+        text = {
+            'Creates a {C:attention}Familiar tarot{} when',
+            'only this card is {C:attention}discarded',
+        }
     },
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }

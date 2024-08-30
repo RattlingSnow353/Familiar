@@ -3,7 +3,7 @@ version = "1.0.0"
 dump_lua = true
 priority = 0
 
-# fam_x_chips fam_force_dual
+# fam_x_chips
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -75,16 +75,6 @@ if effects[ii].fam_x_chips then
 	update_hand_text({delay = 0}, {chips = hand_chips})
 	card_eval_status_text(G.hand.cards[i], 'fam_x_chips', effects[ii].fam_x_chips, percent)
 end
-'''
-match_indent = true
-
-# sfx
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = "sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or 'generic1'"
-position = "at"
-payload = '''sound = extra.edition and 'foil2' or extra.mult_mod and 'multhit1' or extra.Xmult_mod and 'multhit2' or extra.fam_Xchip_mod and 'Xmult_mod' or 'generic1'
 '''
 match_indent = true
 
