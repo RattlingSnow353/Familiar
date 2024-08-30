@@ -4540,7 +4540,7 @@ end
 
 local is_suitref = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
-    is_suitref(self)
+    local ref=is_suitref(self)
     if self.config.center == G.P_CENTERS.m_fam_split then
         for i = 1, #G.hand.highlighted do
             if G.hand.highlighted[i] == self then
@@ -4592,12 +4592,12 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
             end
         end
     end
-    return self.base.suit == suit
+    return (self.base.suit == suit) or ref
 end
 
 local is_faceref = Card.is_face
 function Card:is_face(from_boss)
-    is_faceref(self)
+    local ref=is_faceref(self)
     if self.debuff and not from_boss then return end
     local id = self:get_id()
     for i = 1, #G.jokers.cards do
@@ -4608,6 +4608,7 @@ function Card:is_face(from_boss)
     if id == 11 or id == 12 or id == 13 or next(find_joker("Pareidolia")) then
         return true
     end
+    return ret
 end
 
 local set_costref = Card.set_cost
