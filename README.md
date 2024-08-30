@@ -15,6 +15,7 @@ Promotional art & screenshots by: humplydinkle
 
 Art for The Broken, The Harlot, Mesmer, Joey. J. Jester, Joyful Jester,
 Sapphire Seal, Con Man, Thinktank, Merry Andy's Deck
+by: humplydinkle
 
 Code for Merry Andy's Deck
 by: humplydinkle
