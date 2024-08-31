@@ -255,6 +255,101 @@ elseif self.ability.name == 'j_fam_thinktank' then
         }}
     } or nil
 '''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "misc_functions.lua"
+pattern = "if card.config.center.set == 'Tarot' or card.config.center.set == 'Planet' then"
+position = "before"
+payload = '''
+if card.config.center.set == 'Tarot' or card.config.center.set == 'Planet' then 
+	G.GAME.last_fortune_to_tarot = 'c_fam_the_martyr'
+	if card.config.center_key == "c_strength" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_vigor'
+	elseif card.config.center_key == "c_hanged_man" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_martyr'
+	elseif card.config.center_key == "c_death" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_demise'
+	elseif card.config.center_key == "c_judgement" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_verdict'
+	elseif card.config.center_key == "c_high_priestess" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_harlot'
+	elseif card.config.center_key == "c_wheel_of_fortune" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_cycle_of_fate'
+	elseif card.config.center_key == "c_devil" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_humanity'
+	elseif card.config.center_key == "c_world" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_landscape'
+	elseif card.config.center_key == "c_moon" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_midnight'
+	elseif card.config.center_key == "c_star" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_galaxy'
+	elseif card.config.center_key == "c_sun" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_daylight'
+	elseif card.config.center_key == "c_tower" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_pit'
+	elseif card.config.center_key == "c_heirophant" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_bishop'
+	elseif card.config.center_key == "c_empress" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_queen'
+	elseif card.config.center_key == "c_lovers" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_wed'
+	elseif card.config.center_key == "c_magician" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_the_illusionist'
+	elseif card.config.center_key == "c_ceres" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_demeter'
+	elseif card.config.center_key == "c_earth" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_terra'
+	elseif card.config.center_key == "c_eris" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_discordia'
+	elseif card.config.center_key == "c_jupiter" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_zeus'
+	elseif card.config.center_key == "c_mars" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_ares'
+	elseif card.config.center_key == "c_mercury" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_hermes'
+	elseif card.config.center_key == "c_neptune" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_poseidon'
+	elseif card.config.center_key == "c_planet_x" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_hecate'
+	elseif card.config.center_key == "c_pluto" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_hades'
+	elseif card.config.center_key == "c_saturn" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_cronus'
+	elseif card.config.center_key == "c_uranus" then 
+		G.GAME.last_fortune_to_tarot = 'c_fam_caelus'
+	elseif card.config.center_key == "c_venus" then
+		G.GAME.last_fortune_to_tarot = 'c_fam_aphrodite'
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "elseif self.ability.set == 'Joker' then"
+position = "before"
+payload = '''
+elseif self.ability.set == 'Familiar_Tarots' then
+	if self.ability.name == "fam_the_broken" then
+		local fool_c = G.GAME.last_fortune_to_tarot and G.P_CENTERS[G.GAME.last_fortune_to_tarot] or nil
+		local last_fortune_to_tarot = fool_c and localize{type = 'name_text', key = fool_c.key, set = fool_c.set} or localize('k_none')
+		local colour = (not fool_c or fool_c.name == 'The Broken') and G.C.RED or G.C.GREEN
+		main_end = {
+			{n=G.UIT.C, config={align = "bm", padding = 0.02}, nodes={
+				{n=G.UIT.C, config={align = "m", colour = colour, r = 0.05, padding = 0.05}, nodes={
+					{n=G.UIT.T, config={text = ' '..last_fortune_to_tarot..' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.3, shadow = true}},
+				}}
+			}}
+		}
+		loc_vars = {last_fortune_to_tarot}
+		if not (not fool_c or fool_c.name == 'The Broken') then
+			info_queue[#info_queue+1] = fool_c
+		end
+	end
+'''
 match_indent = true
 
 # [[patches]]
@@ -305,29 +400,27 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "card.T.x = self.T.x"
+pattern = "local edition = poll_edition('standard_edition'..G.GAME.round_resets.ante, edition_rate, true)"
 position = "before"
 payload = '''
 if G.GAME.modifiers.fam_force_dual then
-	if not (self.ability.set == 'Joker' or self.ability.set == 'Voucher' or self.ability.consumeable) then
-		notsuit = card.base.suit
-		suit = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
-		if suit == notsuit then
-			while suit == notsuit do
-				suit = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
-			end
+	notsuit = card.base.suit
+	suit = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
+	if suit == notsuit then
+		while suit == notsuit do
+			suit = pseudorandom_element({'Spades','Hearts','Diamonds','Clubs'}, pseudoseed('dual_deck'))
 		end
-		if suit == 'Spades' then
-			card.ability.is_spade = true
-		elseif suit == 'Hearts' then
-			card.ability.is_heart = true
-		elseif suit == 'Diamonds' then
-			card.ability.is_diamond = true
-		elseif suit == 'Clubs' then
-			card.ability.is_club = true
-		end
-		set_sprite_suits(card, false)
 	end
+	if suit == 'Spades' then
+		card.ability.is_spade = true
+	elseif suit == 'Hearts' then
+		card.ability.is_heart = true
+	elseif suit == 'Diamonds' then
+		card.ability.is_diamond = true
+	elseif suit == 'Clubs' then
+		card.ability.is_club = true
+	end
+	set_sprite_suits(card, false)
 end
 '''
 match_indent = true 
