@@ -257,6 +257,20 @@ elseif self.ability.name == 'j_fam_thinktank' then
 '''
 match_indent = true
 
+# [[patches]]
+# [patches.pattern]
+# target = "card.lua"
+# pattern = "if self.ability.name == 'Hologram' then"
+# position = "before"
+# payload = '''
+# if self.ability.set == 'tekana' then
+#     self.hover_tilt = self.hover_tilt*1.5
+#     self.children.floating_sprite:draw_shader('hologram', nil, self.ARGS.send_to_shader, nil, self.children.center, 2*scale_mod, 2*rotate_mod)
+#     self.hover_tilt = self.hover_tilt/1.5
+# end
+# '''
+# match_indent = true
+
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -265,10 +279,19 @@ position = "before"
 payload = '''
 if self.config.center == G.P_CENTERS.m_fam_gilded then
     if self.ability.extra.p_dollars <= 0 then
-        self.config.center = G.P_CENTERS.m_steel
+        self:set_ability(G.P_CENTERS.m_steel, nil, true)
+		card_eval_status_text(self, 'extra', nil, nil, nil, {message = 'Delamination!', colour = G.C.UI.TEXT_INACTIVE})
+		G.E_MANAGER:add_event(Event({
+            func = function()
+                self:juice_up()
+                return true
+            end
+        })) 
     else
         ease_dollars(self.ability.extra.p_dollars)
+		card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('$')..self.ability.extra.p_dollars, colour = G.C.MONEY})
         self.ability.extra.p_dollars = self.ability.extra.p_dollars - 1
+		self.ability.extra.left = self.ability.extra.left - 1
     end
 	ret.effect = true
 end
