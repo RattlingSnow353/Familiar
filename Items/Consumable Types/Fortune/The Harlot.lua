@@ -20,7 +20,7 @@ local the_harlot = {
         return { vars = { } }
     end,
     can_use = function(self, card, area, copier)
-        if #G.consumeables.cards < G.consumeables.config.card_limit or self.area == G.consumeables then 
+        if #G.consumeables.cards <= G.consumeables.config.card_limit or self.area == G.consumeables then 
             return true 
         end
     end,
