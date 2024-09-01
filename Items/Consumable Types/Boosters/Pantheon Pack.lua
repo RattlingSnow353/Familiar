@@ -22,20 +22,7 @@ local pantheon_booster_1 = {
 		return { vars = { card.config.center.config.choose, card.ability.extra} }
 	end,
 	create_card = function(self, card)
-        local _planet, _hand, _planets = nil, nil, {}
-        for k, v in ipairs(G.handlist) do
-            if G.GAME.hands[v].visible then
-                _hand = v
-                
-            end
-            for k, v in pairs(G.P_CENTER_POOLS.Familiar_Planets) do
-                if v.config.extra.hand == _hand then
-                    _planet = v.key
-                    table.insert(_planets, _planet)
-                end
-            end
-        end
-		return create_card("Familiar_Planets", G.pack_cards, nil, nil, true, true, _planets[math.random(1,#_planets)], 'fam_pantheon')
+		return create_card("Familiar_Planets", G.pack_cards, nil, nil, true, true, nil, 'fam_pantheon')
 	end,
     pack_uibox = function(self)
         local _size = SMODS.OPENED_BOOSTER.ability.extra

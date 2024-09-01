@@ -1,0 +1,24 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# softlock mechanic
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif v.set == 'Planet' then"
+position = "before"
+payload = '''
+elseif v.set == 'Familiar_Planets' then
+    local softlocked = true
+    if not v.config.extra.softlock then
+        softlocked = false
+    elseif v.config.extra.hand then
+        softlocked = G.GAME.hands[v.config.extra.hand].played == 0
+    end
+    if not softlocked then
+        add = true
+    end
+'''
+match_indent = true

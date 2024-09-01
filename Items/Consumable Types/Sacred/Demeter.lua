@@ -2,7 +2,7 @@ local demeter = {
     object_type = "Consumable",
     key = 'demeter',
     set = 'Familiar_Planets',
-    config = { extra = {hand = "Flush House", xmult = 1.3, xchips = 1.8} },
+    config = { extra = {hand = "Flush House", xmult = 1.3, xchips = 1.8, softlock = true} },
     atlas = 'Consumables',
     pos = { x = 8, y = 2 },
     cost = 5,

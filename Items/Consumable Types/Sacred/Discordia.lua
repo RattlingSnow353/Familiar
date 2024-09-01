@@ -2,7 +2,7 @@ local discordia = {
     object_type = "Consumable",
     key = 'discordia',
     set = 'Familiar_Planets',
-    config = { extra = {hand = "Flush Five", xmult = 1.25, xchips = 2} },
+    config = { extra = {hand = "Flush Five", xmult = 1.25, xchips = 2, softlock = true} },
     atlas = 'Consumables',
     pos = { x = 3, y = 2 },
     cost = 5,
