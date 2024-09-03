@@ -55,4 +55,4 @@ local rna = {
         end
     end
 }
-return {name = "RNA", items = {rna}}
+return {name = "Jokers", items = {rna}}

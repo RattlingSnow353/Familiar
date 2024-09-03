@@ -40,4 +40,4 @@ local thinktank = {
         end
     end
 }
-return {name = "Thinktank", items = {thinktank}}
+return {name = "Jokers", items = {thinktank}}

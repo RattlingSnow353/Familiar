@@ -26,4 +26,4 @@ local taromancer = {
         
     end
 }
-return {name = "Taromancer", items = {taromancer}}
+return {name = "Jokers", items = {taromancer}}

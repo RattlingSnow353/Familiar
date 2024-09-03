@@ -45,4 +45,4 @@ local purple_card = {
         end
     end
 }
-return {name = "Purple Card", items = {purple_card}}
+return {name = "Jokers", items = {purple_card}}

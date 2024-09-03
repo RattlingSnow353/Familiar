@@ -44,4 +44,4 @@ local crimsonotype = {
         end
     end
 }
-return {name = "Crimsonotype", items = {crimsonotype}}
+return {name = "Jokers", items = {crimsonotype}}

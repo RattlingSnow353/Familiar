@@ -32,4 +32,4 @@ local the_triplets = {
         end
     end
 }
-return {name = "The Triplets", items = {the_triplets}}
+return {name = "Jokers", items = {the_triplets}}

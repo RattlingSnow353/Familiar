@@ -94,4 +94,4 @@ local neopolitan = {
         end
     end
 }
-return {name = "Neopolitan", items = {neopolitan}}
+return {name = "Jokers", items = {neopolitan}}

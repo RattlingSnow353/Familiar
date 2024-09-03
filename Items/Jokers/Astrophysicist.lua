@@ -28,4 +28,4 @@ local astrophysicist = {
         end
     end
 }
-return {name = "Astrophysicist", items = {astrophysicist}}
+return {name = "Jokers", items = {astrophysicist}}

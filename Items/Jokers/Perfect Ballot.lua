@@ -32,4 +32,4 @@ local perfect_ballot = {
         end
     end
 }
-return {name = "Perfect Ballot", items = {perfect_ballot}}
+return {name = "Jokers", items = {perfect_ballot}}

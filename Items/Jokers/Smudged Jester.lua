@@ -26,4 +26,4 @@ local smudged_jester = {
         
     end
 }
-return {name = "Smudged Jester", items = {smudged_jester}}
+return {name = "Jokers", items = {smudged_jester}}

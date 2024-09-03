@@ -25,4 +25,4 @@ local prosopagnosia = {
     calculate = function(self, card, context)
     end
 }
-return {name = "Prosopagnosia", items = {prosopagnosia}}
+return {name = "Jokers", items = {prosopagnosia}}

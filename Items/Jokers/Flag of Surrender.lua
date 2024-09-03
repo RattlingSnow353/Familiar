@@ -34,4 +34,4 @@ local flag_of_surrender = {
         end
     end
 }
-return {name = "Flag of Surrender", items = {flag_of_surrender}}
+return {name = "Jokers", items = {flag_of_surrender}}

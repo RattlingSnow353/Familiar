@@ -41,4 +41,4 @@ local archibald = {
         end
     end
 }
-return {name = "Archibald", items = {archibald}}
+return {name = "Jokers", items = {archibald}}

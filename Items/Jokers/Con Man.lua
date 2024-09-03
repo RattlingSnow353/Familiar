@@ -28,6 +28,12 @@ local con_man = {
         if context.ending_shop then
             if G.GAME.dollars >= card.ability.extra.money then
                 local random = math.random(1,2)
+                if #G.consumeables.cards == 0 then
+                    random = 2
+                end
+                if #G.jokers.cards == 0 then
+                    random = 1
+                end
                 if #G.consumeables.cards > 0 and #G.consumeables.cards < G.consumeables.config.card_limit and random == 1 then
                     local eligibleConsumeables = {}
                     for i = 1, #G.consumeables.cards do
@@ -68,4 +74,4 @@ local con_man = {
         end
     end
 }
-return {name = "Con Man", items = {con_man}}
+return {name = "Jokers", items = {con_man}}

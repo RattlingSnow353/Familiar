@@ -31,4 +31,4 @@ local trapeze_artist = {
         end
     end
 }
-return {name = "Trapeze Artist", items = {trapeze_artist}}
+return {name = "Jokers", items = {trapeze_artist}}

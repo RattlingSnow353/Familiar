@@ -37,4 +37,4 @@ local forged_signature = {
         end
     end
 }
-return {name = "Forged Signature", items = {forged_signature}}
+return {name = "Jokers", items = {forged_signature}}

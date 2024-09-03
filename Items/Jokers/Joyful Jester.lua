@@ -35,4 +35,4 @@ local joyful_jester = {
         end
     end
 }
-return {name = "Joyful Jester", items = {joyful_jester}}
+return {name = "Jokers", items = {joyful_jester}}

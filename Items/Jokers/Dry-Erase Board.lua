@@ -39,4 +39,4 @@ local dry-erase_board = {
         end
     end
 }
-return {name = "Dry-Erase Board", items = {dry-erase_board}}
+return {name = "Jokers", items = {dry-erase_board}}

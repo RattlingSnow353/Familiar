@@ -38,4 +38,4 @@ local sploosh = {
         end
     end
 }
-return {name = "Sploosh", items = {sploosh}}
+return {name = "Jokers", items = {sploosh}}
