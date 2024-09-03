@@ -104,7 +104,6 @@ function create_joker(card_type,tag,message,extra, rarity)
         return true
     end)}))
 end
-
 local Backapply_to_runRef = Back.apply_to_run
 function Back.apply_to_run(self)
     Backapply_to_runRef(self)
@@ -472,6 +471,8 @@ SMODS.Atlas { key = 'Stickers', path = 'StickersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Voucher', path = 'VouchersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'modicon', path = 'ModIcon.png', px = 18, py = 18 }
 
+
+
 SMODS.ConsumableType { 
     key = 'Familiar_Tarots',
     collection_rows = { 5,6 },
@@ -589,6 +590,114 @@ SMODS.UndiscoveredSprite {
 --	}
 --}
 
+--- MOD SUPPORT
+
+-- CardSleeves Support
+if (SMODS.Mods["CardSleeves"] or {}).can_load then
+    SMODS.Atlas { key = 'cardsleeves', path = 'CardSleevesFam.png', px = 71, py = 95}
+    --Amythest Sleeve
+    CardSleeves.Sleeve {
+        key = 'amythestsleeve',
+        name = 'Amythest Sleeve',
+        atlas = 'cardsleeves',
+        pos = {x = 0, y = 0},
+        config = {
+            hand_size = 5
+        },
+        loc_vars = function(self)
+            return { vars = {self.config.hand_size} }
+        end,
+        loc_txt = {
+            name = "Amythest Sleeve",
+            text = {
+                "{C:attention}+5{} hand size"
+            }
+        }
+    }
+    -- Ruby Sleeve
+    CardSleeves.Sleeve {
+        key = 'rubysleeve',
+        name = 'Ruby Sleeve',
+        atlas = 'cardsleeves',
+        pos = {x = 2, y = 0},
+        config = {
+        },
+        loc_vars = function(self)
+        self.config = {consumables = { 'c_fam_playback', 'c_fam_playback' }, discards = 2}
+        end,
+        loc_txt = {
+            name = "Ruby Sleeve",
+            text = {
+                "Start with {C:attention}2 copies{} of Playback,",
+                "{C:red}+2{} discards every round.",
+            }
+        }
+    }
+
+    --Silver Sleeve (AKA CBT)
+    CardSleeves.Sleeve {
+        key = 'silversleeve',
+        name = 'Silver Sleeve',
+        atlas = 'cardsleeves',
+        pos = {x = 3, y = 0},
+        config = {
+            joker_slot = 2,
+            hands = -1,
+            discards = -1,
+        },
+        loc_vars = function(self)
+            return {
+                vars = {
+                    self.config.joker_slot,
+                    -self.config.hands,
+                    -self.config.discards
+                }
+            }
+        end,
+        loc_txt = {
+            name = "Silver Sleeve",
+            text = {
+                "{C:attention}+2{} joker slots,",
+                "{C:blue}-1{} hand every round,",
+                "{C:red}-1{} discard every round",
+            }
+        }
+    }
+
+
+    --Topaz Sleeve
+    CardSleeves.Sleeve {
+        key = 'topaz',
+        name = 'Topaz Sleeve',
+        atlas = 'cardsleeves',
+        pos = {x = 1, y = 0},
+        config = {
+            hands = 1,
+            discards = 1,
+        },
+        loc_vars = function(self)
+            return {
+                vars = {
+                    self.config.hands,
+                    self.config.discards
+                }
+            }
+        end,
+        loc_txt = {
+            name = "Topaz Sleeve",
+            text = {
+                "{C:blue}+1{} hand every round,",
+                "{C:red}+1{} discard every round",
+            }
+        }
+    }
+end
+
+
+
+
+
+--- FILE LOADING
 local folders = NFS.getDirectoryItems(mod_path.."Items")
 local folders2 = NFS.getDirectoryItems(mod_path.."Items/Consumable Types")
 for _, folder in ipairs(folders) do
@@ -640,6 +749,7 @@ for _, folder in ipairs(folders) do
         end
     end
 end
+
 
 ----------------------------------------------
 ------------MOD CODE END---------------------
