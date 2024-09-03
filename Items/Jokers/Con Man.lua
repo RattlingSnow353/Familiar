@@ -12,7 +12,7 @@ local con_man = {
             text = {
                 "At the end of the shop, lose {C:money}$#1#{}",
                 "and create a random copy of",
-                "a {C:attention}Joker{} or {C:tarot}Consumable{} in your posession",
+                "a {C:attention}Joker{} or {C:tarot}Consumable{} in your possession",
                 "Price increases by {C:money}$2{} on activation",
                 "{C:inactive}(Must have room){}"
 
