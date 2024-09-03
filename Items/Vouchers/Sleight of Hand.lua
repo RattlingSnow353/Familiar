@@ -5,7 +5,7 @@ local sleight_of_hand = {
         name = 'Sleight of Hand',
         text = {
             "{C:attention}+#1#{} hand",
-            "{C:attention}-#2#{} discard",
+            "{C:mult}-#2#{} discard",
         }
     },
     cost = 15,

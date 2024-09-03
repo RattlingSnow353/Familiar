@@ -5,7 +5,7 @@ local pickpocket = {
         name = 'Pickpocket',
         text = {
             "{C:blue}+#1#{} hand size",
-            "{C:attention}-#2#{} discards",
+            "{C:mult}-#2#{} discards",
         }
     },
     cost = 10,
