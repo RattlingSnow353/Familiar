@@ -15,4 +15,4 @@ local static_deck = {
     pos = { x = 5, y = 2 },
     config = {fam_force_edition = "fam_statics"},
 }
-return {name = "Static Deck", items = {static_deck}}
+return {name = "Decks", items = {static_deck}}

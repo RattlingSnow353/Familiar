@@ -42,4 +42,4 @@ local aureate = {
         end
     end,
 }
-return {name = "Aureate Pin", items = {aureate}}
+return {name = "Tags", items = {aureate}}

@@ -39,4 +39,4 @@ local spare_deck = {
         }))
     end
 }
-return {name = "Spare Deck", items = {spare_deck}}
+return {name = "Decks", items = {spare_deck}}

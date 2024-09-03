@@ -42,4 +42,4 @@ local statics = {
         end
     end,
 }
-return {name = "Static Pin", items = {statics}}
+return {name = "Tags", items = {statics}}

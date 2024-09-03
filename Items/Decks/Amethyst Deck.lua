@@ -21,4 +21,4 @@ local amethyst_deck = {
         }))
     end
 }
-return {name = "Amethyst Deck", items = {amethyst_deck}}
+return {name = "Decks", items = {amethyst_deck}}

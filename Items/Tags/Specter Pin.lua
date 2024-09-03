@@ -36,4 +36,4 @@ local specter_tag = {
         end
     end,
 }
-return {name = "Specter Pin", items = {specter_tag}}
+return {name = "Tags", items = {specter_tag}}

@@ -29,4 +29,4 @@ local aureate = {
 
     shader = 'aureate'
 }
-return {name = "Aureate", items = {aureate, aureate_shader}}
+return {name = "Editions", items = {aureate, aureate_shader}}

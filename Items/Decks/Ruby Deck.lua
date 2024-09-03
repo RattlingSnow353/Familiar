@@ -26,4 +26,4 @@ local ruby_deck = {
         }))
     end
 }
-return {name = "Ruby Deck", items = {ruby_deck}}
+return {name = "Decks", items = {ruby_deck}}

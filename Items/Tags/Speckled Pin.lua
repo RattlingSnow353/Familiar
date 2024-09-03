@@ -42,4 +42,4 @@ local speckle = {
         end
     end,
 }
-return {name = "Speckled Pin", items = {speckle}}
+return {name = "Tags", items = {speckle}}

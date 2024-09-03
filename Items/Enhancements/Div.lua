@@ -22,4 +22,4 @@ local div = {
         end
     end
 }
-return {name = "Div", items = {div}}
+return {name = "Enhancements", items = {div}}

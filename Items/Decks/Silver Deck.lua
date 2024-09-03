@@ -30,4 +30,4 @@ local silver_deck = {
         }))
     end
 }
-return {name = "Silver Deck", items = {silver_deck}}
+return {name = "Decks", items = {silver_deck}}

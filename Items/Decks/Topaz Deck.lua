@@ -26,4 +26,4 @@ local topaz_deck = {
         }))
     end
 }
-return {name = "Topaz Deck", items = {topaz_deck}}
+return {name = "Decks", items = {topaz_deck}}

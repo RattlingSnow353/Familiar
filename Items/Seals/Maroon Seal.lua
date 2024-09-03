@@ -30,4 +30,4 @@ local maroon_seal = {
         end
     end
 }
-return {name = "Maroon Seal", items = {maroon_seal}}
+return {name = "Seals", items = {maroon_seal}}

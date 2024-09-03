@@ -29,4 +29,4 @@ local sleight_of_hand = {
         G.GAME.pool_flags.sleight_of_hand_redeemed = true
     end
 }
-return {name = "Sleight of Hand", items = {sleight_of_hand}}
+return {name = "Vouchers", items = {sleight_of_hand}}

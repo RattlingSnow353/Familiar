@@ -26,4 +26,4 @@ local familiar_seal = {
         end
     end
 }
-return {name = "Familiar Seal", items = {familiar_seal}}
+return {name = "Seals", items = {familiar_seal}}

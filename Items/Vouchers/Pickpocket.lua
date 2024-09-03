@@ -28,4 +28,4 @@ local pickpocket = {
         G.GAME.pool_flags.pickpocket_redeemed = true
     end
 }
-return {name = "Pickpocket", items = {pickpocket}}
+return {name = "Vouchers", items = {pickpocket}}

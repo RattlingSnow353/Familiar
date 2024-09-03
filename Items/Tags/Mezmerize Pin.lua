@@ -36,4 +36,4 @@ local mezmerize_tag = {
         end
     end,
 }
-return {name = "Mezmerize Pin", items = {mezmerize_tag}}
+return {name = "Tags", items = {mezmerize_tag}}

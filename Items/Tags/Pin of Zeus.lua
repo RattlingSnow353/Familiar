@@ -36,4 +36,4 @@ local Zeus_tag = {
         end
     end,
 }
-return {name = "Pin of Zeus", items = {Zeus_tag}}
+return {name = "Tags", items = {Zeus_tag}}

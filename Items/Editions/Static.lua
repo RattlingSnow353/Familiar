@@ -29,4 +29,4 @@ local statics = {
 
     shader = 'statics'
 }
-return {name = "Static", items = {statics, statics_shader}}
+return {name = "Editions", items = {statics, statics_shader}}

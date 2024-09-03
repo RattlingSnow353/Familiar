@@ -20,4 +20,4 @@ local sapphire_seal = {
         return { vars = {  } }
     end,
 }
-return {name = "Sapphire Seal", items = {sapphire_seal}}
+return {name = "Seals", items = {sapphire_seal}}

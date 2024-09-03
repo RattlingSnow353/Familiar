@@ -23,4 +23,4 @@ local penalty = {
         end
     end
 }
-return {name = "Penalty", items = {penalty}}
+return {name = "Enhancements", items = {penalty}}

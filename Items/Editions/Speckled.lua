@@ -30,4 +30,4 @@ local speckle = {
 
     shader = 'speckle'
 }
-return {name = "Speckled", items = {speckle, speckle_shader}}
+return {name = "Editions", items = {speckle, speckle_shader}}

@@ -24,4 +24,4 @@ local andys_deck = {
         }))
     end
 }
-return {name = "Merry Andy's Deck", items = {andys_deck}}
+return {name = "Decks", items = {andys_deck}}

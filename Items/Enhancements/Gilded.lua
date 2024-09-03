@@ -17,4 +17,4 @@ local gilded = {
         return { vars = {self.config.extra.p_dollars, self.config.extra.dollar_mod, self.config.extra.left } }
     end,
 }
-return {name = "Gilded", items = {gilded}}
+return {name = "Enhancements", items = {gilded}}
