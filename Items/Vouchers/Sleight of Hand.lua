@@ -4,7 +4,7 @@ local sleight_of_hand = {
     loc_txt = {
         name = 'Sleight of Hand',
         text = {
-            "{C:attention}+#1#{} hand",
+            "{C:blue}+#1#{} hand",
             "{C:mult}-#2#{} discard",
         }
     },
