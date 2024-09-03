@@ -31,4 +31,4 @@ by: RattlingSnow353
 
 Playtesters: humplydinkle, potted_plant., dnolife, and con_artistssbu
 
-(disclaimer faded blueprint and echo are not from this mod there are from crytid)
+(disclaimer faded blueprint and echo are not from this mod there are from cryptid)
