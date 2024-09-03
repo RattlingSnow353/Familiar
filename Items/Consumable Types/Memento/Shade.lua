@@ -36,4 +36,4 @@ local shade = {
         end
     end,
 }
-return {name = "Shade", items = {shade}}
+return {name = "Memento Cards", items = {shade}}

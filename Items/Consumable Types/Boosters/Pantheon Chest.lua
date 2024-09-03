@@ -57,4 +57,4 @@ local pantheon_booster_3 = {
         return t
     end,
 }
-return {name = "Pantheon Chest", items = {pantheon_booster_3}}
+return {name = "Sacred Cards", items = {pantheon_booster_3}}

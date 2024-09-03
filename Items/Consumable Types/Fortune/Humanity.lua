@@ -21,4 +21,4 @@ local humanity = {
         return {vars = {self.config.max_highlighted}}
     end,
 }
-return {name = "Humanity", items = {humanity}}
+return {name = "Fortune Cards", items = {humanity}}

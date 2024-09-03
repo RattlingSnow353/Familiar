@@ -27,4 +27,4 @@ local ares = {
         mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
     end,
 }
-return {name = "Ares", items = {ares}}
+return {name = "Sacred Cards", items = {ares}}

@@ -45,4 +45,4 @@ local vigor = {
         end  
     end,
 }
-return {name = "Vigor", items = {vigor}}
+return {name = "Fortune Cards", items = {vigor}}

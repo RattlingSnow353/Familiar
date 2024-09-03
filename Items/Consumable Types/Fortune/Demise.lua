@@ -36,4 +36,4 @@ local demise = {
         end  
     end,
 }
-return {name = "Demise", items = {demise}}
+return {name = "Fortune Cards", items = {demise}}

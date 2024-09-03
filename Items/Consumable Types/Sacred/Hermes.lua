@@ -27,4 +27,4 @@ local hermes = {
         mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
     end,
 }
-return {name = "Hermes", items = {hermes}}
+return {name = "Sacred Cards", items = {hermes}}

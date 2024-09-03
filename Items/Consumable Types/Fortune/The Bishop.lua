@@ -21,4 +21,4 @@ local the_bishop = {
         return {vars = {self.config.max_highlighted}}
     end,
 }
-return {name = "The Bishop", items = {the_bishop}}
+return {name = "Fortune Cards", items = {the_bishop}}

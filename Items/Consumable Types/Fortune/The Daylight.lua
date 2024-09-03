@@ -31,4 +31,4 @@ local the_daylight = {
         end
     end,
 }
-return {name = "The Daylight", items = {the_daylight}}
+return {name = "Fortune Cards", items = {the_daylight}}

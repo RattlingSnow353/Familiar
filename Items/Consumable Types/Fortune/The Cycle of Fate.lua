@@ -58,4 +58,4 @@ local the_cycle_of_fate = {
         delay(0.6)
     end,
 }
-return {name = "The Cycle of Fate", items = {the_cycle_of_fate}}
+return {name = "Fortune Cards", items = {the_cycle_of_fate}}

@@ -84,4 +84,4 @@ local the_broken = {
         end
     end,
 }
-return {name = "The Broken", items = {the_broken}}
+return {name = "Fortune Cards", items = {the_broken}}

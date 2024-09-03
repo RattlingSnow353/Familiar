@@ -27,4 +27,4 @@ local demeter = {
         mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
     end,
 }
-return {name = "Demeter", items = {demeter}}
+return {name = "Sacred Cards", items = {demeter}}

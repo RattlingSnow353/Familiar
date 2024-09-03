@@ -42,4 +42,4 @@ local the_harlot = {
         create_consumable("Planet",'pl1',nil,{forced_key = _planet}, true, true)
     end,
 }
-return {name = "The Harlot", items = {the_harlot}}
+return {name = "Fortune Cards", items = {the_harlot}}

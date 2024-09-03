@@ -28,4 +28,4 @@ local verdict = {
         create_consumable("Consumeables", nil, nil, nil)
     end,
 }
-return {name = "Verdict", items = {verdict}}
+return {name = "Fortune Cards", items = {verdict}}

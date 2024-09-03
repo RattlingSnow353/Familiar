@@ -27,4 +27,4 @@ local zeus = {
         mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
     end,
 }
-return {name = "Zeus", items = {zeus}}
+return {name = "Sacred Cards", items = {zeus}}

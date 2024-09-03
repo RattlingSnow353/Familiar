@@ -107,4 +107,4 @@ local ethereal_booster_1 = {
         return t
     end,
 }
-return {name = "Ethereal Pack", items = {ethereal_booster_1}}
+return {name = "Memento Cards", items = {ethereal_booster_1}}

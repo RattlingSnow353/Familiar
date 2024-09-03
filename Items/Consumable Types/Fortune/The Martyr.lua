@@ -40,4 +40,4 @@ local the_martyr = {
         return true end }))
     end,
 }
-return {name = "The Martyr", items = {the_martyr}}
+return {name = "Fortune Cards", items = {the_martyr}}

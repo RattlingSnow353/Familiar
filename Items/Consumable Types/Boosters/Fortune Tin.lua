@@ -107,4 +107,4 @@ local forture_booster_2 = {
         return t
     end,
 }
-return {name = "Fortune Tin", items = {forture_booster_2}}
+return {name = "Fortune Cards", items = {forture_booster_2}}

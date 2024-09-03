@@ -31,4 +31,4 @@ local the_landscape = {
         end
     end,
 }
-return {name = "The Landscape", items = {the_landscape}}
+return {name = "Fortune Cards", items = {the_landscape}}

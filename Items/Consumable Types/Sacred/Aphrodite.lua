@@ -27,4 +27,4 @@ local aphrodite = {
         mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
     end,
 }
-return {name = "Aphrodite", items = {aphrodite}}
+return {name = "Sacred Cards", items = {aphrodite}}

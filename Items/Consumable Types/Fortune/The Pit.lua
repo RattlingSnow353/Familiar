@@ -31,4 +31,4 @@ local the_pit = {
         end
     end,
 }
-return {name = "The Pit", items = {the_pit}}
+return {name = "Fortune Cards", items = {the_pit}}
