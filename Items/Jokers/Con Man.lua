@@ -10,9 +10,10 @@ local con_man = {
         ['en-us'] = {
             name = 'Con Man',
             text = {
-                "Spend {C:money}$#1#{} dollars to create",
-                "a random duplicate of a {C:attention}Joker",
-                "or a {C:tarot}Consumable{} you currently have.",
+                "Takes {C:money}$#1#{} to create",
+                "a copy of one a random {C:attention}Joker{}",
+                "or {C:tarot}Consumable{} at the end of a shop",
+                "Price increases by {C:money}$2{} every activation",
                 "{C:inactive}(Must have room){}"
 
             }
