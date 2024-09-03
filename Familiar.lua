@@ -70,7 +70,7 @@ function create_consumable(card_type,tag,messae,extra, thing1, thing2)
     end)}))
 end
 
-local function create_joker(card_type,tag,message,extra, rarity)
+function create_joker(card_type,tag,message,extra, rarity)
     extra=extra or {}
     
     G.GAME.joker_buffer = G.GAME.joker_buffer + 1
