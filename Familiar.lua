@@ -605,7 +605,7 @@ SMODS.Atlas { key = 'Enhancers', path = 'EnhancersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'SuitEffects', path = 'Double_Suit_CardsFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Suits', path = '8BitDeckFam.png', px = 71, py = 95 }
 --SMODS.Atlas { key = 'SuitsHc', path = '8BitDeckFam_opt2.png', px = 71, py = 95 }
-SMODS.Atlas { key = 'UI', path = 'ui_assets.png', px = 34, py = 34 }
+--SMODS.Atlas { key = 'UI', path = 'ui_assets.png', px = 34, py = 34 }
 --SMODS.Atlas { key = 'UIHc', path = 'ui_assets_opt2.png', px = 34, py = 34 }
 SMODS.Atlas { key = 'Booster', path = 'BoostersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Tags', path = 'TagsFam.png', px = 34, py = 34 }
