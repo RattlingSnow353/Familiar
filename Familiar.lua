@@ -597,13 +597,11 @@ fam_msgs_chips = {
 	{string = "#@"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1,1) or 'D'), colour = G.C.BLUE},
 }
 
--- Make sure to comment out any textures that aren't in the game yet you silly - humplydinkle
-
 SMODS.Atlas { key = 'Joker', path = 'JokersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Consumables', path = 'TarotsFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Enhancers', path = 'EnhancersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'SuitEffects', path = 'Double_Suit_CardsFam.png', px = 71, py = 95 }
-SMODS.Atlas { key = 'Suits', path = '8BitDeckFam.png', px = 71, py = 95 }
+--SMODS.Atlas { key = 'Suits', path = '8BitDeckFam.png', px = 71, py = 95 }
 --SMODS.Atlas { key = 'SuitsHc', path = '8BitDeckFam_opt2.png', px = 71, py = 95 }
 --SMODS.Atlas { key = 'UI', path = 'ui_assets.png', px = 34, py = 34 }
 --SMODS.Atlas { key = 'UIHc', path = 'ui_assets_opt2.png', px = 34, py = 34 }
@@ -616,12 +614,12 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
     SMODS.Atlas { key = 'cardsleeves', path = 'CardSleevesFam.png', px = 71, py = 95}
 end
 
-local lc = loc_colour
-function loc_colour(_c, _default)
-    if not G.ARGS.LOC_COLOURS then lc() end
-    G.ARGS.LOC_COLOURS.web = HEX("55d2be") 
-    return lc(_c, _default)
-end
+--local lc = loc_colour
+--function loc_colour(_c, _default)
+--    if not G.ARGS.LOC_COLOURS then lc() end
+--    G.ARGS.LOC_COLOURS.web = HEX("55d2be") 
+--    return lc(_c, _default)
+--end
 
 local folders = NFS.getDirectoryItems(mod_path.."Items")
 local folders2 = NFS.getDirectoryItems(mod_path.."Items/Consumable Types")
@@ -662,34 +660,36 @@ for _, folder in ipairs(folders) do
             end
         end
     elseif folder == "Cross Mod Content" then
-        for _, folder3 in ipairs(folders3) do
-            local files = NFS.getDirectoryItems(mod_path.."Items/Cross Mod Content/"..folder3)
-            for _, file in ipairs(files) do
-                local f, err = SMODS.load_file("Items/"..file)
-                if not err then
-                    local curr_obj = f()
-                    if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
+        if (SMODS.Mods["CardSleeves"] or {}).can_load then
+            for _, folder3 in ipairs(folders3) do
+                local files = NFS.getDirectoryItems(mod_path.."Items/Cross Mod Content/"..folder3)
+                for _, file in ipairs(files) do
+                    local f, err = SMODS.load_file("Items/"..file)
+                    if not err then
+                        local curr_obj = f()
+                        if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
+                    end
                 end
-            end
-            for _, file in ipairs(files) do
-                print("Loading file "..file)
-                local f, err = SMODS.load_file("Items/Cross Mod Content/"..folder3.."/"..file)
-                if err then print("Error loading file: "..err) else
-                    local curr_obj = f()
-                    if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
-                    if Familiar_config[curr_obj.name] then
-                        if curr_obj.init then curr_obj:init() end
-                        if not curr_obj.items then
-                            print("Warning: "..file.." has no items")
-                        else
-                            for _, item in ipairs(curr_obj.items) do
-                                item.discovered = true
-                                if SMODS[item.object_type] then
-                                    SMODS[item.object_type](item)
-                                elseif CardSleeves[item.object_type] then
-                                    CardSleeves[item.object_type](item)
-                                else
-                                    print("Error loading item "..item.key.." of unknown type "..item.object_type)
+                for _, file in ipairs(files) do
+                    print("Loading file "..file)
+                    local f, err = SMODS.load_file("Items/Cross Mod Content/"..folder3.."/"..file)
+                    if err then print("Error loading file: "..err) else
+                        local curr_obj = f()
+                        if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
+                        if Familiar_config[curr_obj.name] then
+                            if curr_obj.init then curr_obj:init() end
+                            if not curr_obj.items then
+                                print("Warning: "..file.." has no items")
+                            else
+                                for _, item in ipairs(curr_obj.items) do
+                                    item.discovered = true
+                                    if SMODS[item.object_type] then
+                                        SMODS[item.object_type](item)
+                                    elseif CardSleeves[item.object_type] then
+                                        CardSleeves[item.object_type](item)
+                                    else
+                                        print("Error loading item "..item.key.." of unknown type "..item.object_type)
+                                    end
                                 end
                             end
                         end
