@@ -1,4 +1,4 @@
-local dry-erase_board = {
+local dryerase_board = {
     object_type = "Joker",
     key = 'dry-erase_board',
     config = {
@@ -23,20 +23,22 @@ local dry-erase_board = {
         return { vars = { card.ability.extra.fam_x_chips } }
     end,
     calculate = function(self, card, context)
-        local red_suits, all_cards = 0, 0
-        for k, v in ipairs(G.hand.cards) do
-            all_cards = all_cards + 1
-            if v:is_suit('Hearts', nil, true) or v:is_suit('Diamonds', nil, true) then
-                red_suits = red_suits + 1
+        if context.scoring_hand then
+            local red_suits, all_cards = 0, 0
+            for _, v in pairs(context.scoring_hand) do
+                all_cards = all_cards + 1
+                if v:is_suit('Hearts', nil, true) or v:is_suit('Diamonds', nil, true) then
+                    red_suits = red_suits + 1
+                end
             end
-        end
-        if context.joker_main and red_suits == all_cards then
-            return {
-                message = "X"..number_format(card.ability.extra.fam_x_chips),
-                fam_Xchip_mod = card.ability.extra.fam_x_chips,
-                colour = G.C.CHIPS
-            }
+            if context.joker_main and red_suits == all_cards then
+                return {
+                    message = "X"..number_format(card.ability.extra.fam_x_chips),
+                    fam_Xchip_mod = card.ability.extra.fam_x_chips,
+                    colour = G.C.CHIPS
+                }
+            end
         end
     end
 }
-return {name = "Jokers", items = {dry-erase_board}}
+return {name = "Jokers", items = {dryerase_board}}
