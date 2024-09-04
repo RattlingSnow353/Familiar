@@ -3,7 +3,7 @@
 --- MOD_ID: familiar
 --- MOD_AUTHOR: [RattlingSnow353]
 --- MOD_DESCRIPTION: Adds different variations to everything in-game
---- BADGE_COLOUR: cecf4b
+--- BADGE_COLOUR: 63e19a
 --- DISPLAY_NAME: Familiar
 --- VERSION: 0.1.0
 --- PREFIX: fam
@@ -12,6 +12,7 @@
 ------------MOD CODE ------------------------- 
 
 local mod_path = ''..SMODS.current_mod.path
+Familiar_config = SMODS.current_mod.config
 
 -- You're not supposed to be here
 function Card:get_suit()
@@ -104,6 +105,7 @@ function create_joker(card_type,tag,message,extra, rarity)
         return true
     end)}))
 end
+
 local Backapply_to_runRef = Back.apply_to_run
 function Back.apply_to_run(self)
     Backapply_to_runRef(self)
@@ -139,7 +141,7 @@ SMODS.current_mod.credits_tab = function()
             {n = G.UIT.T, config = { text = "Art for The Broken, The Harlot, Mesmer, Joey. J. Jester, Joyful Jester,", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
         }},
         {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
-            {n = G.UIT.T, config = { text = "Sapphire Seal, Con Man, Thinktank, Merry Andy's Deck", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
+            {n = G.UIT.T, config = { text = "Sapphire Seal, Con Man, Thinktank, Merry Andy's Deck, (Webs, Digits, Arms, and Bottles Suits)", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
         }},
         {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
             {n = G.UIT.T, config = { text = "Code for Merry Andy's Deck", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
@@ -155,6 +157,14 @@ SMODS.current_mod.credits_tab = function()
         {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
             {n = G.UIT.T, config = { text = "by: ", scale = 0.5, colour = G.C.UI.TEXT_LIGHT}},
             {n = G.UIT.T, config = { text = "luigicat11", scale = 0.5, colour = G.C.GREEN}},
+        }},
+
+        {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
+            {n = G.UIT.T, config = { text = "Art for (Webs, Digits, Arms, and Bottles) Faces ", scale = 0.35, colour = G.C.UI.TEXT_LIGHT}},
+        }},
+        {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
+            {n = G.UIT.T, config = { text = "by: ", scale = 0.5, colour = G.C.UI.TEXT_LIGHT}},
+            {n = G.UIT.T, config = { text = "hedera0489", scale = 0.5, colour = G.C.GREEN}},
         }},
 
         {n = G.UIT.R, config = {align = "cm", padding = 0.05}, nodes = {
@@ -438,6 +448,132 @@ function SMODS.current_mod.process_loc_text()
     G.localization.misc.labels.unstable = "Unstable"
 end
 
+local set_spritesref = Card.set_sprites
+function Card:set_sprites(_center, _front)
+    set_spritesref(self, _center, _front);
+    if _center and _center.fifth_layer then
+        if _center and _center.set == 'tekana' then
+            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
+            self.children.floating_sprite4.role.draw_major = self
+            self.children.floating_sprite4.states.hover.can = false
+            self.children.floating_sprite4.states.click.can = false
+        else
+            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
+            self.children.floating_sprite4.role.draw_major = self
+            self.children.floating_sprite4.states.hover.can = false
+            self.children.floating_sprite4.states.click.can = false
+        end
+    end
+    if _center and _center.fouth_layer then
+        if _center and _center.set == 'tekana' then
+            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
+            self.children.floating_sprite3.role.draw_major = self
+            self.children.floating_sprite3.states.hover.can = false
+            self.children.floating_sprite3.states.click.can = false
+        else
+            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
+            self.children.floating_sprite3.role.draw_major = self
+            self.children.floating_sprite3.states.hover.can = false
+            self.children.floating_sprite3.states.click.can = false
+        end
+    end
+    if _center and _center.third_layer then
+        if _center and _center.set == 'tekana' then
+            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
+            self.children.floating_sprite2.role.draw_major = self
+            self.children.floating_sprite2.states.hover.can = false
+            self.children.floating_sprite2.states.click.can = false
+        else
+            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
+            self.children.floating_sprite2.role.draw_major = self
+            self.children.floating_sprite2.states.hover.can = false
+            self.children.floating_sprite2.states.click.can = false
+        end
+    end
+end
+
+--SMODS.Shader {
+--    key = 'statics', 
+--    path = 'statics.fs'
+--}
+
+function tekana_shut_down(self, _center, _front)
+    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+        self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.soul_pos)
+        self.children.floating_sprite2.role.draw_major = self
+        self.children.floating_sprite2.states.hover.can = false
+        self.children.floating_sprite2.states.click.can = false
+        self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.soul_pos)
+        self.children.floating_sprite4.role.draw_major = self
+        self.children.floating_sprite4.states.hover.can = false
+        self.children.floating_sprite4.states.click.can = false
+    return true end }))
+    G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        blockable = false,
+        delay =  0.5,
+        func = (function() 
+        self:remove()
+        local card = create_card("tekana",G.consumeables, nil, nil, true, nil, nil, nil)
+        G.consumeables:emplace(card)
+        return true end)
+    })) 
+end
+
+function gltich(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
+    local dissolve_time = 0.7 * (dissolve_time_fac or 1)
+    self.dissolve = 0
+    self.dissolve_colours = dissolve_colours or {G.C.BLACK, G.C.ORANGE, G.C.RED, G.C.GOLD, G.C.JOKER_GREY}
+    if not no_juice then self:juice_up() end
+
+    local childParts = Particles(0, 0, 0, 0, {
+        timer_type = 'TOTAL',
+        timer = 0.01 * dissolve_time,
+        scale = 0.1,
+        speed = 2,
+        lifespan = 0.7 * dissolve_time,
+        attach = self,
+        colours = self.dissolve_colours,
+        fill = true
+    })
+
+    G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        blockable = false,
+        delay = 0.7 * dissolve_time,
+        func = function()
+            childParts:fade(0.3 * dissolve_time)
+            return true
+        end
+    }))
+
+    if not silent then
+        G.E_MANAGER:add_event(Event({
+            blockable = false,
+            func = function()
+                play_sound('whoosh2', math.random() * 0.2 + 0.9, 0.5)
+                play_sound('crumple' .. math.random(1, 5), math.random() * 0.2 + 0.9, 0.5)
+                return true
+            end
+        }))
+    end
+
+    G.E_MANAGER:add_event(Event({
+        trigger = 'ease',
+        blockable = false,
+        ref_table = self,
+        ref_value = 'dissolve',
+        ease_to = 1,
+        delay = dissolve_time,
+        func = function(t)
+            local scale_mod = 0.07 * (1 - t)
+            local flicker = math.random() * (1 - t)
+            return t
+        end
+    }))
+
+end
+
 fam_operators = {"+"}
 fam_numbers = {"0","1","2","3","4","5","6","7","8","9","10","25","m","nan","nil","???"}
 fam_msgs_mult = {
@@ -465,253 +601,119 @@ SMODS.Atlas { key = 'Joker', path = 'JokersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Consumables', path = 'TarotsFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Enhancers', path = 'EnhancersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'SuitEffects', path = 'Double_Suit_CardsFam.png', px = 71, py = 95 }
+SMODS.Atlas { key = 'Suits', path = '8BitDeckFam.png', px = 71, py = 95 }
+SMODS.Atlas { key = 'SuitsHc', path = '8BitDeckFam_opt2.png', px = 71, py = 95 }
+SMODS.Atlas { key = 'UI', path = 'ui_assets.png', px = 34, py = 34 }
+SMODS.Atlas { key = 'UIHc', path = 'ui_assets_opt2.png', px = 34, py = 34 }
 SMODS.Atlas { key = 'Booster', path = 'BoostersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Tags', path = 'TagsFam.png', px = 34, py = 34 }
 SMODS.Atlas { key = 'Stickers', path = 'StickersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Voucher', path = 'VouchersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'modicon', path = 'ModIcon.png', px = 18, py = 18 }
-
-
-
-SMODS.ConsumableType { 
-    key = 'Familiar_Tarots',
-    collection_rows = { 5,6 },
-    primary_colour = HEX("2e3530"),
-    secondary_colour = HEX("2e3530"),
-    loc_txt = {
-        collection = 'Fortune Cards',
-        name = 'Fortune',
-        label = 'Fortune',
-        undiscovered = {
-			name = "Not Discovered",
-			text = {
-				"Purchase or use",
-                "this card in an",
-                "unseeded run to",
-                "learn what it does"
-			},
-		},
-    },
-}
-SMODS.UndiscoveredSprite {
-	key = "Familiar_Tarots",
-	atlas = "Consumables",
-	pos = {
-		x = 6,
-		y = 2,
-	}
-}
-
-SMODS.ConsumableType { 
-    key = 'Familiar_Planets',
-    collection_rows = { 6,6 },
-    primary_colour = HEX("675baa"),
-    secondary_colour = HEX("675baa"),
-    loc_txt = {
-        collection = 'Sacred Cards',
-        name = 'Sacred',
-        label = 'Sacred',
-        undiscovered = {
-			name = "Not Discovered",
-			text = {
-				"Purchase or use",
-                "this card in an",
-                "unseeded run to",
-                "learn what it does"
-			},
-		},
-    },
-}
-SMODS.UndiscoveredSprite {
-	key = "Familiar_Planets",
-	atlas = "Consumables",
-	pos = {
-		x = 7,
-		y = 2,
-	}
-}
-
-SMODS.ConsumableType { 
-    key = 'Familiar_Spectrals',
-    collection_rows = { 4,5 },
-    primary_colour = HEX("e16363"),
-    secondary_colour = HEX("e16363"),
-    shop_rate = 0,
-    loc_txt = {
-        collection = 'Memento Cards',
-        name = 'Mementos',
-        label = 'Mementos',
-        undiscovered = {
-			name = "Not Discovered",
-			text = {
-				"Purchase or use",
-                "this card in an",
-                "unseeded run to",
-                "learn what it does"
-			},
-		},
-    },
-}
-SMODS.UndiscoveredSprite {
-	key = "Familiar_Spectrals",
-	atlas = "Consumables",
-	pos = {
-		x = 5,
-		y = 2,
-	}
-}
-
---SMODS.ConsumableType { 
---    key = 'tekana',
---    collection_rows = { 5,6 },
---    primary_colour = HEX("2e3530"),
---    secondary_colour = HEX("2e3530"),
---    loc_txt = {
---        collection = 'Tekana Cards',
---        name = 'Tekana',
---        label = 'Tekana',
---        undiscovered = {
---			name = "Not Discovered",
---			text = {
---				"Purchase or use",
---                "this card in an",
---                "unseeded run to",
---                "learn what it does"
---			},
---		},
---    },
---}
---SMODS.UndiscoveredSprite {
---	key = "tekana",
---	atlas = "Consumables",
---	pos = {
---		x = 6,
---		y = 2,
---	}
---}
-
---- MOD SUPPORT
-
--- CardSleeves Support
 if (SMODS.Mods["CardSleeves"] or {}).can_load then
     SMODS.Atlas { key = 'cardsleeves', path = 'CardSleevesFam.png', px = 71, py = 95}
-    --Amythest Sleeve
-    CardSleeves.Sleeve {
-        key = 'amythestsleeve',
-        name = 'Amythest Sleeve',
-        atlas = 'cardsleeves',
-        pos = {x = 0, y = 0},
-        config = {
-            hand_size = 5
-        },
-        loc_vars = function(self)
-            return { vars = {self.config.hand_size} }
-        end,
-        loc_txt = {
-            name = "Amythest Sleeve",
-            text = {
-                "{C:attention}+5{} hand size"
-            }
-        }
-    }
-    -- Ruby Sleeve
-    CardSleeves.Sleeve {
-        key = 'rubysleeve',
-        name = 'Ruby Sleeve',
-        atlas = 'cardsleeves',
-        pos = {x = 2, y = 0},
-        config = {
-        },
-        loc_vars = function(self)
-        self.config = {consumables = { 'c_fam_playback', 'c_fam_playback' }, discards = 2}
-        end,
-        loc_txt = {
-            name = "Ruby Sleeve",
-            text = {
-                "Start with {C:attention}2 copies{} of Playback,",
-                "{C:red}+2{} discards every round.",
-            }
-        }
-    }
-
-    --Silver Sleeve (AKA CBT)
-    CardSleeves.Sleeve {
-        key = 'silversleeve',
-        name = 'Silver Sleeve',
-        atlas = 'cardsleeves',
-        pos = {x = 3, y = 0},
-        config = {
-            joker_slot = 2,
-            hands = -1,
-            discards = -1,
-        },
-        loc_vars = function(self)
-            return {
-                vars = {
-                    self.config.joker_slot,
-                    -self.config.hands,
-                    -self.config.discards
-                }
-            }
-        end,
-        loc_txt = {
-            name = "Silver Sleeve",
-            text = {
-                "{C:attention}+2{} joker slots,",
-                "{C:blue}-1{} hand every round,",
-                "{C:red}-1{} discard every round",
-            }
-        }
-    }
-
-
-    --Topaz Sleeve
-    CardSleeves.Sleeve {
-        key = 'topaz',
-        name = 'Topaz Sleeve',
-        atlas = 'cardsleeves',
-        pos = {x = 1, y = 0},
-        config = {
-            hands = 1,
-            discards = 1,
-        },
-        loc_vars = function(self)
-            return {
-                vars = {
-                    self.config.hands,
-                    self.config.discards
-                }
-            }
-        end,
-        loc_txt = {
-            name = "Topaz Sleeve",
-            text = {
-                "{C:blue}+1{} hand every round,",
-                "{C:red}+1{} discard every round",
-            }
-        }
-    }
 end
 
+local lc = loc_colour
+function loc_colour(_c, _default)
+    if not G.ARGS.LOC_COLOURS then lc() end
+    G.ARGS.LOC_COLOURS.web = HEX("55d2be") 
+    return lc(_c, _default)
+end
 
-
-
-
---- FILE LOADING
 local folders = NFS.getDirectoryItems(mod_path.."Items")
 local folders2 = NFS.getDirectoryItems(mod_path.."Items/Consumable Types")
+local folders3 = NFS.getDirectoryItems(mod_path.."Items/Cross Mod Content")
 for _, folder in ipairs(folders) do
     if folder == "Consumable Types" then
         for _, folder2 in ipairs(folders2) do
             local files = NFS.getDirectoryItems(mod_path.."Items/Consumable Types/"..folder2)
             for _, file in ipairs(files) do
+                local f, err = SMODS.load_file("Items/"..file)
+                if not err then
+                    local curr_obj = f()
+                    if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
+                end
+            end
+            for _, file in ipairs(files) do
                 print("Loading file "..file)
                 local f, err = SMODS.load_file("Items/Consumable Types/"..folder2.."/"..file)
                 if err then print("Error loading file: "..err) else
                     local curr_obj = f()
+                    if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
+                    if Familiar_config[curr_obj.name] then
+                        if curr_obj.init then curr_obj:init() end
+                        if not curr_obj.items then
+                            print("Warning: "..file.." has no items")
+                        else
+                            for _, item in ipairs(curr_obj.items) do
+                                item.discovered = true
+                                if SMODS[item.object_type] then
+                                    SMODS[item.object_type](item)
+                                else
+                                    print("Error loading item "..item.key.." of unknown type "..item.object_type)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    elseif folder == "Cross Mod Content" then
+        for _, folder3 in ipairs(folders3) do
+            local files = NFS.getDirectoryItems(mod_path.."Items/Cross Mod Content/"..folder3)
+            for _, file in ipairs(files) do
+                local f, err = SMODS.load_file("Items/"..file)
+                if not err then
+                    local curr_obj = f()
+                    if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
+                end
+            end
+            for _, file in ipairs(files) do
+                print("Loading file "..file)
+                local f, err = SMODS.load_file("Items/Cross Mod Content/"..folder3.."/"..file)
+                if err then print("Error loading file: "..err) else
+                    local curr_obj = f()
+                    if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
+                    if Familiar_config[curr_obj.name] then
+                        if curr_obj.init then curr_obj:init() end
+                        if not curr_obj.items then
+                            print("Warning: "..file.." has no items")
+                        else
+                            for _, item in ipairs(curr_obj.items) do
+                                item.discovered = true
+                                if SMODS[item.object_type] then
+                                    SMODS[item.object_type](item)
+                                elseif CardSleeves[item.object_type] then
+                                    CardSleeves[item.object_type](item)
+                                else
+                                    print("Error loading item "..item.key.." of unknown type "..item.object_type)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    else
+        local files = NFS.getDirectoryItems(mod_path.."Items/"..folder)
+        for _, file in ipairs(files) do
+            local f, err = SMODS.load_file("Items/"..file)
+            if not err then
+                local curr_obj = f()
+                if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
+            end
+        end
+        for _, file in ipairs(files) do
+            print("Loading file "..file)
+            local f, err = SMODS.load_file("Items/"..folder.."/"..file)
+            if err then print("Error loading file: "..err) else
+                local curr_obj = f()
+                if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
+                if Familiar_config[curr_obj.name] then
                     if curr_obj.init then curr_obj:init() end
                     if not curr_obj.items then
-                        print("Warning: "..file.." has no items")
+                    print("Warning: "..file.." has no items")
                     else
                         for _, item in ipairs(curr_obj.items) do
                             item.discovered = true
@@ -725,30 +727,86 @@ for _, folder in ipairs(folders) do
                 end
             end
         end
-    else
-        local files = NFS.getDirectoryItems(mod_path.."Items/"..folder)
-        for _, file in ipairs(files) do
-            print("Loading file "..file)
-            local f, err = SMODS.load_file("Items/"..folder.."/"..file)
-            if err then print("Error loading file: "..err) else
-                local curr_obj = f()
-                if curr_obj.init then curr_obj:init() end
-                if not curr_obj.items then
-                print("Warning: "..file.." has no items")
-                else
-                    for _, item in ipairs(curr_obj.items) do
-                        item.discovered = true
-                        if SMODS[item.object_type] then
-                            SMODS[item.object_type](item)
-                        else
-                            print("Error loading item "..item.key.." of unknown type "..item.object_type)
-                        end
+    end
+end
+
+if not SpectralPack then
+    SpectralPack = {}
+    local ct = create_tabs
+    function create_tabs(args)
+        if args and args.tab_h == 7.05 then
+            args.tabs[#args.tabs+1] = {
+                label = "Spectral Pack",
+                tab_definition_function = function() return {
+                    n = G.UIT.ROOT,
+                    config = {
+                        emboss = 0.05,
+                        minh = 6,
+                        r = 0.1,
+                        minw = 10,
+                        align = "cm",
+                        padding = 0.2,
+                        colour = G.C.BLACK
+                    },
+                    nodes = SpectralPack
+                } end
+            }
+        end
+        return ct(args)
+    end
+  end
+  SpectralPack[#SpectralPack+1] = UIBox_button{ label = {"Familiar"}, button = "familiarMenu", colour = HEX("63e19a"), minw = 5, minh = 0.7, scale = 0.6}
+  local familiarTabs = {
+    {
+        label = "Features",
+        chosen = true,
+        tab_definition_function = function()
+            fam_nodes = {{n=G.UIT.R, config={align = "cm"}, nodes={
+                {n=G.UIT.O, config={object = DynaText({string = "Select features to enable (applies on game restart):", colours = {G.C.WHITE}, shadow = true, scale = 0.4})}},
+              }}}
+            left_settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
+            right_settings = {n=G.UIT.C, config={align = "tl", padding = 0.05}, nodes={}}
+            for k, _ in pairs(Familiar_config) do
+                if k ~= "Familiar" then
+                    if #right_settings.nodes < #left_settings.nodes then
+                        right_settings.nodes[# right_settings.nodes+1] = create_toggle({label = k, ref_table = Familiar_config, ref_value = k})
+                    else
+                        left_settings.nodes[#left_settings.nodes+1] = create_toggle({label = k, ref_table = Familiar_config, ref_value = k})
                     end
                 end
             end
+            config = {n=G.UIT.R, config={align = "tm", padding = 0}, nodes={left_settings,right_settings}}
+            fam_nodes[#fam_nodes+1] = config
+            return {
+            n = G.UIT.ROOT,
+            config = {
+                emboss = 0.05,
+                minh = 6,
+                r = 0.1,
+                minw = 10,
+                align = "cm",
+                padding = 0.2,
+                colour = G.C.BLACK
+            },
+            nodes = fam_nodes
+        }
         end
-    end
-end
+    },
+}
+  G.FUNCS.familiarMenu = function(e)
+    local tabs = create_tabs({
+        snap_to_nav = true,
+        tabs = familiarTabs})
+    G.FUNCS.overlay_menu{
+            definition = create_UIBox_generic_options({
+                back_func = "options",
+                contents = {tabs}
+            }),
+        config = {offset = {x=0,y=10}}
+    }
+  end
+
+SMODS.current_mod.extra_tabs = function() return familiarTabs end
 
 
 ----------------------------------------------
