@@ -2,7 +2,7 @@ local archibald = {
     object_type = "Joker",
     key = 'archibald',
     config = {
-        extra = { money = 50, current_money = 0},
+        extra = { money = 25, current_money = 0},
     },
     atlas = 'Joker',
     pos = { x = 7, y = 8 },
