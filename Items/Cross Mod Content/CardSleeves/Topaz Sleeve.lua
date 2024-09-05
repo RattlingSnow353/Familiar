@@ -8,12 +8,14 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
         config = {
             hands = 1,
             discards = 1,
+            hand_size = -2
         },
         loc_vars = function(self)
             return {
                 vars = {
                     self.config.hands,
                     self.config.discards
+                    -self.config.hand_size
                 }
             }
         end,
@@ -22,6 +24,7 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
             text = {
                 "{C:blue}+1{} hand every round,",
                 "{C:red}+1{} discard every round",
+                "{C:attention}-2{} hand size",
             }
         }
     }
