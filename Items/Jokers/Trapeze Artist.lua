@@ -2,7 +2,7 @@ local trapeze_artist = {
     object_type = "Joker",
     key = 'trapeze_artist',
     config = {
-        extra = { fam_x_chips = 3 },
+        extra = { fam_x_chips = 2 },
     },
     atlas = 'Joker',
     pos = { x = 2, y = 1 },
