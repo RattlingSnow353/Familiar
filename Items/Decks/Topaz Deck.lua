@@ -7,6 +7,7 @@ local topaz_deck = {
             text = {
                 "{C:blue}+1{} hand every round,",
                 "{C:red}+1{} discard every round",
+                "{C:attention}-2{} hand size",
             }
         }
     },
@@ -21,6 +22,8 @@ local topaz_deck = {
 
                 G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
                 G.GAME.round_resets.hands = G.GAME.round_resets.hands + 1
+
+                G.hand:change_size(-2)
                 return true
             end
         }))

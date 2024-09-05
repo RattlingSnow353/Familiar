@@ -6,26 +6,27 @@ local spare_deck = {
             name = "Spare Deck",
             text = {
                 "Start run with",
-                "{C:attention}no Aces{}, {C:attention}doubled Jacks",
-                "{C:attention}no queen's{}, and {C:attention}doubled 7's",
-                "{C:blue}+1{} hand, and {C:money}$13",
+                "Some {C:attention}missing{} cards, ",
+                "Some {C:attention}addition{} cards",
+                "{C:blue}+1{} hand, and some {C:money}Money",
             }
         }
     },
     atlas = 'Enhancers',
     pos = { x = 3, y = 3 },
-    config = { dollars = 9 },
+    config = { dollars = math.random(-2,7) },
     apply = function(self, card, context)
         G.E_MANAGER:add_event(Event({ 
             func = function()
+                self.config.dollars = math.random(-2,7)
                 G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
                 G.GAME.round_resets.hands = G.GAME.round_resets.hands + 1
                 G.GAME.starting_params.dollars = self.config.dollars
                 for i = #G.playing_cards, 1, -1 do 
-                    if G.playing_cards[i]:get_id() == 14 or G.playing_cards[i]:get_id() == 12 then
+                    if pseudorandom('nocards') < 1/4 then
                         G.playing_cards[i]:start_dissolve(nil, true)
                     end
-                    if G.playing_cards[i]:get_id() == 11 or G.playing_cards[i]:get_id() == 7 then
+                    if pseudorandom('nocards') < 1/16 then
                         G.playing_card = (G.playing_card and G.playing_card + 1) or 1
                         local _card = copy_card(G.playing_cards[i], nil, nil, G.playing_card)
                         _card:add_to_deck()

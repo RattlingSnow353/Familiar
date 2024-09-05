@@ -5,8 +5,10 @@ local ruby_deck = {
         ['en-us'] = {
             name = "Ruby Deck",
             text = {
-                "Start with {C:attention}2 copies{} of Playback,",
+                "Start with {C:attention}2 copies{}",
+                "of Playback,",
                 "{C:red}+2{} discards every round.",
+                "{C:blue}-1{} hand every round,"
             }
         }
     },
@@ -18,6 +20,9 @@ local ruby_deck = {
             func = function()
                 G.GAME.round_resets.discards = G.GAME.round_resets.discards + 2
                 ease_discard(2)
+
+                G.GAME.starting_params.hands = G.GAME.starting_params.hands - 1
+                G.GAME.round_resets.hands = G.GAME.round_resets.hands - 1
                 
                 create_consumable("Familiar_Spectrals", nil, nil, {forced_key='c_fam_playback'})
                 create_consumable("Familiar_Spectrals", nil, nil, {forced_key='c_fam_playback'})
