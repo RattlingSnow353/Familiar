@@ -15,4 +15,4 @@ local speckled_deck = {
     pos = { x = 5, y = 2 },
     config = {fam_force_edition = "fam_speckle"},
 }
-return {name = "Decks", items = {speckled_deck}}
+return {name = {"Editions", "Decks"}, items = {speckled_deck}}

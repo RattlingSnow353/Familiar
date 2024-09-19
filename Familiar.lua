@@ -448,131 +448,54 @@ function SMODS.current_mod.process_loc_text()
     G.localization.misc.labels.unstable = "Unstable"
 end
 
-local set_spritesref = Card.set_sprites
-function Card:set_sprites(_center, _front)
-    set_spritesref(self, _center, _front);
-    if _center and _center.fifth_layer then
-        if _center and _center.set == 'tekana' then
-            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
-            self.children.floating_sprite4.role.draw_major = self
-            self.children.floating_sprite4.states.hover.can = false
-            self.children.floating_sprite4.states.click.can = false
-        else
-            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
-            self.children.floating_sprite4.role.draw_major = self
-            self.children.floating_sprite4.states.hover.can = false
-            self.children.floating_sprite4.states.click.can = false
-        end
-    end
-    if _center and _center.fouth_layer then
-        if _center and _center.set == 'tekana' then
-            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
-            self.children.floating_sprite3.role.draw_major = self
-            self.children.floating_sprite3.states.hover.can = false
-            self.children.floating_sprite3.states.click.can = false
-        else
-            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
-            self.children.floating_sprite3.role.draw_major = self
-            self.children.floating_sprite3.states.hover.can = false
-            self.children.floating_sprite3.states.click.can = false
-        end
-    end
-    if _center and _center.third_layer then
-        if _center and _center.set == 'tekana' then
-            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
-            self.children.floating_sprite2.role.draw_major = self
-            self.children.floating_sprite2.states.hover.can = false
-            self.children.floating_sprite2.states.click.can = false
-        else
-            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
-            self.children.floating_sprite2.role.draw_major = self
-            self.children.floating_sprite2.states.hover.can = false
-            self.children.floating_sprite2.states.click.can = false
-        end
-    end
-end
+--local set_spritesref = Card.set_sprites
+--function Card:set_sprites(_center, _front)
+--    set_spritesref(self, _center, _front);
+--    if _center and _center.fifth_layer then
+--        if _center and _center.set == 'tekana' then
+--            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
+--            self.children.floating_sprite4.role.draw_major = self
+--            self.children.floating_sprite4.states.hover.can = false
+--            self.children.floating_sprite4.states.click.can = false
+--        else
+--            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
+--            self.children.floating_sprite4.role.draw_major = self
+--            self.children.floating_sprite4.states.hover.can = false
+--            self.children.floating_sprite4.states.click.can = false
+--        end
+--    end
+--    if _center and _center.fouth_layer then
+--        if _center and _center.set == 'tekana' then
+--            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
+--            self.children.floating_sprite3.role.draw_major = self
+--            self.children.floating_sprite3.states.hover.can = false
+--            self.children.floating_sprite3.states.click.can = false
+--        else
+--            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
+--            self.children.floating_sprite3.role.draw_major = self
+--            self.children.floating_sprite3.states.hover.can = false
+--            self.children.floating_sprite3.states.click.can = false
+--        end
+--    end
+--    if _center and _center.third_layer then
+--        if _center and _center.set == 'tekana' then
+--            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
+--            self.children.floating_sprite2.role.draw_major = self
+--            self.children.floating_sprite2.states.hover.can = false
+--            self.children.floating_sprite2.states.click.can = false
+--        else
+--            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
+--            self.children.floating_sprite2.role.draw_major = self
+--            self.children.floating_sprite2.states.hover.can = false
+--            self.children.floating_sprite2.states.click.can = false
+--        end
+--    end
+--end
 
 --SMODS.Shader {
 --    key = 'statics', 
 --    path = 'statics.fs'
 --}
-
-function tekana_shut_down(self, _center, _front)
-    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-        self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.soul_pos)
-        self.children.floating_sprite2.role.draw_major = self
-        self.children.floating_sprite2.states.hover.can = false
-        self.children.floating_sprite2.states.click.can = false
-        self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.soul_pos)
-        self.children.floating_sprite4.role.draw_major = self
-        self.children.floating_sprite4.states.hover.can = false
-        self.children.floating_sprite4.states.click.can = false
-    return true end }))
-    G.E_MANAGER:add_event(Event({
-        trigger = 'after',
-        blockable = false,
-        delay =  0.5,
-        func = (function() 
-        self:remove()
-        local card = create_card("tekana",G.consumeables, nil, nil, true, nil, nil, nil)
-        G.consumeables:emplace(card)
-        return true end)
-    })) 
-end
-
-function gltich(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
-    local dissolve_time = 0.7 * (dissolve_time_fac or 1)
-    self.dissolve = 0
-    self.dissolve_colours = dissolve_colours or {G.C.BLACK, G.C.ORANGE, G.C.RED, G.C.GOLD, G.C.JOKER_GREY}
-    if not no_juice then self:juice_up() end
-
-    local childParts = Particles(0, 0, 0, 0, {
-        timer_type = 'TOTAL',
-        timer = 0.01 * dissolve_time,
-        scale = 0.1,
-        speed = 2,
-        lifespan = 0.7 * dissolve_time,
-        attach = self,
-        colours = self.dissolve_colours,
-        fill = true
-    })
-
-    G.E_MANAGER:add_event(Event({
-        trigger = 'after',
-        blockable = false,
-        delay = 0.7 * dissolve_time,
-        func = function()
-            childParts:fade(0.3 * dissolve_time)
-            return true
-        end
-    }))
-
-    if not silent then
-        G.E_MANAGER:add_event(Event({
-            blockable = false,
-            func = function()
-                play_sound('whoosh2', math.random() * 0.2 + 0.9, 0.5)
-                play_sound('crumple' .. math.random(1, 5), math.random() * 0.2 + 0.9, 0.5)
-                return true
-            end
-        }))
-    end
-
-    G.E_MANAGER:add_event(Event({
-        trigger = 'ease',
-        blockable = false,
-        ref_table = self,
-        ref_value = 'dissolve',
-        ease_to = 1,
-        delay = dissolve_time,
-        func = function(t)
-            local scale_mod = 0.07 * (1 - t)
-            local flicker = math.random() * (1 - t)
-            return t
-        end
-    }))
-
-end
 
 fam_operators = {"+"}
 fam_numbers = {"0","1","2","3","4","5","6","7","8","9","10","25","m","nan","nil","???"}
@@ -624,109 +547,84 @@ end
 local folders = NFS.getDirectoryItems(mod_path.."Items")
 local folders2 = NFS.getDirectoryItems(mod_path.."Items/Consumable Types")
 local folders3 = NFS.getDirectoryItems(mod_path.."Items/Cross Mod Content")
+local function handle_name(curr_obj_name, Familiar_config)
+    if type(curr_obj_name) == "string" then
+        if Familiar_config[curr_obj_name] == nil then 
+            Familiar_config[curr_obj_name] = true 
+        end
+    elseif type(curr_obj_name) == "table" then
+        for _, name in ipairs(curr_obj_name) do
+            if Familiar_config[name] == nil then 
+                Familiar_config[name] = true 
+            end
+        end
+    end
+end
+local function load_items(curr_obj, Familiar_config)
+    handle_name(curr_obj.name, Familiar_config)
+
+    if Familiar_config[curr_obj.name] then
+        if curr_obj.init then curr_obj:init() end
+
+        if not curr_obj.items then
+            print("Warning: curr_obj has no items")
+        else
+            for _, item in ipairs(curr_obj.items) do
+                item.discovered = true
+                if SMODS[item.object_type] then
+                    SMODS[item.object_type](item)
+                elseif CardSleeves and CardSleeves[item.object_type] then
+                    CardSleeves[item.object_type](item)
+                else
+                    print("Error loading item "..item.key.." of unknown type "..item.object_type)
+                end
+            end
+        end
+    end
+end
 for _, folder in ipairs(folders) do
     if folder == "Consumable Types" then
         for _, folder2 in ipairs(folders2) do
             local files = NFS.getDirectoryItems(mod_path.."Items/Consumable Types/"..folder2)
+            
             for _, file in ipairs(files) do
-                local f, err = SMODS.load_file("Items/"..file)
-                if not err then
-                    local curr_obj = f()
-                    if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
-                end
-            end
-            for _, file in ipairs(files) do
-                print("Loading file "..file)
                 local f, err = SMODS.load_file("Items/Consumable Types/"..folder2.."/"..file)
-                if err then print("Error loading file: "..err) else
+                if err then
+                    print("Error loading file: "..err)
+                else
                     local curr_obj = f()
-                    if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
-                    if Familiar_config[curr_obj.name] then
-                        if curr_obj.init then curr_obj:init() end
-                        if not curr_obj.items then
-                            print("Warning: "..file.." has no items")
-                        else
-                            for _, item in ipairs(curr_obj.items) do
-                                item.discovered = true
-                                if SMODS[item.object_type] then
-                                    SMODS[item.object_type](item)
-                                else
-                                    print("Error loading item "..item.key.." of unknown type "..item.object_type)
-                                end
-                            end
-                        end
-                    end
+                    load_items(curr_obj, Familiar_config)
                 end
             end
         end
+
     elseif folder == "Cross Mod Content" then
         if (SMODS.Mods["CardSleeves"] or {}).can_load then
             for _, folder3 in ipairs(folders3) do
                 local files = NFS.getDirectoryItems(mod_path.."Items/Cross Mod Content/"..folder3)
+                
                 for _, file in ipairs(files) do
-                    local f, err = SMODS.load_file("Items/"..file)
-                    if not err then
-                        local curr_obj = f()
-                        if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
-                    end
-                end
-                for _, file in ipairs(files) do
-                    print("Loading file "..file)
                     local f, err = SMODS.load_file("Items/Cross Mod Content/"..folder3.."/"..file)
-                    if err then print("Error loading file: "..err) else
+                    if err then
+                        print("Error loading file: "..err)
+                    else
                         local curr_obj = f()
-                        if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
-                        if Familiar_config[curr_obj.name] then
-                            if curr_obj.init then curr_obj:init() end
-                            if not curr_obj.items then
-                                print("Warning: "..file.." has no items")
-                            else
-                                for _, item in ipairs(curr_obj.items) do
-                                    item.discovered = true
-                                    if SMODS[item.object_type] then
-                                        SMODS[item.object_type](item)
-                                    elseif CardSleeves[item.object_type] then
-                                        CardSleeves[item.object_type](item)
-                                    else
-                                        print("Error loading item "..item.key.." of unknown type "..item.object_type)
-                                    end
-                                end
-                            end
-                        end
+                        load_items(curr_obj, Familiar_config)
                     end
                 end
             end
         end
+
     else
         local files = NFS.getDirectoryItems(mod_path.."Items/"..folder)
+        
         for _, file in ipairs(files) do
-            local f, err = SMODS.load_file("Items/"..file)
-            if not err then
-                local curr_obj = f()
-                if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
-            end
-        end
-        for _, file in ipairs(files) do
-            print("Loading file "..file)
             local f, err = SMODS.load_file("Items/"..folder.."/"..file)
-            if err then print("Error loading file: "..err) else
+            if err then
+                print("Error loading file: "..err)
+            else
                 local curr_obj = f()
-                if Familiar_config[curr_obj.name] == nil then Familiar_config[curr_obj.name] = true end
-                if Familiar_config[curr_obj.name] then
-                    if curr_obj.init then curr_obj:init() end
-                    if not curr_obj.items then
-                    print("Warning: "..file.." has no items")
-                    else
-                        for _, item in ipairs(curr_obj.items) do
-                            item.discovered = true
-                            if SMODS[item.object_type] then
-                                SMODS[item.object_type](item)
-                            else
-                                print("Error loading item "..item.key.." of unknown type "..item.object_type)
-                            end
-                        end
-                    end
-                end
+                load_items(curr_obj, Familiar_config)
             end
         end
     end

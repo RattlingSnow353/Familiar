@@ -34,4 +34,4 @@ local gilded_seal = {
         end
     end
 }
-return {name = "Seals", items = {gilded_seal}}
+return {name = {"Seals", "Memento Cards"}, items = {gilded_seal}}

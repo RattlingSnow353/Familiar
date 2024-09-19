@@ -40,4 +40,4 @@ local playback = {
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2,func = function() G.hand:unhighlight_all(); return true end }))
     end,
 }
-return {name = "Memento Cards", items = {playback}}
+return {name = {"Seals", "Memento Cards"}, items = {playback}}

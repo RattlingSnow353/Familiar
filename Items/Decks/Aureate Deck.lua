@@ -15,4 +15,4 @@ local aureate_deck = {
     pos = { x = 5, y = 2 },
     config = {fam_force_edition = "fam_aureate"},
 }
-return {name = "Decks", items = {aureate_deck}}
+return {name = {"Editions", "Decks"}, items = {aureate_deck}}

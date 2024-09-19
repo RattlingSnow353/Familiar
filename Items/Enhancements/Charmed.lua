@@ -28,4 +28,4 @@ local charmed = {
         end
     end
 }
-return {name = "Enhancements", items = {charmed}}
+return {name = {"Fortune Cards", "Enhancements"}, items = {charmed}}
