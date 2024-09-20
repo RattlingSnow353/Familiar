@@ -79,4 +79,4 @@ local duality_deck = {
         }))
     end
 }
-return {name = "Decks", items = {duality_deck}}
+return {name = {"Decks", "Fortune Cards"}, items = {duality_deck}}
