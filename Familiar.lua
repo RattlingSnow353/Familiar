@@ -497,29 +497,6 @@ end
 --    path = 'statics.fs'
 --}
 
-fam_operators = {"+"}
-fam_numbers = {"0","1","2","3","4","5","6","7","8","9","10","25","m","nan","nil","???"}
-fam_msgs_mult = {
-	{string = 'rand()', colour = G.C.UI.TEXT_INACTIVE},
-	{string = 'Mult'},
-	{string = 'Mult'},
-    {string = 'Mult'},
-    {string = 'Mult'},
-    {string = 'Mult'},
-    {string = 'Mult'},
-	{string = "#@"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1,1) or 'D'), colour = G.C.RED},
-}
-fam_msgs_chips = {
-	{string = 'rand()', colour = G.C.UI.TEXT_INACTIVE},
-	{string = 'Chips'},
-	{string = 'Chips'},
-	{string = 'Chips'},
-    {string = 'Chips'},
-    {string = 'Chips'},
-    {string = 'Chips'},
-	{string = "#@"..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)..(G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.suit:sub(1,1) or 'D'), colour = G.C.BLUE},
-}
-
 SMODS.Atlas { key = 'Joker', path = 'JokersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Consumables', path = 'TarotsFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Enhancers', path = 'EnhancersFam.png', px = 71, py = 95 }
@@ -563,7 +540,18 @@ end
 local function load_items(curr_obj, Familiar_config)
     handle_name(curr_obj.name, Familiar_config)
 
-    if Familiar_config[curr_obj.name] then
+    local should_load = false
+    if type(curr_obj.name) == "string" then
+        should_load = Familiar_config[curr_obj.name]
+    elseif type(curr_obj.name) == "table" then
+        for _, name in ipairs(curr_obj.name) do
+            if Familiar_config[name] then
+                should_load = true
+                break
+            end
+        end
+    end
+    if should_load then
         if curr_obj.init then curr_obj:init() end
 
         if not curr_obj.items then

@@ -91,22 +91,6 @@ if effects[ii].fam_x_chips then
 	update_hand_text({delay = 0}, {chips = hand_chips})
 	card_eval_status_text(scoring_hand[i], 'fam_x_chips', effects[ii].fam_x_chips, percent)
 end
-if effects[ii].ranchips then
-	mod_percent = true
-	ranchips = math.random(effects[ii].cmin,effects[ii].cmax)
-	if effects[ii].card then juice_card(effects[ii].card) end
-	hand_chips = mod_chips(hand_chips + ranchips)
-	update_hand_text({delay = 0}, {chips = hand_chips})
-	card_eval_status_text(scoring_hand[i], 'ranchips', effects[ii].ranchips, percent)
-end
-if effects[ii].ranmult then
-	mod_percent = true
-	ranmult = math.random(effects[ii].mmin,effects[ii].mmax)
-	if effects[ii].card then juice_card(effects[ii].card) end
-	mult = mod_mult(mult + ranmult)
-	update_hand_text({delay = 0}, {mult = mult})
-	card_eval_status_text(scoring_hand[i], 'ranmult', effects[ii].ranmult, percent)
-end
 '''
 match_indent = true
 
@@ -127,24 +111,6 @@ if scoring_hand and scoring_hand[i] and scoring_hand[i].edition then
 		{message = 'X'.. edi.fam_x_chips ..' Chips',
 		edition = true,
 		fam_x_chips = true})
-	end
-	if edi.ranchips then
-		edi.ranchips = math.random(edi.cmin,edi.cmax)
-		hand_chips = mod_chips(hand_chips + edi.ranchips )
-		update_hand_text({delay = 0}, {chips = hand_chips})
-		card_eval_status_text(trg, 'extra', nil, percent, nil,
-		{message = '+'.. edi.ranchips ..' Chips',
-		edition = true,
-		ranchips = true})
-	end
-	if edi.ranmult then
-		edi.ranmult = math.random(edi.mmin,edi.mmax)
-		mult = mod_mult(mult + edi.ranmult )
-		update_hand_text({delay = 0}, {mult = mult})
-		card_eval_status_text(trg, 'extra', nil, percent, nil,
-		{message = '+'.. edi.ranmult ..' Mult',
-		edition = true,
-		ranmult = true})
 	end
 end
 '''
@@ -167,24 +133,6 @@ if G.jokers.cards and G.jokers.cards[i] and G.jokers.cards[i].edition then
 		edition = true,
 		fam_x_chips = true})
 	end
-	if edi.ranchips then
-		edi.ranchips = math.random(edi.cmin,edi.cmax)
-		hand_chips = mod_chips(hand_chips + edi.ranchips )
-		update_hand_text({delay = 0}, {chips = hand_chips})
-		card_eval_status_text(trg, 'extra', nil, percent, nil,
-		{message = '+'.. edi.ranchips ..' Chips',
-		edition = true,
-		ranchips = true})
-	end
-	if edi.ranmult then
-		edi.ranmult = math.random(edi.mmin,edi.mmax)
-		mult = mod_mult(mult + edi.ranmult )
-		update_hand_text({delay = 0}, {mult = mult})
-		card_eval_status_text(trg, 'extra', nil, percent, nil,
-		{message = '+'.. edi.ranmult ..' Mult',
-		edition = true,
-		ranmult = true})
-	end
 end
 '''
 
@@ -205,30 +153,6 @@ if G.play.cards[i].ability.suitless == true then
     if not inside then table.insert(pures, G.play.cards[i]) end
 end
 '''
-
-# Misprint-like description
-# [[patches]]
-# [patches.pattern]
-# target = "card.lua"
-# pattern = "if self.edition.type == 'negative' and self.ability.consumeable then"
-# position = "before"
-# payload = '''
-# if self.config.center == G.P_CENTERS.e_fam_speckle then
-# 	self.config.rantextnum = fam_numbers[math.random(1, 15)]
-# 	self.config.rantextnum2 = fam_numbers[math.random(1, 15)]
-#     main_start = {
-#         {n=G.UIT.O, config={object = DynaText({string = fam_operators, pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.30, scale = 0.32, min_cycle_time = 0})}},
-#         {n=G.UIT.O, config={object = DynaText({string = fam_numbers, colours = {G.C.MULT,},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.33, scale = 0.32, min_cycle_time = 0})}},
-#         {n=G.UIT.O, config={object = DynaText({string = fam_msgs_mult, colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.4011, scale = 0.32, min_cycle_time = 0})}},
-#     }
-# 	main_end = {
-#         {n=G.UIT.O, config={object = DynaText({string = fam_operators, colours = {G.C.CHIPS,}, pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.30, scale = 0.32, min_cycle_time = 0})}},
-#         {n=G.UIT.O, config={object = DynaText({string = fam_numbers, colours = {G.C.CHIPS,},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.33, scale = 0.32, min_cycle_time = 0})}},
-#         {n=G.UIT.O, config={object = DynaText({string = fam_msgs_chips, colours = {G.C.UI.TEXT_DARK},pop_in_rate = 9999999, silent = true, random_element = true, pop_delay = 0.4011, scale = 0.32, min_cycle_time = 0})}},
-#     }
-# end
-# '''
-# match_indent = true
 
 [[patches]]
 [patches.pattern]
@@ -272,19 +196,6 @@ match_indent = true
 # 	self.children.floating_sprite3:draw_shader('dissolve',0, nil, nil, self.children.center, 0.25*scale_mod, rotate_mod,nil, 0.1--[[ + 0.03*math.cos(1.8*G.TIMERS.REAL)--]],nil, 0.6)
 # 	self.children.floating_sprite3:draw_shader('dissolve', nil, nil, nil, self.children.center, 0.25*scale_mod, rotate_mod) 
 # 	self.children.floating_sprite4:draw_shader('hologram', nil, self.ARGS.send_to_shader, nil, self.children.center, 1*scale_mod, 0*rotate_mod)
-# '''
-# match_indent = true
-# 
-# [[patches]]
-# [patches.pattern]
-# target = "card.lua"
-# pattern = "if self.ability.name == 'Hologram' then"
-# position = "before"
-# payload = '''
-# if self.ability.set == 'tekana' then
-# 	local scale_mod = 0.07-- + 0.02*math.cos(1.8*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
-#     local rotate_mod = 0--0.05*math.cos(1.219*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
-# end
 # '''
 # match_indent = true
 # 
