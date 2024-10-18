@@ -245,14 +245,16 @@ function Card:get_id(base)
             end
         end
     end
-    for i = 1, #G.jokers.cards do
-        if G.jokers.cards[i].ability.name == "j_fam_smudged_jester" then
-            if id == 3 then
-                return 8
-            elseif id == 6 then
-                return 9
-            elseif id == 13 then
-                return 14
+    if G.jokers then
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i].ability.name == "j_fam_smudged_jester" then
+                if id == 3 then
+                    return 8
+                elseif id == 6 then
+                    return 9
+                elseif id == 13 then
+                    return 14
+                end
             end
         end
     end
@@ -319,7 +321,7 @@ end
 local is_faceref = Card.is_face
 function Card:is_face(from_boss)
     local ref=is_faceref(self)
-    if self.debuff and not from_boss then return end
+    if (self.debuff and not from_boss) or not G.jokers then return end
     local id = self:get_id()
     for i = 1, #G.jokers.cards do
         if G.jokers.cards[i].ability.name == "j_fam_prosopagnosia" then
