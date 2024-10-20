@@ -10,7 +10,7 @@ local sploosh = {
         ['en-us'] = {
             name = 'Sploosh',
             text = {
-                "Every {C:attention}In-hand{} card vaules",
+                "Every {C:attention}In-hand{} card values",
                 "counts in scoring",
             }
         }
