@@ -29,7 +29,7 @@ local vigor = {
             for j = 1, 3 do
                 G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function()
                     local card = G.hand.highlighted[i]
-                    local suit_prefix = string.sub(card.base.suit, 1, 1)..'_'
+                    local suit_prefix = SMODS.Suits[card.base.suit].card_key
                     local rank_suffix = card.base.id == 14 and 2 or math.min(card.base.id+1, 14)
                     if rank_suffix < 10 then rank_suffix = tostring(rank_suffix)
                     elseif rank_suffix == 10 then rank_suffix = 'T'
@@ -39,7 +39,7 @@ local vigor = {
                     elseif rank_suffix == 14 then rank_suffix = 'A'
                     end
                     card:juice_up(0.3, 0.5)
-                    card:set_base(G.P_CARDS[suit_prefix..rank_suffix])
+                    card:set_base(G.P_CARDS[suit_prefix .. '_' .. rank_suffix])
                 return true end }))
             end
         end  
