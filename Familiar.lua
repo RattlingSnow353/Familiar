@@ -1,7 +1,7 @@
 --- STEAMODDED HEADER
 --- MOD_NAME: Familiar
 --- MOD_ID: familiar
---- MOD_AUTHOR: [RattlingSnow353]
+--- MOD_AUTHOR: [RattlingSnow353, Humplydinkle]
 --- MOD_DESCRIPTION: Adds different variations to everything in-game
 --- BADGE_COLOUR: 63e19a
 --- DISPLAY_NAME: Familiar
