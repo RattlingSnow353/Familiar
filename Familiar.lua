@@ -5,8 +5,9 @@
 --- MOD_DESCRIPTION: Adds different variations to everything in-game
 --- BADGE_COLOUR: 63e19a
 --- DISPLAY_NAME: Familiar
---- VERSION: 0.1.5
+--- VERSION: 0.1.6
 --- PREFIX: fam
+--- DEPENDENCIES: [Talisman>=2.0.0-beta8]
 
 ---------------------------------------------- 
 ------------MOD CODE ------------------------- 
@@ -429,12 +430,6 @@ function copy_card(other, new_card, card_scale, playing_card, strip_edition)
     return new_card
 end
 
-function Card:get_chip_x_bonus()
-    if self.debuff then return 0 end
-    if self.ability.set == 'Joker' then return 0 end
-    if self.ability.fam_x_chips <= 1 then return 0 end
-    return self.ability.fam_x_chips
-end
 
 local card_drawref = Card.draw
 function Card:draw(layer)

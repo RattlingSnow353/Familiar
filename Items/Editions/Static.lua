@@ -15,9 +15,9 @@ local statics = {
             "{X:chips,C:white} X#1# {} Chips"
         }
     },
-    config = { fam_x_chips = 1.5 },
+    config = { x_chips = 1.5 },
     loc_vars = function(self, info_queue)
-        return {vars = {self.config.fam_x_chips}}
+        return {vars = {self.config.x_chips}}
     end,
 
     in_shop = true,
