@@ -4,12 +4,12 @@
 
 ## Optional mods (not required, but you're missing out on content):
 
-*(CardSleeves)[https://github.com/larswijn/CardSleeves]*
+*[CardSleeves](https://github.com/larswijn/CardSleeves)*
 
 ## Currently Adds:
 ### 29 Jokers
 ### 10 Decks
-### 7 (Card Sleeves)[https://github.com/larswijn/CardSleeves]
+### 7 [Card Sleeves](https://github.com/larswijn/CardSleeves)
 ### 2 Vouchers (Tickets)
 ### 3 new consumable types
 > **16 Fortune Cards** <br>
