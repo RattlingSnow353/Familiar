@@ -5,7 +5,22 @@
 (Cardsleeves)[https://github.com/larswijn/CardSleeves]
 
 
-Adds multiple variations of everything into the game.  
+# FAMILIAR: THE ALTERNATE EXPANSION
+
+## Currently Adds:
+### 29 Jokers
+### 10 Decks
+### 7 (Card Sleeves)[https://github.com/larswijn/CardSleeves]
+### 2 Vouchers (Tickets)
+### 3 new consumable types
+**16 Fortune Cards**
+**10 Ethereal Cards**
+**12 Sacred Cards**
+### 4 new enhancements
+### 4 Seals
+### 3 Ediitons
+### 9 Booster Packs
+### 6 Tags 
         
 ![familiar](https://github.com/user-attachments/assets/58498779-25bc-4128-8a35-6cda1e17a795)
 Adds 29 Jokers, 3 New Consumable Types (16 Fortune Cards, 12 Sacred Cards, 5 Memento Cards), 2 Vouchers, 6 Tags, 9 Booster Packs, 10 Decks, 4 Seals, 3 Editions, and 4 Enhancements so far
