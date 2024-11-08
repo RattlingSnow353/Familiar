@@ -4,7 +4,7 @@ local pickpocket = {
     loc_txt = {
         name = 'Pickpocket',
         text = {
-            "{C:blue}+#1#{} hand size",
+            "{C:attention}+#1#{} hand size",
             "{C:mult}-#2#{} discards",
         }
     },
