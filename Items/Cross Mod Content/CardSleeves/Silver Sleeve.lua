@@ -4,7 +4,7 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
         key = 'silversleeve',
         name = 'Silver Sleeve',
         atlas = 'cardsleeves',
-        pos = {x = 3, y = 0},
+        pos = {x = 0, y = 1},
         config = {
             joker_slot = 2,
             hands = -1,

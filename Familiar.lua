@@ -5,7 +5,7 @@
 --- MOD_DESCRIPTION: Adds different variations to everything in-game
 --- BADGE_COLOUR: 63e19a
 --- DISPLAY_NAME: Familiar
---- VERSION: 0.1.0
+--- VERSION: 0.1.5
 --- PREFIX: fam
 
 ---------------------------------------------- 
