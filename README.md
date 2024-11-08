@@ -12,9 +12,9 @@
 ### 7 (Card Sleeves)[https://github.com/larswijn/CardSleeves]
 ### 2 Vouchers (Tickets)
 ### 3 new consumable types
-**16 Fortune Cards**
-**10 Ethereal Cards**
-**12 Sacred Cards**
+> **16 Fortune Cards** <br>
+> **10 Ethereal Cards** <br>
+> **12 Sacred Cards**
 ### 4 new enhancements
 ### 4 Seals
 ### 3 Ediitons
