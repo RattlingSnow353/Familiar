@@ -4,7 +4,7 @@
 
 ## Optional mods (not required, but you're missing out on content):
 
-*(CardSleeves)[https://github.com/larswijn/CardSleeves])*
+*(CardSleeves)[https://github.com/larswijn/CardSleeves]*
 
 ## Currently Adds:
 ### 29 Jokers
