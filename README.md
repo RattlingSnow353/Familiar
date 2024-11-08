@@ -1,11 +1,10 @@
-# 0.1.6 AND HIGHER REQURIES THE LATEST BETA OF [TALISMAN](https://github.com/MathIsFun0/Talisman)
+# FAMILIAR: THE ALTERNATE EXPANSION
+
+## 0.1.6 AND HIGHER REQURIES THE LATEST BETA OF [TALISMAN](https://github.com/MathIsFun0/Talisman)
 
 ## Optional mods (not required, but you're missing out on content):
 
-(Cardsleeves)[https://github.com/larswijn/CardSleeves]
-
-
-# FAMILIAR: THE ALTERNATE EXPANSION
+*(CardSleeves)[https://github.com/larswijn/CardSleeves])*
 
 ## Currently Adds:
 ### 29 Jokers
@@ -23,9 +22,6 @@
 ### 6 Tags 
         
 ![familiar](https://github.com/user-attachments/assets/58498779-25bc-4128-8a35-6cda1e17a795)
-Adds 29 Jokers, 3 New Consumable Types (16 Fortune Cards, 12 Sacred Cards, 5 Memento Cards), 2 Vouchers, 6 Tags, 9 Booster Packs, 10 Decks, 4 Seals, 3 Editions, and 4 Enhancements so far
-
-![familiarrelease](https://github.com/user-attachments/assets/f7a77274-b4f5-438c-a64c-8c6f08ea7d36)
 
 Gameplay:
 ![Screenshot_20240829_204620](https://github.com/user-attachments/assets/a628f3cd-1728-40fc-8f07-663fcc3046cf)
