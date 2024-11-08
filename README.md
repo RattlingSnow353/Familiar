@@ -1,4 +1,5 @@
 # FAMILIAR: THE ALTERNATE EXPANSION
+![familiar](https://github.com/user-attachments/assets/58498779-25bc-4128-8a35-6cda1e17a795)
 
 ## 0.1.6 AND HIGHER REQURIES THE LATEST BETA OF [TALISMAN](https://github.com/MathIsFun0/Talisman)
 
@@ -21,7 +22,6 @@
 ### 9 Booster Packs
 ### 6 Tags 
         
-![familiar](https://github.com/user-attachments/assets/58498779-25bc-4128-8a35-6cda1e17a795)
 
 Gameplay:
 ![Screenshot_20240829_204620](https://github.com/user-attachments/assets/a628f3cd-1728-40fc-8f07-663fcc3046cf)
