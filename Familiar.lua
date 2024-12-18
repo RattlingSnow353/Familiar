@@ -230,8 +230,7 @@ end
 
 local get_idref = Card.get_id
 function Card:get_id(base)
-    get_idref(self, base)
-    local id = self.base.id
+    local id = get_idref(self)
     if base == true then
         return self.base.id
     end
@@ -259,7 +258,7 @@ function Card:get_id(base)
             end
         end
     end
-    return self.base.id
+    return id
 end
 
 local is_suitref = Card.is_suit
