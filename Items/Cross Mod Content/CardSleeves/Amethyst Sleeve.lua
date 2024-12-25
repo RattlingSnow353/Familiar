@@ -18,5 +18,5 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
             }
         }
     }
-    return {name = "Cross Mod", items = {amethystsleeve}}
+    return {name = "Card Sleeves", items = {amethystsleeve}}
 end
