@@ -16,11 +16,11 @@ local Zeus_tag = {
         info_queue[#info_queue+1] = {set = "Other", key = "p_fam_pantheon_booster_3", vars = {2, 5}}
         return {vars = {}}
     end,
-    apply = function(self, _context)
+    apply = function(self, tag, _context)
         if _context.type == 'new_blind_choice' then 
-            local lock = self.ID
+            local lock = tag.ID
             G.CONTROLLER.locks[lock] = true
-            self:yep('+', G.C.BLACK,function() 
+            tag:yep('+', G.C.BLACK,function() 
                 local key = 'p_fam_pantheon_booster_3'
                 local card = Card(G.play.T.x + G.play.T.w/2 - G.CARD_W*1.27/2,
                 G.play.T.y + G.play.T.h/2-G.CARD_H*1.27/2, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})
@@ -31,7 +31,7 @@ local Zeus_tag = {
                 G.CONTROLLER.locks[lock] = nil
                 return true
             end)
-            self.triggered = true
+            tag.triggered = true
             return true
         end
     end,
