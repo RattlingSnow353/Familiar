@@ -5,7 +5,7 @@
 --- MOD_DESCRIPTION: Adds different variations to everything in-game
 --- BADGE_COLOUR: 63e19a
 --- DISPLAY_NAME: Familiar
---- VERSION: 0.1.6
+--- VERSION: 0.1.7
 --- PREFIX: fam
 --- DEPENDENCIES: [Talisman>=2.0.0-beta8]
 
