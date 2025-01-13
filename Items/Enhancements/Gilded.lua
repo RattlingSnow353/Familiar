@@ -16,5 +16,22 @@ local gilded = {
     loc_vars = function(self, info_queue, card)
         return { vars = {self.config.extra.p_dollars, self.config.extra.dollar_mod, self.config.extra.left } }
     end,
+    calculate = function(self, card, context)
+        if not context.repetition_only and context.end_of_round == true then
+            if self.config.extra.p_dollars <= 0 then
+                card_eval_status_text(self, 'extra', nil, nil, nil, {message = 'Delamination!', colour = G.C.UI.TEXT_INACTIVE})
+                card:set_ability(G.P_CENTERS.m_steel, nil, true)
+                card:juice_up()
+                return
+            else
+                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('$')..self.config.extra.p_dollars, colour = G.C.MONEY})
+                ease_dollars(self.config.extra.p_dollars)
+                self.config.extra.p_dollars = self.config.extra.p_dollars - self.config.extra.dollar_mod
+                self.config.extra.left = self.config.extra.left - 1
+                card:juice_up()
+                return
+            end
+        end
+    end
 }
 return {name = {"Fortune Cards", "Enhancements"}, items = {gilded}}
