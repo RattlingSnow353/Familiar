@@ -5,7 +5,7 @@ local professor =  {
        extra = 1
     },
     atlas = 'Joker',
-    pos = { x = 0, y = 0 },
+    pos = { x = 2, y = 2},
     loc_txt = {
         ['en-us'] = {
             name = 'Professor',

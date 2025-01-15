@@ -5,7 +5,7 @@ local bard =  {
         extra =  {hand_size = -2, discard_size = 1},
     },
     atlas = 'Joker',
-    pos = { x = 0, y = 0 },
+    pos = { x = 0, y = 2 },
     loc_txt = {
         ['en-us'] = {
             name = 'Bard',
