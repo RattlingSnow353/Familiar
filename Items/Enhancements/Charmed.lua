@@ -17,10 +17,10 @@ local charmed = {
         return { vars = {self.config.extra.odds, self.config.extra.chips, '' .. (G.GAME and G.GAME.probabilities.normal or 1), self.config.extra.odds*2} }
     end,
     calculate = function(self, card, context)
-        if context.cardarea == G.play and not context.repetition then
+        if context.main_scoring and context.cardarea == G.play then
             if pseudorandom('charmed_prob') < G.GAME.probabilities.normal/self.config.extra.odds then
                 delay(0.2)
-                SMODS.eval_this(card, {chip_mod = card.ability.extra.chips, message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}}} )
+                SMODS.calculate_effect({chip_mod = card.ability.extra.chips, message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}}}, card)
             end
             if pseudorandom('charmed_prob') < G.GAME.probabilities.normal/(self.config.extra.odds*2) then
                 create_consumable("Tarot")
