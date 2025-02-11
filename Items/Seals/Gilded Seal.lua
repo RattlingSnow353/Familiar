@@ -19,7 +19,7 @@ local gilded_seal = {
         return { vars = { self.config.extra.odds, '' .. (G.GAME and G.GAME.probabilities.normal or 1) } }
     end,
     calculate = function(self, card, context)
-        if context.cardarea == G.play and not context.repetition and not context.blueprint then
+        if context.main_scoring and context.cardarea == G.play then
             if pseudorandom('gilded_seal') < G.GAME.probabilities.normal/4 then
                 ease_dollars(-5)
                 G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) - 5

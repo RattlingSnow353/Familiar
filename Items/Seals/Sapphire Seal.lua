@@ -20,20 +20,13 @@ local sapphire_seal = {
         return { vars = {  } }
     end,
     calculate = function(self, card, context)
-        if not context.repetition_only and context.end_of_round == true then
-            G.E_MANAGER:add_event(Event({
-                trigger = "before",
-                func = function()
-                    if G.consumeables.config.card_limit > #G.consumeables.cards then
-                        local card = create_card("Spectral", nil, nil, nil),
-                        card:add_to_deck()
-                        G.consumeables:emplace(card)
-                        card:juice_up()
-                    end
-                    return true
-                end,
-            }))
-            return true
+        if context.end_of_round and context.cardarea == G.hand then
+            if G.consumeables.config.card_limit > #G.consumeables.cards then
+                local card = create_card("Spectral", nil, nil, nil),
+                card:add_to_deck()
+                G.consumeables:emplace(card)
+                card:juice_up()
+            end
         end
     end,
 }

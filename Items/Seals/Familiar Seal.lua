@@ -20,8 +20,13 @@ local familiar_seal = {
     end,
     calculate = function(self, card, context)
         if context.discard and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-            if #context.full_hand == 1 then
-                create_consumable("Familiar_Tarots")
+            if context.full_hand then
+                if #context.full_hand == 1 then
+                    local card = create_card("Familiar_Tarots", nil, nil, nil),
+                    card:add_to_deck()
+                    G.consumeables:emplace(card)
+                    card:juice_up()
+                end
             end
         end
     end
