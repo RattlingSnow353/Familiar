@@ -12,15 +12,11 @@ local speckle = {
         name = "Speckled",
         label = "Speckled",
         text = {
-            "{C:blue}+rand(){} Chips",
-            "{C:red}+rand(){} Mult"
+            "{C:blue}+null{} Chips",
+            "{C:red}+null{} Mult"
         }
     },
     config = { mmin = 1, mmax = 5, cmin = 1, cmax = 25 },
-    loc_vars = function(self, info_queue)
-        return {vars = {}}
-    end,
-
     in_shop = true,
     weight = 12,
     extra_cost = 2,
@@ -28,9 +24,12 @@ local speckle = {
         return G.GAME.edition_rate * self.weight
     end,
     calculate = function(self, card, context)
-		if context.edition_main and context.edition_val then
-			context.edition_val.mult_mod = pseudorandom("cry_noisy_mult", self.config.mmin, self.config.mmax)
-			context.edition_val.chip_mod = pseudorandom("cry_noisy_chips", self.config.cmin, self.config.cmax)
+		if context.post_joker or (context.main_scoring and context.cardarea == G.play) then
+			-- good enough
+			return {
+				chips = math.random(G.P_CENTERS.e_fam_speckle.config.cmin, G.P_CENTERS.e_fam_speckle.config.cmax),
+				mult = math.random(G.P_CENTERS.e_fam_speckle.config.mmin, G.P_CENTERS.e_fam_speckle.config.mmax)
+			}
 		end
 	end,
 	generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)

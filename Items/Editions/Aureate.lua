@@ -15,11 +15,17 @@ local aureate = {
             "{X:money,C:white}$#1#{}"
         }
     },
-    config = { p_dollars = 3 },
+    config = { dollars = 3 },
     loc_vars = function(self, info_queue)
-        return {vars = {self.config.p_dollars}}
+        return {vars = {self.config.dollars}}
     end,
-
+    calculate = function(self, card, context)
+		if context.post_joker or (context.main_scoring and context.cardarea == G.play) then
+			return {
+                dollars = G.P_CENTERS.e_fam_aureate.config.dollars,
+            }
+		end
+	end,
     in_shop = true,
     weight = 15,
     extra_cost = 2,
