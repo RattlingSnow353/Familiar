@@ -2,7 +2,7 @@ local con_man = {
     object_type = "Joker",
     key = 'con_man',
     config = {
-        extra = { money = 10 },
+        money = 10,
     },
     atlas = 'Joker',
     pos = { x = 6, y = 5 },
@@ -23,11 +23,11 @@ local con_man = {
     cost = 7,
     blueprint_compat = false,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.money } }
+        return { vars = { card.ability.money } }
     end,
     calculate = function(self, card, context)
-        if context.ending_shop then
-            if G.GAME.dollars >= card.ability.extra.money then
+        if context.ending_shop and not context.blueprint then
+            if G.GAME.dollars >= to_big(0) then
                 local random = math.random(1,2)
                 if #G.consumeables.cards == 0 then
                     random = 2
@@ -48,10 +48,13 @@ local con_man = {
                             card:add_to_deck()
                             G.consumeables:emplace(card) 
                             return true
-                        end}))
-                        card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
-                    ease_dollars(-card.ability.extra.money)
-                    card.ability.extra.money = card.ability.extra.money + 2
+                        end
+                    }))
+                    card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
+                    card.ability.money = card.ability.money + 2
+                    return {
+                        dollars = -(card.ability.money-2),
+                    }
                 end
                 if #G.jokers.cards > 0 and #G.jokers.cards < G.jokers.config.card_limit and random == 2 then
                     local eligibleJokers = {}
@@ -66,10 +69,13 @@ local con_man = {
                             card:add_to_deck()
                             G.jokers:emplace(card) 
                             return true
-                        end}))
-                        card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
-                    ease_dollars(-card.ability.extra.money)
-                    card.ability.extra.money = card.ability.extra.money + 2
+                        end
+                    }))
+                    card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
+                    card.ability.money = card.ability.money + 2
+                    return {
+                        dollars = -(card.ability.money-2),
+                    }
                 end
             end
         end
