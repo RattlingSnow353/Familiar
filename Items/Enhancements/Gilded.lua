@@ -12,26 +12,30 @@ local gilded = {
     },
     pos = {x = 6, y = 0}, 
     atlas = 'Enhancers', 
-    config = { extra = {p_dollars = 5, dollar_mod = 1, left = 5} },
+    config = { p_dollars = 5, dollar_mod = 1, left = 5 },
     loc_vars = function(self, info_queue, card)
-        return { vars = {self.config.extra.p_dollars, self.config.extra.dollar_mod, self.config.extra.left } }
+        return { vars = {card.ability.p_dollars, card.ability.dollar_mod, card.ability.left } }
     end,
     calculate = function(self, card, context)
-        if not context.repetition_only and context.end_of_round == true then
-            if self.config.extra.p_dollars <= 0 then
-                card_eval_status_text(self, 'extra', nil, nil, nil, {message = 'Delamination!', colour = G.C.UI.TEXT_INACTIVE})
-                card:set_ability(G.P_CENTERS.m_steel, nil, true)
-                card:juice_up()
-                return
+        if context.playing_card_end_of_round and context.cardarea == G.hand then
+            local dollar = card.ability.p_dollars
+            card.ability.p_dollars = dollar - card.ability.dollar_mod
+            card.ability.left = card.ability.left - 1
+            card:juice_up()
+            if dollar <= 1 then
+                return{
+                    dollars = 1,
+                    card_eval_status_text(card, 'extra', nil, nil, nil, {message = 'Delamination!', colour = G.C.UI.TEXT_INACTIVE}),
+                    card:set_ability(G.P_CENTERS.m_steel, nil, true),
+                    card:juice_up()
+                }
             else
-                card_eval_status_text(self, 'extra', nil, nil, nil, {message = localize('$')..self.config.extra.p_dollars, colour = G.C.MONEY})
-                ease_dollars(self.config.extra.p_dollars)
-                self.config.extra.p_dollars = self.config.extra.p_dollars - self.config.extra.dollar_mod
-                self.config.extra.left = self.config.extra.left - 1
-                card:juice_up()
-                return
+                return{
+                    dollars = dollar
+                }
             end
         end
-    end
+    end,
+
 }
 return {name = {"Fortune Cards", "Enhancements"}, items = {gilded}}
