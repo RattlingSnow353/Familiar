@@ -48,21 +48,19 @@ local neopolitan = {
                 card.ability.extra.mult = card.ability.extra.mult - card.ability.extra.mult_mod
                 card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
                 card.ability.extra.money = card.ability.extra.money - card.ability.extra.money_mod
-                if 1 == 1 then
-                    return {
-                        message = localize{type='variable',key='a_mult_minus',vars={card.ability.extra.mult_mod}},
-                        colour = G.C.RED,
-                    }
-                end
-                if 1 == 1 then
-                    return {
-                        message = localize{type='variable',key='a_chips_minus',vars={card.ability.extra.chip_mod}},
-                        colour = G.C.CHIPS,
-                    }
-                end
                 return {
-                    message = localize('-$')..card.ability.extra.money_mod,
-                    colour = G.C.MONEY
+                    extra = {
+                        card_eval_status_text(card, 'extra', nil, nil, nil, {
+                            message = '-$'..number_format(card.ability.extra.money_mod),
+                            colour = G.C.MONEY,
+                        }),
+                        card_eval_status_text(card, 'extra', nil, nil, nil, {
+                            message = localize{type='variable',key='a_chips_minus',vars={card.ability.extra.chip_mod}},
+                            colour = G.C.CHIPS,
+                        })
+                    },
+                    message = localize{type='variable',key='a_mult_minus',vars={card.ability.extra.mult_mod}},
+                    colour = G.C.RED
                 }
             end
         end
@@ -75,11 +73,7 @@ local neopolitan = {
                     card = self,
                 }
             elseif pseudorandom('neopolitan') < G.GAME.probabilities.normal/2 then
-                ease_dollars(card.ability.extra.money)
-                G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.money
-                G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
                 return {
-                    message = localize('$')..card.ability.extra.money,
                     dollars = card.ability.extra.money,
                     colour = G.C.MONEY
                 }

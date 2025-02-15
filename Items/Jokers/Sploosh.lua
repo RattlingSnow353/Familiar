@@ -29,7 +29,7 @@ local sploosh = {
         end
         if context.individual and context.cardarea == G.hand and not context.end_of_round then
             local id = context.other_card:get_chip_bonus()
-            SMODS.eval_this(context.other_card, {chip_mod = id, message = localize{type='variable',key='a_chips',vars={id}}} )
+            SMODS.calculate_effect({chip_mod = id, message = localize{type='variable',key='a_chips',vars={id}}}, context.other_card)
         end
         if context.joker_main then
             for i = 1, #G.hand.cards do

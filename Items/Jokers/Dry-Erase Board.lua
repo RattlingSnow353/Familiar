@@ -1,8 +1,8 @@
 local dryerase_board = {
     object_type = "Joker",
-    key = 'dry-erase_board',
+    key = 'dry_erase_board',
     config = {
-        extra = { x_chips = 3 },
+        Xchips = 3,
     },
     atlas = 'Joker',
     pos = { x = 2, y = 10 },
@@ -20,7 +20,7 @@ local dryerase_board = {
     cost = 8,
     blueprint_compat = true,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips } }
+        return { vars = { card.ability.Xchips } }
     end,
     calculate = function(self, card, context)
         if context.scoring_hand then
@@ -32,11 +32,15 @@ local dryerase_board = {
                 end
             end
             if context.joker_main and red_suits == all_cards then
-                return {
-                    message = "X"..number_format(card.ability.extra.x_chips),
-                    Xchip_mod = card.ability.extra.x_chips,
-                    colour = G.C.CHIPS
-                }
+                return {func = function()
+                local xchips = G.P_CENTERS.j_fam_dry_erase_board.config.Xchips
+                hand_chips = mod_chips(hand_chips * xchips)
+                update_hand_text({delay = 0}, {chips = hand_chips})
+                card_eval_status_text(card, 'extra', nil, percent, nil,
+                {message = 'X'..number_format(xchips),
+                edition = true,
+                x_chips = true})
+            end}
             end
         end
     end
