@@ -348,7 +348,7 @@ function set_sprite_suits(card, juice)
 	local id = card:get_id(true)
     local position = id - 2
     -- Sets Sprites
-    if not card.ability.suitless == true then
+    if not card.ability.suitless == true then -- what does this accpolish again?
         if card.base.suit == 'Diamonds' and card.ability.is_diamond == true and card.ability.is_club ~= true and card.ability.is_spade ~= true and card.ability.is_heart ~= true then
             return
         elseif card.base.suit == 'Clubs' and card.ability.is_club == true and card.ability.is_diamond ~= true and card.ability.is_spade ~= true and card.ability.is_heart ~= true then
@@ -367,41 +367,33 @@ function set_sprite_suits(card, juice)
             return
         end
     end
-    if juice == true then
-        G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.4,func = function()
-            card:flip()
-        return true end }))
-    end
     card.children.front.atlas = G.ASSET_ATLAS['fam_SuitEffects']
     if card.ability.suitless == true then
         card.children.front:set_sprite_pos({x = position, y = 11})
+        return
     end
-    if (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and not card.ability.is_club == true and not card.ability.is_diamond == true then -- Hearts & Spades
-        card.children.front:set_sprite_pos({x = position, y = 2})
-    elseif (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Clubs' or card.ability.is_club == true ) and not card.ability.is_spade == true and not card.ability.is_diamond == true then -- Hearts & Clubs
-        card.children.front:set_sprite_pos({x = position, y = 0})
+    if (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) then -- Clubs, Diamonds, Spades, & Hearts
+        card.children.front:set_sprite_pos({x = position, y = 10})
     elseif (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and (card.base.suit == 'Clubs' or card.ability.is_club == true ) and not card.ability.is_diamond == true then -- Hearts, Clubs, & Spades
         card.children.front:set_sprite_pos({x = position, y = 7})
     elseif (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and not card.ability.is_club == true then -- Hearts, Diamonds, & Spades
         card.children.front:set_sprite_pos({x = position, y = 8})
-    elseif (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and not card.ability.is_heart == true and not card.ability.is_diamond == true then -- Clubs & Spades
-        card.children.front:set_sprite_pos({x = position, y = 4})
     elseif (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and not card.ability.is_heart == true then -- Clubs, Diamonds, & Spades
         card.children.front:set_sprite_pos({x = position, y = 9})
     elseif (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and not card.ability.is_spade == true then -- Clubs, Diamonds, & Hearts
         card.children.front:set_sprite_pos({x = position, y = 6})
+    elseif (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and not card.ability.is_heart == true and not card.ability.is_diamond == true then -- Clubs & Spades
+        card.children.front:set_sprite_pos({x = position, y = 4})
     elseif (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and not card.ability.is_club == true and not card.ability.is_heart == true then -- Diamonds & Spades
         card.children.front:set_sprite_pos({x = position, y = 5})
     elseif (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and not card.ability.is_club == true and not card.ability.is_spade == true then -- Diamonds & Hearts
         card.children.front:set_sprite_pos({x = position, y = 1})
     elseif (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and (card.base.suit == 'Clubs' or card.ability.is_club == true ) and not card.ability.is_heart == true and not card.ability.is_spade == true then -- Diamonds & Clubs
         card.children.front:set_sprite_pos({x = position, y = 3})
-    elseif (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) then -- Clubs, Diamonds, Spades, & Hearts
-        card.children.front:set_sprite_pos({x = position, y = 10})
-    end
-    if juice == true then
-        card:juice_up(0.3, 0.5)
-        card:flip()
+    elseif (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and not card.ability.is_club == true and not card.ability.is_diamond == true then -- Hearts & Spades
+        card.children.front:set_sprite_pos({x = position, y = 2})
+    elseif (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Clubs' or card.ability.is_club == true ) and not card.ability.is_spade == true and not card.ability.is_diamond == true then -- Hearts & Clubs
+        card.children.front:set_sprite_pos({x = position, y = 0})
     end
 end
 
@@ -430,7 +422,6 @@ function copy_card(other, new_card, card_scale, playing_card, strip_edition)
     return new_card
 end
 
-
 local card_drawref = Card.draw
 function Card:draw(layer)
     local card_drawref = card_drawref(self, layer)
@@ -441,7 +432,6 @@ function Card:draw(layer)
 end
 
 function SMODS.current_mod.process_loc_text()
-    G.localization.misc.v_dictionary.fam_penalty = "-#1# Chips"
     G.localization.misc.labels.unstable = "Unstable"
 end
 
