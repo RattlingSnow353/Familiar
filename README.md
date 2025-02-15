@@ -8,17 +8,17 @@
 *[CardSleeves](https://github.com/larswijn/CardSleeves)*
 
 ## Currently Adds:
-### 29 Jokers
+### 31 Jokers
 ### 10 Decks
 ### 7 [Card Sleeves](https://github.com/larswijn/CardSleeves)
 ### 2 Vouchers (Tickets)
 ### 3 new consumable types
 > **16 Fortune Cards** <br>
-> **10 Ethereal Cards** <br>
+> **5 Ethereal Cards** <br>
 > **12 Sacred Cards**
 ### 4 new enhancements
 ### 4 Seals
-### 3 Ediitons
+### 3 Editons
 ### 9 Booster Packs
 ### 6 Tags 
         
