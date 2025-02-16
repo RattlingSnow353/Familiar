@@ -7,7 +7,7 @@
 --- DISPLAY_NAME: Familiar
 --- VERSION: 0.1.7
 --- PREFIX: fam
---- DEPENDENCIES: [Talisman>=2.0.0-beta8]
+--- DEPENDENCIES: 
 --- PRIORITY: 1
 
 ---------------------------------------------- 
@@ -706,7 +706,7 @@ jester_table = {
     ["j_space"] = {},
     ["j_egg"] = {},
     ["j_burglar"] = {},
-    ["j_blackboard"] = {"j_fam_dry-erase_board"},
+    ["j_blackboard"] = {"j_fam_dry_erase_board"},
     ["j_runner"] = {},
     ["j_ice_cream"] = {"j_fam_neopolitan"},
     ["j_dna"] = {"j_fam_rna"},
@@ -759,7 +759,7 @@ jester_table = {
     ["j_trousers"] = {},
     ["j_ancient"] = {},
     ["j_ramen"] = {},
-    ["j_walkie_talkie"] = {},
+    ["j_walkie_talkie"] = {"j_fam_ham_radio"},
     ["j_selzer"] = {},
     ["j_castle"] = {},
     ["j_smiley"] = {},
