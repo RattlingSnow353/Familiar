@@ -7,7 +7,7 @@
 *[CardSleeves](https://github.com/larswijn/CardSleeves)*
 
 ## Currently Adds:
-### 33 Jokers
+### 34 Jokers
 ### 10 Decks
 ### 7 [Card Sleeves](https://github.com/larswijn/CardSleeves)
 ### 2 Vouchers (Tickets)
