@@ -1,7 +1,6 @@
 # FAMILIAR: THE ALTERNATE EXPANSION
 ![familiar](https://github.com/user-attachments/assets/58498779-25bc-4128-8a35-6cda1e17a795)
 
-## 0.1.6 AND HIGHER REQURIES THE LATEST BETA OF [TALISMAN](https://github.com/MathIsFun0/Talisman)
 
 ## Optional mods (not required, but you're missing out on content):
 
@@ -18,7 +17,7 @@
 > **12 Sacred Cards**
 ### 4 new enhancements
 ### 4 Seals
-### 3 Editons
+### 3 Editions
 ### 9 Booster Packs
 ### 6 Tags 
         
