@@ -20,7 +20,7 @@ local sapphire_seal = {
         return { vars = {  } }
     end,
     calculate = function(self, card, context)
-        if context.end_of_round and context.cardarea == G.hand then
+        if context.playing_card_end_of_round and context.cardarea == G.hand then
             if G.consumeables.config.card_limit > #G.consumeables.cards then
                 local card = create_card("Spectral", nil, nil, nil),
                 card:add_to_deck()
