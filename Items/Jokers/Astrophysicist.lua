@@ -19,6 +19,7 @@ local astrophysicist = {
     rarity = 2,
     cost = 6,
     blueprint_compat = true,
+    familiar = "j_cartomancer",
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

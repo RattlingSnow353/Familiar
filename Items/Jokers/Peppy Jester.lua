@@ -18,7 +18,9 @@ local peppy_jester = {
     },
     rarity = 1,
     cost = 4,
+    order = 7,
     blueprint_compat = true,
+    familiar = "j_zany",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.poker_hand, card.ability.money } }
     end,

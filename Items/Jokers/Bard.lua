@@ -19,6 +19,7 @@ local bard =  {
     rarity = 1,
     cost = 7,
     blueprint_compat = false,
+    familiar = "j_troubadour",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.hand_size, card.ability.extra.discard_size} }
     end,

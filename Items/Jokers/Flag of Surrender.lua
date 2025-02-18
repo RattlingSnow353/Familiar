@@ -19,6 +19,7 @@ local flag_of_surrender = {
     rarity = 1,
     cost = 5,
     blueprint_compat = true,
+    familiar = "j_banner",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult_mod } }
     end,

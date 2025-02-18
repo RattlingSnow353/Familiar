@@ -16,7 +16,9 @@ local joey_j_jester = {
     },
     rarity = 1,
     cost = 4,
+    order = 1,
     blueprint_compat = true,
+    familiar = "j_joker",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.Xchips } }
     end,

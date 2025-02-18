@@ -19,6 +19,7 @@ local dryerase_board = {
     rarity = 2,
     cost = 8,
     blueprint_compat = true,
+    familiar = "j_blackboard",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.Xchips } }
     end,

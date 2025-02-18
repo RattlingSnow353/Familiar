@@ -18,6 +18,7 @@ local sploosh = {
     rarity = 2,
     cost = 3,
     blueprint_compat = false,
+    familiar = "j_splash",
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

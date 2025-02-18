@@ -18,7 +18,9 @@ local joyful_jester = {
     },
     rarity = 1,
     cost = 4,
+    order = 6,
     blueprint_compat = true,
+    familiar = "j_jolly",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.poker_hand, card.ability.money } }
     end,

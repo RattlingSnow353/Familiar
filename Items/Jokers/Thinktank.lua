@@ -18,6 +18,7 @@ local thinktank = {
     rarity = 3,
     cost = 10,
     blueprint_compat = true,
+    familiar = "j_brainstorm",
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

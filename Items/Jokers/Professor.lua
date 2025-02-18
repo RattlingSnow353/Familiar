@@ -17,6 +17,7 @@ local professor =  {
     rarity = 1,
     cost = 7,
     blueprint_compat = false,
+    familiar = "j_drunkard",
     loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
 	end,

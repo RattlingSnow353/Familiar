@@ -19,6 +19,7 @@ local the_tetrad = {
     rarity = 3,
     cost = 8,
     blueprint_compat = true,
+    familiar = "j_family",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.Xchips, localize(card.ability.poker_hand, 'poker_hands') } }
     end,

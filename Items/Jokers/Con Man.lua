@@ -22,6 +22,7 @@ local con_man = {
     rarity = 3,
     cost = 7,
     blueprint_compat = false,
+    familiar = "j_ring_master",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.money } }
     end,

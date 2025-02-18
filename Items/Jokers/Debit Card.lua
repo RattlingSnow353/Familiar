@@ -20,6 +20,7 @@ local debit_card = {
     rarity = 2,
     cost = 1,
     blueprint_compat = false,
+    familiar = "j_credit_card",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.cash, card.ability.extra.interest } }
     end,

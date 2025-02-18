@@ -18,6 +18,7 @@ local sixers_scrapbook = {
     rarity = 3,
     cost = 8,
     blueprint_compat = false,
+    familiar = "j_four_fingers",
     loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.highlighted_limit } }
 	end,

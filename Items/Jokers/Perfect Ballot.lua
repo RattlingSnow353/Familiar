@@ -19,6 +19,7 @@ local perfect_ballot = {
     rarity = 2,
     cost = 5,
     blueprint_compat = false,
+    familiar = "j_hanging_chad",
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

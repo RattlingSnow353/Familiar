@@ -19,6 +19,7 @@ local red_jester = {
     rarity = 1,
     cost = 5,
     blueprint_compat = true,
+    familiar = "j_blue_joker",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.deckcards } }
     end,

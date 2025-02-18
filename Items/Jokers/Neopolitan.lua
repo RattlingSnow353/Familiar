@@ -18,6 +18,7 @@ local neopolitan = {
     },
     rarity = 2,
     cost = 6,
+    familiar = "j_ice_cream",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.mult_mod, card.ability.extra.chips, card.ability.extra.chip_mod, card.ability.extra.money, card.ability.extra.money_mod} }
     end,

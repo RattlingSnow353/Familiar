@@ -19,6 +19,7 @@ local taromancer = {
     rarity = 2,
     cost = 8,
     blueprint_compat = false,
+    familiar = "j_astronomer",
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

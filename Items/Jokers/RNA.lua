@@ -20,6 +20,7 @@ local rna = {
     rarity = 3,
     cost = 8,
     blueprint_compat = true,
+    familiar = "j_dna",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.odds, '' .. (G.GAME and G.GAME.probabilities.normal or 1) } }
     end,

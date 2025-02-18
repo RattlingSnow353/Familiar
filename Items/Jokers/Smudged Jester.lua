@@ -19,6 +19,7 @@ local smudged_jester = {
     rarity = 2,
     cost = 7,
     blueprint_compat = false,
+    familiar = "j_smeared",
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

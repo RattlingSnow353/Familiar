@@ -19,6 +19,7 @@ local archibald = {
     rarity = 4,
     cost = 20,
     blueprint_compat = false,
+    familiar = "j_perkeo",
     soul_pos = {x = 7, y = 9},
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.current_money, card.ability.extra.money } }

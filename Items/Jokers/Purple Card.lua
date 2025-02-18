@@ -20,6 +20,7 @@ local purple_card = {
     rarity = 1,
     cost = 5,
     blueprint_compat = true,
+    familiar = "j_red_card",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.chips, card.ability.extra.chip_mod } }
     end,

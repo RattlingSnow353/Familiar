@@ -20,6 +20,7 @@ local forged_signature = {
     rarity = 2,
     cost = 7,
     blueprint_compat = true,
+    familiar = "j_certificate",
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

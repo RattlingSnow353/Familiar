@@ -18,6 +18,7 @@ local trapeze_artist = {
     rarity = 2,
     cost = 8,
     blueprint_compat = true,
+    familiar = "j_acrobat",
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.Xchips } }
     end,
