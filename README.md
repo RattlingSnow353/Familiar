@@ -15,6 +15,7 @@
 > **16 Fortune Cards** <br>
 > **5 Ethereal Cards** <br>
 > **12 Sacred Cards**
+### 1 Spectral
 ### 4 new enhancements
 ### 4 Seals
 ### 3 Editions
