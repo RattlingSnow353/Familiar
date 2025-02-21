@@ -1,3 +1,18 @@
+--- STEAMODDED HEADER
+--- MOD_NAME: Familiar
+--- MOD_ID: familiar
+--- MOD_AUTHOR: [RattlingSnow353, Humplydinkle]
+--- MOD_DESCRIPTION: Adds different variations to everything in-game
+--- BADGE_COLOUR: 63e19a
+--- DISPLAY_NAME: Familiar
+--- VERSION: 0.1.7
+--- PREFIX: fam
+--- DEPENDENCIES: 
+--- PRIORITY: 1
+
+---------------------------------------------- 
+------------MOD CODE ------------------------- 
+
 local mod_path = ''..SMODS.current_mod.path
 Familiar_config = SMODS.current_mod.config
 
@@ -12,6 +27,10 @@ end
 local function is_face(card)
     local id = card:get_id()
     return id == 11 or id == 12 or id == 13
+end
+
+to_big = to_big or function(num)
+    return num
 end
 
 function shakecard(self)
