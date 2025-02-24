@@ -33,7 +33,6 @@ local purple_card = {
                         message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chip_mod}},
                         colour = G.C.CHIPS,
                         delay = 0.45, 
-                        card = self
                     }) 
                     return true
                 end}))

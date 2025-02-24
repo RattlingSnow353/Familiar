@@ -30,7 +30,6 @@ local red_jester = {
                 message = localize{type='variable', key='a_mult', vars={card.ability.extra.mult * (#G.deck.cards/2)}},
                 mult_mod = card.ability.extra.mult * (#G.deck.cards/2), 
                 colour = G.C.MULT,
-                card = self
             }
         end
     end

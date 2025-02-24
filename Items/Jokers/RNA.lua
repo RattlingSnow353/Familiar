@@ -51,7 +51,6 @@ local rna = {
                     return {
                         message = localize('k_copied_ex'),
                         colour = G.C.RED,
-                        card = self,
                         playing_cards_created = {true}
                     }
                 end

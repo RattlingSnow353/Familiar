@@ -71,7 +71,6 @@ local neopolitan = {
                     message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
                     mult_mod = card.ability.extra.mult, 
                     colour = G.C.RED,
-                    card = self,
                 }
             elseif pseudorandom('neopolitan') < G.GAME.probabilities.normal/2 then
                 return {
@@ -83,7 +82,6 @@ local neopolitan = {
                     message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
                     chip_mod = card.ability.extra.chips, 
                     colour = G.C.CHIPS,
-                    card = self,
                 }
             end
         end
