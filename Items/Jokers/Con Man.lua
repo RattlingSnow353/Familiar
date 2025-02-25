@@ -57,7 +57,7 @@ local con_man = {
                         dollars = -(card.ability.money-2),
                     }
                 end
-                if #G.jokers.cards > 0 and #G.jokers.cards < G.jokers.config.card_limit and random == 2 then
+                if #G.jokers.cards > 1 and #G.jokers.cards < G.jokers.config.card_limit and random == 2 then
                     local eligibleJokers = {}
                     for i = 1, #G.jokers.cards do
                         if G.jokers.cards[i].ability.name ~= card.ability.name then
