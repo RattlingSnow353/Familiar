@@ -1,18 +1,3 @@
---- STEAMODDED HEADER
---- MOD_NAME: Familiar
---- MOD_ID: familiar
---- MOD_AUTHOR: [RattlingSnow353, Humplydinkle]
---- MOD_DESCRIPTION: Adds different variations to everything in-game
---- BADGE_COLOUR: 63e19a
---- DISPLAY_NAME: Familiar
---- VERSION: 0.1.7
---- PREFIX: fam
---- DEPENDENCIES: [Talisman>=2.0.0-beta8]
---- PRIORITY: 1
-
----------------------------------------------- 
-------------MOD CODE ------------------------- 
-
 local mod_path = ''..SMODS.current_mod.path
 Familiar_config = SMODS.current_mod.config
 
@@ -27,6 +12,10 @@ end
 local function is_face(card)
     local id = card:get_id()
     return id == 11 or id == 12 or id == 13
+end
+
+to_big = to_big or function(num)
+    return num
 end
 
 function shakecard(self)
@@ -194,12 +183,18 @@ SMODS.current_mod.credits_tab = function()
     }}
 end
 
-function mult_level_up_hand(card, hand, instant, XMult, XChips)
-    G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level)
-    G.GAME.hands[hand].mult = math.max((XMult * G.GAME.hands[hand].mult), 1)
-    G.GAME.hands[hand].chips = math.max((XChips * G.GAME.hands[hand].chips), 0)
+function mult_level_up_hand(card, hand, instant, XMult, XChips, amount)
+    if G.GAME.hands[hand].i_level then
+        G.GAME.hands[hand].i_level = math.max(0, G.GAME.hands[hand].i_level + amount)
+    else
+        G.GAME.hands[hand].i_level = 1
+    end
+    G.GAME.hands[hand].s_mult = math.max((XMult * G.GAME.hands[hand].s_mult), 1)
+    G.GAME.hands[hand].s_chips = math.max((XChips * G.GAME.hands[hand].s_chips), 0)
     G.GAME.hands[hand].l_chips = math.max((XChips * G.GAME.hands[hand].l_chips), 0)
     G.GAME.hands[hand].l_mult = math.max((XMult * G.GAME.hands[hand].l_mult), 1)
+    G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1), 1)
+    G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1), 0)
     if not instant then 
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             play_sound('tarot1')
@@ -217,15 +212,12 @@ function mult_level_up_hand(card, hand, instant, XMult, XChips)
             if card then card:juice_up(0.8, 0.5) end
             G.TAROT_INTERRUPT_PULSE = nil
             return true end }))
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=G.GAME.hands[hand].level})
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=G.GAME.hands[hand].i_level.."i"})
         delay(1.3)
-        update_hand_text({delay = 0}, {mult = 0, StatusText = true})
-        update_hand_text({delay = 0}, {chips = 0, StatusText = true})
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=""})
     end
     G.E_MANAGER:add_event(Event({
         trigger = 'immediate',
-        func = (function() check_for_unlock{type = 'upgrade_hand', hand = hand, level = G.GAME.hands[hand].level} return true end)
+        func = (function() check_for_unlock{type = 'upgrade_hand', hand = hand, level = G.GAME.hands[hand].i_level} return true end)
     }))
 end
 
@@ -348,7 +340,7 @@ function set_sprite_suits(card, juice)
 	local id = card:get_id(true)
     local position = id - 2
     -- Sets Sprites
-    if not card.ability.suitless == true then
+    if not card.ability.suitless == true then -- what does this accpolish again?
         if card.base.suit == 'Diamonds' and card.ability.is_diamond == true and card.ability.is_club ~= true and card.ability.is_spade ~= true and card.ability.is_heart ~= true then
             return
         elseif card.base.suit == 'Clubs' and card.ability.is_club == true and card.ability.is_diamond ~= true and card.ability.is_spade ~= true and card.ability.is_heart ~= true then
@@ -367,41 +359,33 @@ function set_sprite_suits(card, juice)
             return
         end
     end
-    if juice == true then
-        G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.4,func = function()
-            card:flip()
-        return true end }))
-    end
     card.children.front.atlas = G.ASSET_ATLAS['fam_SuitEffects']
     if card.ability.suitless == true then
         card.children.front:set_sprite_pos({x = position, y = 11})
+        return
     end
-    if (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and not card.ability.is_club == true and not card.ability.is_diamond == true then -- Hearts & Spades
-        card.children.front:set_sprite_pos({x = position, y = 2})
-    elseif (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Clubs' or card.ability.is_club == true ) and not card.ability.is_spade == true and not card.ability.is_diamond == true then -- Hearts & Clubs
-        card.children.front:set_sprite_pos({x = position, y = 0})
+    if (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) then -- Clubs, Diamonds, Spades, & Hearts
+        card.children.front:set_sprite_pos({x = position, y = 10})
     elseif (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and (card.base.suit == 'Clubs' or card.ability.is_club == true ) and not card.ability.is_diamond == true then -- Hearts, Clubs, & Spades
         card.children.front:set_sprite_pos({x = position, y = 7})
     elseif (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and not card.ability.is_club == true then -- Hearts, Diamonds, & Spades
         card.children.front:set_sprite_pos({x = position, y = 8})
-    elseif (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and not card.ability.is_heart == true and not card.ability.is_diamond == true then -- Clubs & Spades
-        card.children.front:set_sprite_pos({x = position, y = 4})
     elseif (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and not card.ability.is_heart == true then -- Clubs, Diamonds, & Spades
         card.children.front:set_sprite_pos({x = position, y = 9})
     elseif (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and not card.ability.is_spade == true then -- Clubs, Diamonds, & Hearts
         card.children.front:set_sprite_pos({x = position, y = 6})
+    elseif (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and not card.ability.is_heart == true and not card.ability.is_diamond == true then -- Clubs & Spades
+        card.children.front:set_sprite_pos({x = position, y = 4})
     elseif (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and not card.ability.is_club == true and not card.ability.is_heart == true then -- Diamonds & Spades
         card.children.front:set_sprite_pos({x = position, y = 5})
     elseif (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and not card.ability.is_club == true and not card.ability.is_spade == true then -- Diamonds & Hearts
         card.children.front:set_sprite_pos({x = position, y = 1})
     elseif (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and (card.base.suit == 'Clubs' or card.ability.is_club == true ) and not card.ability.is_heart == true and not card.ability.is_spade == true then -- Diamonds & Clubs
         card.children.front:set_sprite_pos({x = position, y = 3})
-    elseif (card.base.suit == 'Clubs' or card.ability.is_club == true ) and (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Diamonds' or card.ability.is_diamond == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) then -- Clubs, Diamonds, Spades, & Hearts
-        card.children.front:set_sprite_pos({x = position, y = 10})
-    end
-    if juice == true then
-        card:juice_up(0.3, 0.5)
-        card:flip()
+    elseif (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Spades' or card.ability.is_spade == true ) and not card.ability.is_club == true and not card.ability.is_diamond == true then -- Hearts & Spades
+        card.children.front:set_sprite_pos({x = position, y = 2})
+    elseif (card.base.suit == 'Hearts' or card.ability.is_heart == true ) and (card.base.suit == 'Clubs' or card.ability.is_club == true ) and not card.ability.is_spade == true and not card.ability.is_diamond == true then -- Hearts & Clubs
+        card.children.front:set_sprite_pos({x = position, y = 0})
     end
 end
 
@@ -430,7 +414,6 @@ function copy_card(other, new_card, card_scale, playing_card, strip_edition)
     return new_card
 end
 
-
 local card_drawref = Card.draw
 function Card:draw(layer)
     local card_drawref = card_drawref(self, layer)
@@ -441,7 +424,6 @@ function Card:draw(layer)
 end
 
 function SMODS.current_mod.process_loc_text()
-    G.localization.misc.v_dictionary.fam_penalty = "-#1# Chips"
     G.localization.misc.labels.unstable = "Unstable"
 end
 
@@ -449,12 +431,7 @@ end
 --function Card:set_sprites(_center, _front)
 --    set_spritesref(self, _center, _front);
 --    if _center and _center.fifth_layer then
---        if _center and _center.set == 'tekana' then
---            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
---            self.children.floating_sprite4.role.draw_major = self
---            self.children.floating_sprite4.states.hover.can = false
---            self.children.floating_sprite4.states.click.can = false
---        else
+--        if _center then
 --            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
 --            self.children.floating_sprite4.role.draw_major = self
 --            self.children.floating_sprite4.states.hover.can = false
@@ -462,12 +439,7 @@ end
 --        end
 --    end
 --    if _center and _center.fouth_layer then
---        if _center and _center.set == 'tekana' then
---            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
---            self.children.floating_sprite3.role.draw_major = self
---            self.children.floating_sprite3.states.hover.can = false
---            self.children.floating_sprite3.states.click.can = false
---        else
+--        if _center then
 --            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
 --            self.children.floating_sprite3.role.draw_major = self
 --            self.children.floating_sprite3.states.hover.can = false
@@ -475,12 +447,7 @@ end
 --        end
 --    end
 --    if _center and _center.third_layer then
---        if _center and _center.set == 'tekana' then
---            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
---            self.children.floating_sprite2.role.draw_major = self
---            self.children.floating_sprite2.states.hover.can = false
---            self.children.floating_sprite2.states.click.can = false
---        else
+--        if _center then
 --            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
 --            self.children.floating_sprite2.role.draw_major = self
 --            self.children.floating_sprite2.states.hover.can = false
@@ -497,7 +464,7 @@ end
 SMODS.Atlas { key = 'Joker', path = 'JokersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Consumables', path = 'TarotsFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Enhancers', path = 'EnhancersFam.png', px = 71, py = 95 }
-SMODS.Atlas { key = 'SuitEffects', path = 'Double_Suit_CardsFam.png', px = 71, py = 95 }
+--SMODS.Atlas { key = 'SuitEffects', path = 'Double_Suit_CardsFam.png', px = 71, py = 95 }
 --SMODS.Atlas { key = 'Suits', path = '8BitDeckFam.png', px = 71, py = 95 }
 --SMODS.Atlas { key = 'SuitsHc', path = '8BitDeckFam_opt2.png', px = 71, py = 95 }
 --SMODS.Atlas { key = 'UI', path = 'ui_assets.png', px = 34, py = 34 }
@@ -517,6 +484,159 @@ end
 --    G.ARGS.LOC_COLOURS.web = HEX("55d2be") 
 --    return lc(_c, _default)
 --end
+
+jester_table = {
+    ["j_joker"] = {},
+    ["j_greedy_joker"] = {},
+    ["j_lusty_joker"] = {},
+    ["j_wrathful_joker"] = {},
+    ["j_gluttenous_joker"] = {},
+    ["j_jolly"] = {},
+    ["j_zany"] = {},
+    ["j_mad"] = {},
+    ["j_crazy"] = {},
+    ["j_droll"] = {},
+    ["j_sly"] = {},
+    ["j_wily"] = {},
+    ["j_clever"] = {},
+    ["j_devious"] = {},
+    ["j_crafty"] = {},
+    ["j_half"] = {},
+    ["j_stencil"] = {},
+    ["j_four_fingers"] = {},
+    ["j_mime"] = {},
+    ["j_credit_card"] = {},
+    ["j_ceremonial"] = {},
+    ["j_banner"] = {},
+    ["j_mystic_summit"] = {},
+    ["j_marble"] = {},
+    ["j_loyalty_card"] = {},
+    ["j_8_ball"] = {},
+    ["j_misprint"] = {},
+    ["j_dusk"] = {},
+    ["j_raised_fist"] = {},
+    ["j_chaos"] = {},
+    ["j_fibonacci"] = {},
+    ["j_steel_joker"] = {},
+    ["j_scary_face"] = {},
+    ["j_abstract"] = {},
+    ["j_delayed_grat"] = {},
+    ["j_hack"] = {},
+    ["j_pareidolia"] = {},
+    ["j_gros_michel"] = {},
+    ["j_even_steven"] = {},
+    ["j_odd_todd"] = {},
+    ["j_scholar"] = {},
+    ["j_business"] = {},
+    ["j_supernova"] = {},
+    ["j_ride_the_bus"] = {},
+    ["j_space"] = {},
+    ["j_egg"] = {},
+    ["j_burglar"] = {},
+    ["j_blackboard"] = {},
+    ["j_runner"] = {},
+    ["j_ice_cream"] = {},
+    ["j_dna"] = {},
+    ["j_splash"] = {},
+    ["j_blue_joker"] = {},
+    ["j_sixth_sense"] = {},
+    ["j_constellation"] = {},
+    ["j_hiker"] = {},
+    ["j_faceless"] = {},
+    ["j_green_joker"] = {},
+    ["j_superposition"] = {},
+    ["j_todo_list"] = {},
+    ["j_cavendish"] = {},
+    ["j_card_sharp"] = {},
+    ["j_red_card"] = {},
+    ["j_madness"] = {},
+    ["j_square"] = {},
+    ["j_seance"] = {},
+    ["j_riff_raff"] = {},
+    ["j_vampire"] = {},
+    ["j_shortcut"] = {},
+    ["j_hologram"] = {},
+    ["j_vagabond"] = {},
+    ["j_baron"] = {},
+    ["j_cloud_9"] = {},
+    ["j_rocket"] = {},
+    ["j_obelisk"] = {},
+    ["j_midas_mask"] = {},
+    ["j_luchador"] = {},
+    ["j_photograph"] = {},
+    ["j_gift"] = {},
+    ["j_turtle_bean"] = {},
+    ["j_erosion"] = {},
+    ["j_reserved_parking"] = {},
+    ["j_mail"] = {},
+    ["j_to_the_moon"] = {},
+    ["j_hallucination"] = {},
+    ["j_fortune_teller"] = {},
+    ["j_juggler"] = {},
+    ["j_drunkard"] = {},
+    ["j_stone"] = {},
+    ["j_golden"] = {},
+    ["j_lucky_cat"] = {},
+    ["j_baseball"] = {},
+    ["j_bull"] = {},
+    ["j_diet_cola"] = {},
+    ["j_trading"] = {},
+    ["j_flash"] = {},
+    ["j_popcorn"] = {},
+    ["j_trousers"] = {},
+    ["j_ancient"] = {},
+    ["j_ramen"] = {},
+    ["j_walkie_talkie"] = {},
+    ["j_selzer"] = {},
+    ["j_castle"] = {},
+    ["j_smiley"] = {},
+    ["j_campfire"] = {},
+    ["j_ticket"] = {},
+    ["j_mr_bones"] = {},
+    ["j_acrobat"] = {},
+    ["j_sock_and_buskin"] = {},
+    ["j_swashbuckler"] = {},
+    ["j_troubadour"] = {},
+    ["j_certificate"] = {},
+    ["j_smeared"] = {},
+    ["j_throwback"] = {},
+    ["j_hanging_chad"] = {},
+    ["j_rough_gem"] = {},
+    ["j_bloodstone"] = {},
+    ["j_arrowhead"] = {},
+    ["j_onyx_agate"] = {},
+    ["j_glass"] = {},
+    ["j_ring_master"] = {},
+    ["j_flower_pot"] = {},
+    ["j_blueprint"] = {},
+    ["j_wee"] = {},
+    ["j_merry_andy"] = {},
+    ["j_oops"] = {},
+    ["j_idol"] = {},
+    ["j_seeing_double"] = {},
+    ["j_matador"] = {},
+    ["j_hit_the_road"] = {},
+    ["j_duo"] = {},
+    ["j_trio"] = {},
+    ["j_family"] = {},
+    ["j_order"] = {},
+    ["j_tribe"] = {},
+    ["j_stuntman"] = {},
+    ["j_invisible"] = {},
+    ["j_brainstorm"] = {},
+    ["j_satellite"] = {},
+    ["j_shoot_the_moon"] = {},
+    ["j_drivers_license"] = {},
+    ["j_cartomancer"] = {},
+    ["j_astronomer"] = {},
+    ["j_burnt"] = {},
+    ["j_bootstraps"] = {},
+    ["j_caino"] = {},
+    ["j_triboulet"] = {},
+    ["j_yorick"] = {},
+    ["j_chicot"] = {},
+    ["j_perkeo"] = {},
+}
 
 local folders = NFS.getDirectoryItems(mod_path.."Items")
 local folders2 = NFS.getDirectoryItems(mod_path.."Items/Consumable Types")
@@ -557,7 +677,7 @@ local function load_items(curr_obj, Familiar_config)
             for _, item in ipairs(curr_obj.items) do
                 item.discovered = true
                 if SMODS[item.object_type] then
-                    SMODS[item.object_type](item)
+                    SMODS[item.object_type](item) 
                 elseif CardSleeves and CardSleeves[item.object_type] then
                     CardSleeves[item.object_type](item)
                 else
@@ -615,33 +735,7 @@ for _, folder in ipairs(folders) do
     end
 end
 
-if not SpectralPack then
-    SpectralPack = {}
-    local ct = create_tabs
-    function create_tabs(args)
-        if args and args.tab_h == 7.05 then
-            args.tabs[#args.tabs+1] = {
-                label = "Spectral Pack",
-                tab_definition_function = function() return {
-                    n = G.UIT.ROOT,
-                    config = {
-                        emboss = 0.05,
-                        minh = 6,
-                        r = 0.1,
-                        minw = 10,
-                        align = "cm",
-                        padding = 0.2,
-                        colour = G.C.BLACK
-                    },
-                    nodes = SpectralPack
-                } end
-            }
-        end
-        return ct(args)
-    end
-  end
-  SpectralPack[#SpectralPack+1] = UIBox_button{ label = {"Familiar"}, button = "familiarMenu", colour = HEX("63e19a"), minw = 5, minh = 0.7, scale = 0.6}
-  local familiarTabs = {
+local familiarTabs = {
     {
         label = "Features",
         chosen = true,
@@ -692,7 +786,6 @@ if not SpectralPack then
   end
 
 SMODS.current_mod.extra_tabs = function() return familiarTabs end
-
 
 ----------------------------------------------
 ------------MOD CODE END---------------------
