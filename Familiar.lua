@@ -183,8 +183,12 @@ SMODS.current_mod.credits_tab = function()
     }}
 end
 
-function mult_level_up_hand(card, hand, instant, XMult, XChips)
-    G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level)
+function mult_level_up_hand(card, hand, instant, XMult, XChips, amount)
+    if G.GAME.hands[hand].i_level then
+        G.GAME.hands[hand].i_level = math.max(0, G.GAME.hands[hand].i_level + amount)
+    else
+        G.GAME.hands[hand].i_level = 1
+    end
     G.GAME.hands[hand].s_mult = math.max((XMult * G.GAME.hands[hand].s_mult), 1)
     G.GAME.hands[hand].s_chips = math.max((XChips * G.GAME.hands[hand].s_chips), 0)
     G.GAME.hands[hand].l_chips = math.max((XChips * G.GAME.hands[hand].l_chips), 0)
@@ -208,15 +212,12 @@ function mult_level_up_hand(card, hand, instant, XMult, XChips)
             if card then card:juice_up(0.8, 0.5) end
             G.TAROT_INTERRUPT_PULSE = nil
             return true end }))
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=G.GAME.hands[hand].level})
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=G.GAME.hands[hand].i_level.."i"})
         delay(1.3)
-        update_hand_text({delay = 0}, {mult = 0, StatusText = true})
-        update_hand_text({delay = 0}, {chips = 0, StatusText = true})
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
     end
     G.E_MANAGER:add_event(Event({
         trigger = 'immediate',
-        func = (function() check_for_unlock{type = 'upgrade_hand', hand = hand, level = G.GAME.hands[hand].level} return true end)
+        func = (function() check_for_unlock{type = 'upgrade_hand', hand = hand, level = G.GAME.hands[hand].i_level} return true end)
     }))
 end
 
