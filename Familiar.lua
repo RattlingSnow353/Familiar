@@ -427,34 +427,34 @@ function SMODS.current_mod.process_loc_text()
     G.localization.misc.labels.unstable = "Unstable"
 end
 
-local set_spritesref = Card.set_sprites
-function Card:set_sprites(_center, _front)
-    set_spritesref(self, _center, _front);
-    if _center and _center.fifth_layer then
-        if _center then
-            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
-            self.children.floating_sprite4.role.draw_major = self
-            self.children.floating_sprite4.states.hover.can = false
-            self.children.floating_sprite4.states.click.can = false
-        end
-    end
-    if _center and _center.fouth_layer then
-        if _center then
-            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
-            self.children.floating_sprite3.role.draw_major = self
-            self.children.floating_sprite3.states.hover.can = false
-            self.children.floating_sprite3.states.click.can = false
-        end
-    end
-    if _center and _center.third_layer then
-        if _center then
-            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
-            self.children.floating_sprite2.role.draw_major = self
-            self.children.floating_sprite2.states.hover.can = false
-            self.children.floating_sprite2.states.click.can = false
-        end
-    end
-end
+--local set_spritesref = Card.set_sprites
+--function Card:set_sprites(_center, _front)
+--    set_spritesref(self, _center, _front);
+--    if _center and _center.fifth_layer then
+--        if _center then
+--            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
+--            self.children.floating_sprite4.role.draw_major = self
+--            self.children.floating_sprite4.states.hover.can = false
+--            self.children.floating_sprite4.states.click.can = false
+--        end
+--    end
+--    if _center and _center.fouth_layer then
+--        if _center then
+--            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
+--            self.children.floating_sprite3.role.draw_major = self
+--            self.children.floating_sprite3.states.hover.can = false
+--            self.children.floating_sprite3.states.click.can = false
+--        end
+--    end
+--    if _center and _center.third_layer then
+--        if _center then
+--            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
+--            self.children.floating_sprite2.role.draw_major = self
+--            self.children.floating_sprite2.states.hover.can = false
+--            self.children.floating_sprite2.states.click.can = false
+--        end
+--    end
+--end
 
 --SMODS.Shader {
 --    key = 'statics', 
@@ -464,11 +464,11 @@ end
 SMODS.Atlas { key = 'Joker', path = 'JokersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Consumables', path = 'TarotsFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Enhancers', path = 'EnhancersFam.png', px = 71, py = 95 }
-SMODS.Atlas { key = 'SuitEffects', path = 'Double_Suit_CardsFam.png', px = 71, py = 95 }
-SMODS.Atlas { key = 'Suits', path = '8BitDeckFam.png', px = 71, py = 95 }
-SMODS.Atlas { key = 'SuitsHc', path = '8BitDeckFam_opt2.png', px = 71, py = 95 }
-SMODS.Atlas { key = 'UI', path = 'ui_assets.png', px = 34, py = 34 }
-SMODS.Atlas { key = 'UIHc', path = 'ui_assets_opt2.png', px = 34, py = 34 }
+--SMODS.Atlas { key = 'SuitEffects', path = 'Double_Suit_CardsFam.png', px = 71, py = 95 }
+--SMODS.Atlas { key = 'Suits', path = '8BitDeckFam.png', px = 71, py = 95 }
+--SMODS.Atlas { key = 'SuitsHc', path = '8BitDeckFam_opt2.png', px = 71, py = 95 }
+--SMODS.Atlas { key = 'UI', path = 'ui_assets.png', px = 34, py = 34 }
+--SMODS.Atlas { key = 'UIHc', path = 'ui_assets_opt2.png', px = 34, py = 34 }
 SMODS.Atlas { key = 'Booster', path = 'BoostersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Tags', path = 'TagsFam.png', px = 34, py = 34 }
 SMODS.Atlas { key = 'Stickers', path = 'StickersFam.png', px = 71, py = 95 }
@@ -478,12 +478,12 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
     SMODS.Atlas { key = 'cardsleeves', path = 'CardSleevesFam.png', px = 71, py = 95}
 end
 
-local lc = loc_colour
-function loc_colour(_c, _default)
-    if not G.ARGS.LOC_COLOURS then lc() end
-    G.ARGS.LOC_COLOURS.web = HEX("55d2be") 
-    return lc(_c, _default)
-end
+--local lc = loc_colour
+--function loc_colour(_c, _default)
+--    if not G.ARGS.LOC_COLOURS then lc() end
+--    G.ARGS.LOC_COLOURS.web = HEX("55d2be") 
+--    return lc(_c, _default)
+--end
 
 jester_table = {
     ["j_joker"] = {},
