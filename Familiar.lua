@@ -185,10 +185,12 @@ end
 
 function mult_level_up_hand(card, hand, instant, XMult, XChips)
     G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level)
-    G.GAME.hands[hand].mult = math.max((XMult * G.GAME.hands[hand].mult), 1)
-    G.GAME.hands[hand].chips = math.max((XChips * G.GAME.hands[hand].chips), 0)
+    G.GAME.hands[hand].s_mult = math.max((XMult * G.GAME.hands[hand].s_mult), 1)
+    G.GAME.hands[hand].s_chips = math.max((XChips * G.GAME.hands[hand].s_chips), 0)
     G.GAME.hands[hand].l_chips = math.max((XChips * G.GAME.hands[hand].l_chips), 0)
     G.GAME.hands[hand].l_mult = math.max((XMult * G.GAME.hands[hand].l_mult), 1)
+    G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1), 1)
+    G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1), 0)
     if not instant then 
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             play_sound('tarot1')
