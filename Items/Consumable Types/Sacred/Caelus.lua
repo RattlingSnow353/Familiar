@@ -24,7 +24,7 @@ local caelus = {
         return true 
     end,
     use = function(self, card)
-        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips)
+        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips, 1)
     end,
 }
 return {name = "Sacred Cards", items = {caelus}}
