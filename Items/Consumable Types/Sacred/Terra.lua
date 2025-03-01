@@ -2,7 +2,7 @@ local terra = {
     object_type = "Consumable",
     key = 'terra',
     set = 'Familiar_Planets',
-    config = { extra = {hand = "Full House", xmult = 1.2, xchips = 1.7} },
+    config = { extra = {hand = "Full House"} },
     atlas = 'Consumables',
     pos = { x = 2, y = 3 },
     cost = 5,
@@ -18,13 +18,13 @@ local terra = {
         }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = {G.GAME.hands[card.ability.extra.hand].level, card.ability.extra.xmult, card.ability.extra.xchips, card.ability.extra.hand } }
+        return { vars = {i_hands[card.ability.extra.hand].i_level, i_hands[card.ability.extra.hand].s_x_mult, i_hands[card.ability.extra.hand].s_x_chips, card.ability.extra.hand } }
     end,
     can_use = function(self, card, area, copier)
         return true 
     end,
     use = function(self, card)
-        mult_level_up_hand(card, card.ability.extra.hand, false, card.ability.extra.xmult, card.ability.extra.xchips, 1)
+        mult_level_up_hand(card, card.ability.extra.hand, false, 1)
     end,
 }
 return {name = "Sacred Cards", items = {terra}}

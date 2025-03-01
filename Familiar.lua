@@ -183,19 +183,31 @@ SMODS.current_mod.credits_tab = function()
     }}
 end
 
-function mult_level_up_hand(card, hand, instant, XMult, XChips, amount)
-    if G.GAME.hands[hand].i_level then
-        G.GAME.hands[hand].i_level = math.max(0, G.GAME.hands[hand].i_level + amount)
-    else
-        G.GAME.hands[hand].i_level = 1
-    end
-    G.GAME.hands[hand].s_mult = math.max((XMult * G.GAME.hands[hand].s_mult), 1)
-    G.GAME.hands[hand].s_chips = math.max((XChips * G.GAME.hands[hand].s_chips), 0)
-    G.GAME.hands[hand].l_chips = math.max((XChips * G.GAME.hands[hand].l_chips), 0)
-    G.GAME.hands[hand].l_mult = math.max((XMult * G.GAME.hands[hand].l_mult), 1)
-    G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1), 1)
-    G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1), 0)
+i_hands = {
+    ["Flush Five"] =        {s_x_mult = 1.25, s_x_chips = 2, i_level = 0},
+    ["Flush House"] =       {s_x_mult = 1.3, s_x_chips = 1.8, i_level = 0},
+    ["Five of a Kind"] =    {s_x_mult = 1.25, s_x_chips = 1.75, i_level = 0},
+    ["Straight Flush"] =    {s_x_mult = 1.3, s_x_chips = 1.8, i_level = 0},
+    ["Four of a Kind"] =    {s_x_mult = 1.25, s_x_chips = 1.75, i_level = 0},
+    ["Full House"] =        {s_x_mult = 1.2, s_x_chips = 1.7, i_level = 0},
+    ["Flush"] =             {s_x_mult = 1.1, s_x_chips = 1.3, i_level = 0},
+    ["Straight"] =          {s_x_mult = 1.25, s_x_chips = 1.75, i_level = 0},
+    ["Three of a Kind"] =   {s_x_mult = 1.1, s_x_chips = 1.5, i_level = 0},
+    ["Two Pair"] =          {s_x_mult = 1.1, s_x_chips = 1.5, i_level = 0},
+    ["Pair"] =              {s_x_mult = 1.1, s_x_chips = 1.3, i_level = 0},
+    ["High Card"] =         {s_x_mult = 1.1, s_x_chips = 1.2, i_level = 0},
+}
+
+function mult_level_up_hand(card, hand, instant, amount)
     if not instant then 
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=hand,chips = G.GAME.hands[hand].chips, mult = G.GAME.hands[hand].mult, level=G.GAME.hands[hand].level})
+        i_hands[hand].i_level = math.max(0, i_hands[hand].i_level + amount)
+        G.GAME.hands[hand].s_mult = math.max((i_hands[hand].s_x_mult * G.GAME.hands[hand].s_mult), 1)
+        G.GAME.hands[hand].s_chips = math.max((i_hands[hand].s_x_chips * G.GAME.hands[hand].s_chips), 0)
+        G.GAME.hands[hand].l_chips = math.max((i_hands[hand].s_x_chips * G.GAME.hands[hand].l_chips), 0)
+        G.GAME.hands[hand].l_mult = math.max((i_hands[hand].s_x_mult * G.GAME.hands[hand].l_mult), 1)
+        G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1), 1)
+        G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1), 0)
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             play_sound('tarot1')
             if card then card:juice_up(0.8, 0.5) end
@@ -212,12 +224,21 @@ function mult_level_up_hand(card, hand, instant, XMult, XChips, amount)
             if card then card:juice_up(0.8, 0.5) end
             G.TAROT_INTERRUPT_PULSE = nil
             return true end }))
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=G.GAME.hands[hand].i_level.."i"})
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {level=i_hands[hand].i_level.."+i"})
         delay(1.3)
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+    else
+        i_hands[hand].i_level = math.max(0, i_hands[hand].i_level + amount)
+        G.GAME.hands[hand].s_mult = math.max((i_hands[hand].s_x_mult * G.GAME.hands[hand].s_mult), 1)
+        G.GAME.hands[hand].s_chips = math.max((i_hands[hand].s_x_chips * G.GAME.hands[hand].s_chips), 0)
+        G.GAME.hands[hand].l_chips = math.max((i_hands[hand].s_x_chips * G.GAME.hands[hand].l_chips), 0)
+        G.GAME.hands[hand].l_mult = math.max((i_hands[hand].s_x_mult * G.GAME.hands[hand].l_mult), 1)
+        G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1), 1)
+        G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1), 0)
     end
     G.E_MANAGER:add_event(Event({
         trigger = 'immediate',
-        func = (function() check_for_unlock{type = 'upgrade_hand', hand = hand, level = G.GAME.hands[hand].i_level} return true end)
+        func = (function() check_for_unlock{type = 'upgrade_hand', hand = hand, level = i_hands[hand].i_level} return true end)
     }))
 end
 
