@@ -13,7 +13,7 @@
 ### 2 Vouchers (Tickets)
 ### 3 new consumable types
 > **16 Fortune Cards** <br>
-> **5 Ethereal Cards** <br>
+> **7 Ethereal Cards** <br>
 > **12 Sacred Cards**
 ### 1 Spectral
 ### 4 new enhancements
