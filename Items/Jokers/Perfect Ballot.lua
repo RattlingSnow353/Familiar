@@ -11,8 +11,8 @@ local perfect_ballot = {
             name = 'Perfect Ballot',
             text = {
                 "Retrigger {C:attention}all{} played",
-                "cards used in scoring",
-                "{C:attention}once",
+                "cards used in scoring {C:attention}once",
+                "{C:inactive}(If you have a perfect hand){}",
             }
         }
     },
@@ -25,11 +25,19 @@ local perfect_ballot = {
     end,
     calculate = function(self, card, context)
         if context.repetition and context.cardarea == G.play then
-            return {
-                message = localize('k_again_ex'),
-                repetitions = 1,
-                card = card
-            }
+            local temp = 0
+            for _, card in ipairs(G.play.cards) do
+                if (G.play.cards[1]:get_id() == card:get_id()) then
+                    temp = temp + 1
+                end
+            end
+            if temp == #G.play.cards then
+                return {
+                    message = localize('k_again_ex'),
+                    repetitions = 1,
+                    card = card
+                }
+            end
         end
     end
 }
