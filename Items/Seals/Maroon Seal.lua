@@ -20,7 +20,21 @@ local maroon_seal = {
     end,
     calculate = function(self, card, context)
         if context.cardarea == G.play and context.repetition then
-            SMODS.score_card(context.scoring_hand[1], {cardarea = G.play, full_hand = context.full_hand, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands})
+            if context.scoring_hand[1] == card then
+                return {
+                    message = localize('k_again_ex'),
+                    repetitions = 1,
+                    card = card
+                }
+            else 
+                return {
+                    card_eval_status_text(context.scoring_hand[1], 'extra', nil, nil, nil, {
+                        message = 'Again!',
+                        colour = G.C.MONEY,
+                    }),
+                    SMODS.score_card(context.scoring_hand[1], {cardarea = G.play, full_hand = context.full_hand, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands})
+                }
+            end
         end
     end
 }
