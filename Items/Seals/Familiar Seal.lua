@@ -7,14 +7,7 @@ local familiar_seal = {
     atlas = 'Enhancers',
     pos = { x = 4, y = 4 },
     badge_colour = HEX("3c423e"),
-    loc_txt = {
-        label = 'Familiar Seal',
-        name = 'Familiar Seal',
-        text = {
-            'Creates a {C:attention}Familiar tarot{} when',
-            'only this card is {C:attention}discarded',
-        }
-    },
+    order = 4,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

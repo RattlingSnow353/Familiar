@@ -78,13 +78,6 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
                 end
             }))
         end,
-        loc_txt = {
-            name = "Duality Sleeve",
-            text = {
-                 "Start with 26",
-                "{C:attention}dual-suit{} cards",
-            }
-        }
     }
     return {name = "Card Sleeves", items = {dualitysleeve}}
 end

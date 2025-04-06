@@ -17,13 +17,6 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
                 }
             }
         end,
-        loc_txt = {
-            name = "Merry Andy's Sleeve",
-            text = {
-                "{C:attention}+3{} discards,",
-                "{C:blue}-1{} hand size."
-            }
-        }
     }
     return {name = "Card Sleeves", items = {andysleeve}}
 end

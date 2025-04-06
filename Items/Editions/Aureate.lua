@@ -7,14 +7,8 @@ local aureate = {
     object_type = "Edition",
     key = 'aureate', 
     atlas = 'Joker',
+    order = 5,
     pos = { x = 0, y = 0 },
-    loc_txt = {
-        name = "Aureate",
-        label = "Aureate",
-        text = {
-            "{X:money,C:white}$#1#{}"
-        }
-    },
     config = { dollars = 3 },
     loc_vars = function(self, info_queue)
         return {vars = {self.config.dollars}}

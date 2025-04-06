@@ -14,15 +14,6 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
             hands = -1
         }
         end,
-        loc_txt = {
-            name = "Ruby Sleeve",
-            text = {
-                "Start with {C:attention}2 copies{}",
-                "of Playback,",
-                "{C:red}+2{} discards every round.",
-                "{C:blue}-1{} hand every round."
-            }
-        }
     }
     return {name = "Card Sleeves", items = {rubysleeve}}
 end

@@ -19,14 +19,6 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
                 }
             }
         end,
-        loc_txt = {
-            name = "Topaz Sleeve",
-            text = {
-                "{C:blue}+1{} hand every round,",
-                "{C:red}+1{} discard every round",
-                "{C:attention}-2{} hand size",
-            }
-        }
     }
     return {name = "Card Sleeves", items = {topazsleeve}}
 end

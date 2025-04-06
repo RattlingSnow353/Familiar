@@ -1,17 +1,10 @@
 local charmed = {
     object_type = "Enhancement",
     key = 'charmed',
-    loc_txt = {
-        name = 'Charmed',
-        text = {
-            "{C:green,E:1,S:1.1}#3# in #1#{} chance",
-            "for {C:blue}+#2#{} Chips",
-            "{C:green,E:1,S:1.1}#3# in #4#{} chance",
-            "for a random {C:attention}Tarot{} card",
-        }
-    },
     pos = {x = 4, y = 1}, 
     atlas = 'Enhancers', 
+    order = 8,
+    unlocked = true,
     config = { extra = { chips = 150, odds = 5, } },
     loc_vars = function(self, info_queue, card)
         return { vars = {self.config.extra.odds, self.config.extra.chips, '' .. (G.GAME and G.GAME.probabilities.normal or 1), self.config.extra.odds*2} }

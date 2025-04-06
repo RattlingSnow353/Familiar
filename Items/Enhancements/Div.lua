@@ -1,15 +1,10 @@
 local div = {
     object_type = "Enhancement",
     key = 'div',
-    loc_txt = {
-        name = 'Div',
-        text = {
-            "{C:red}X#1#{} Mult",
-            "{C:blue}+#2#{} Chips",
-        }
-    },
     pos = {x = 2, y = 1}, 
     atlas = 'Enhancers', 
+    order = 2,
+    unlocked = true,
     config = { extra = {mult = 0.9, chips = 100} },
     loc_vars = function(self, info_queue, card)
         return { vars = {self.config.extra.mult, self.config.extra.chips} }

@@ -1,18 +1,8 @@
 local ruby_deck = {
     object_type = "Back",
     key = "ruby_deck",
-    loc_txt = {
-        ['en-us'] = {
-            name = "Ruby Deck",
-            text = {
-                "Start with {C:attention}2 copies{}",
-                "of Playback,",
-                "{C:red}+2{} discards every round.",
-                "{C:blue}-1{} hand every round,"
-            }
-        }
-    },
     atlas = 'Enhancers',
+    order = 4,
     pos = { x = 2, y = 2 },
     config = {},
     apply = function(self, card, context)

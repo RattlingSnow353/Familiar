@@ -1,18 +1,9 @@
 local spare_deck = {
     object_type = "Back",
     key = "spare_deck",
-    loc_txt = {
-        ['en-us'] = {
-            name = "Spare Deck",
-            text = {
-                "Start run with",
-                "Some {C:attention}missing{} cards, ",
-                "Some {C:attention}addition{} cards",
-                "{C:blue}+1{} hand, and some {C:money}Money",
-            }
-        }
-    },
     atlas = 'Enhancers',
+    order = 9,
+    unlocked = false,
     pos = { x = 3, y = 3 },
     config = { dollars = math.random(-2,7) },
     apply = function(self, card, context)

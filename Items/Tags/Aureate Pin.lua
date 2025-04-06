@@ -1,17 +1,9 @@
 local aureate = {
     object_type = "Tag",
     key = 'aureate', 
-    loc_txt = {
-        name = "Aureate Pin",
-        text = {
-            'Next base edition shop',
-            'Jester is free and',
-            'becomes {C:dark_edition}Aureate'
-        }
-    },
     pos = { x = 0, y = 4},
     atlas = 'Tags',
-
+    order = 4,
     config = {type = 'store_joker_modify', edition = 'fam_aureate', odds = 4},
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = G.P_CENTERS.e_fam_aureate

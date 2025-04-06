@@ -39,15 +39,6 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
                 end
             }))
         end,
-        loc_txt = {
-            name = "Spare Sleeve",
-            text = {
-                "Start run with",
-                "Some {C:attention}missing{} cards, ",
-                "Some {C:attention}addition{} cards",
-                "{C:blue}+1{} hand, and some {C:money}Money",
-            }
-        }
     }
     return {name = "Card Sleeves", items = {sparesleeve}}
 end

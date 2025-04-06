@@ -1,17 +1,17 @@
-local amethyst_deck = {
+local fleeting_deck = {
     object_type = "Back",
-    key = "amethyst_deck",
+    key = "fleeting_deck",
     atlas = 'Enhancers',
-    order = 1,
-    pos = { x = 0, y = 0 },
+    order = 8,
+    pos = { x = 6, y = 2 },
     config = {},
     apply = function(self, card, context)
         G.E_MANAGER:add_event(Event({
             func = function()
-                G.hand:change_size(5)
+                G.GAME["familiar_spectrals_rate"] = 1.5
                 return true
             end
         }))
     end
 }
-return {name = "Decks", items = {amethyst_deck}}
+return {name = "Decks", items = {fleeting_deck}}
