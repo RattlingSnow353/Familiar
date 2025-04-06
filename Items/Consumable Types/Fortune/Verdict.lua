@@ -6,16 +6,8 @@ local verdict = {
     atlas = 'Consumables',
     pos = { x = 0, y = 2 },
     cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "Verdict",
-            text = {
-                "Creates a random",
-                "{C:attention}Consumble{} card",
-
-            }
-        }
-    },
+    order = 21,
+    familiar = "c_judgement",
     loc_vars = function(self, info_queue)
         return { vars = { } }
     end,

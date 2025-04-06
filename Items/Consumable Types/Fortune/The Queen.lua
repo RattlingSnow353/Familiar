@@ -6,15 +6,8 @@ local the_queen = {
     atlas = 'Consumables',
     pos = { x = 3, y = 0 },
     cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "The Queen",
-            text = {
-                "Enhances {C:attention}2{} selected card",
-                "into a {C:attention}Div Card{}.",
-            }
-        }
-    },
+    order = 4,
+    familiar = "c_empress",
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = G.P_CENTERS.m_fam_div
 

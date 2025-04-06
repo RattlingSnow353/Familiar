@@ -4,10 +4,10 @@ local Familiar_TarotsConsumableType = {
     collection_rows = { 5,6 },
     primary_colour = HEX("2e3530"),
     secondary_colour = HEX("2e3530"),
+    default = 'c_fam_the_broken',
     loc_txt = {
         collection = 'Fortune Cards',
         name = 'Fortune',
-        label = 'Fortune',
         undiscovered = {
             name = "Not Discovered",
             text = {
@@ -26,7 +26,8 @@ local Familiar_TarotsUndiscoveredSprite = {
     pos = {
         x = 6,
         y = 2,
-    }
+    },
+    no_overlay = true
 }
 
 return {name = "Fortune Cards", items = {Familiar_TarotsUndiscoveredSprite, Familiar_TarotsConsumableType}}

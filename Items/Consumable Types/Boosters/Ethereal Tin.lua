@@ -4,16 +4,8 @@ local ethereal_booster_2 = {
 	key = "ethereal_booster_2",
     group_key = "ethereal_booster",
 	atlas = 'Booster',
+    order = 8,
 	pos = {x = 2, y = 4},
-    loc_txt = {
-        ['en-us'] = {
-            name = "Ethereal Booster Tin",
-            text = {
-                "Choose {C:attention}#1#{} of up to",
-				"{C:attention}#2#{} Memento Cards"
-            }
-        }
-    },
 	weight = 0.7 * 0.3,
 	cost = 9,
 	config = {draw_hand = true, extra = 4, choose = 1},

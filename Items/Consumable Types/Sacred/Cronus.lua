@@ -6,17 +6,8 @@ local cronus = {
     atlas = 'Consumables',
     pos = { x = 5, y = 3 },
     cost = 5,
-    loc_txt = {
-        ['en-us'] = {
-            name = "Cronus",
-            text = {
-                "(lvl:#1#+i) Imaginary Level Up",
-                "{C:attention}#4#",
-                "{C:red}X#2#{} Mult and",
-                "{C:blue}X#3#{} chips",
-            }
-        }
-    },
+    order = 6,
+    familiar = "c_saturn",
     loc_vars = function(self, info_queue, card)
         return { vars = {i_hands[card.ability.extra.hand].i_level, i_hands[card.ability.extra.hand].s_x_mult, i_hands[card.ability.extra.hand].s_x_chips, card.ability.extra.hand } }
     end,

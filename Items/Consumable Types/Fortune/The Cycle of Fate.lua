@@ -4,18 +4,10 @@ local the_cycle_of_fate = {
     set = 'Familiar_Tarots',
     config = { extra = { odds = 4 } },
     atlas = 'Consumables',
+    order = 11,
     pos = { x = 0, y = 1 },
     cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "The Cycle of Fate",
-            text = {
-                "{C:green,E:1,S:1.1}#2# in #1#{} chance to",
-                "make a {C:attention}joker{} Negative.",
-                "{C:inactive}(Overrides other Editions){}"
-            }
-        }
-    },
+    familiar = "c_wheel_of_fortune",
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.e_negative
         return { vars = { card.ability.extra.odds, '' .. (G.GAME and G.GAME.probabilities.normal or 1) } }

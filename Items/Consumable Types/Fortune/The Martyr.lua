@@ -6,16 +6,10 @@ local the_martyr = {
     atlas = 'Consumables',
     pos = { x = 2, y = 1 },
     cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "The Martyr",
-            text = {
-                "Creates {C:attention}2{} random cards",
-            }
-        }
-    },
+    order = 13,
+    familiar = "c_hanged_man",
     loc_vars = function(self, info_queue)
-        return { vars = { } }
+        return { vars = { self.config.extra } }
     end,
     can_use = function(self, card, area, copier, context)
         if (G.hand and not G.shop) or (G.hand) then

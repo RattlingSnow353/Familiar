@@ -4,16 +4,8 @@ local forture_booster_3 = {
 	key = "forture_booster_3",
     group_key = "forture_booster",
 	atlas = 'Booster',
+    order = 3,
 	pos = {x = 2, y = 2},
-    loc_txt = {
-        ['en-us'] = {
-            name = "Fortune Collector Chest",
-            text = {
-                "Choose {C:attention}#1#{} of up to",
-				"{C:attention}#2#{} Fortune Cards"
-            }
-        }
-    },
 	weight = 0.7 * 0.5,
 	cost = 12,
 	config = {draw_hand = true, extra = 5, choose = 2},

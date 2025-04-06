@@ -4,17 +4,10 @@ local the_bishop = {
     set = 'Familiar_Tarots',
     config = { mod_conv = 'm_fam_penalty', max_highlighted = 2 },
     atlas = 'Consumables',
+    order = 6,
     pos = { x = 5, y = 0 },
     cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "The Bishop",
-            text = {
-                "Enhances {C:attention}2{} selected card",
-                "into a {C:attention}Penalty Card{}.",
-            }
-        }
-    },
+    familiar = "c_hierophant",
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = G.P_CENTERS.m_fam_penalty
 

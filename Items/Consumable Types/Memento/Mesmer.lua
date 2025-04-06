@@ -5,19 +5,9 @@ local mesmer = {
     config = { extra = {mod_conv = "fam_sapphire_seal"} },
     atlas = 'Consumables',
     pos = { x = 3, y = 5 },
-    in_shop = true,
-    loc_txt = {
-        ['en-us'] = {
-            name = "Mesmer",
-            text = {
-                "Add a {C:blue}Sapphire Seal",
-                "to one {C:attention}selected card{}",
-                "in your hand",
-            }
-        }
-    },
+    order = 14,
     loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = G.P_CENTERS.s_fam_sapphire_seal
+        info_queue[#info_queue+1] = {key = 'fam_sapphire_seal_seal', set = 'Other'}
         return { vars = { } }
     end,
     can_use = function(self, card, area, copier)

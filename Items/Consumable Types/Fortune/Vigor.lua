@@ -6,16 +6,8 @@ local vigor = {
     atlas = 'Consumables',
     pos = { x = 1, y = 1 },
     cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "Vigor",
-            text = {
-                "Increases rank of",
-                "{C:attention}one{} selected card",
-                "by {C:attention}3",
-            }
-        }
-    },
+    order = 12,
+    familiar = "c_strength",
     loc_vars = function(self, info_queue)
         return { vars = { } }
     end,

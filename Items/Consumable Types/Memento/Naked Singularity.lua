@@ -4,17 +4,11 @@ local naked_singularity = {
     set = 'Familiar_Spectrals',
     config = { },
     atlas = 'Consumables',
+    soul_set = 'Familiar_Spectrals',
+    soul_rate = 0.003, 
+    can_repeat_soul = true,
     pos = { x = 9, y = 3 },
-    loc_txt = {
-        ['en-us'] = {
-            name = "Naked Singularity ",
-            text = {
-                "Upgrade every",
-                "{C:legendary,E:1}poker hand{} by",
-                "{C:attention}1+i{} Imaginary level"
-            }
-        }
-    },
+    order = 18,
     loc_vars = function(self, info_queue, card)
         return { vars = { } }
     end,

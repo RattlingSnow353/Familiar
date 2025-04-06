@@ -5,18 +5,7 @@ local shade = {
     config = { extra = { odds = 4 } },
     atlas = 'Consumables',
     pos = { x = 5, y = 4 },
-    in_shop = true,
-    loc_txt = {
-        ['en-us'] = {
-            name = "Shade",
-            text = {
-                "{C:green,E:1,S:1.1}#3# in #2#{} chance to",
-                "create a {C:mult}rare{} joker",
-                "{C:green,E:1,S:1.1}#3# in #1#{} chance to",
-                "set money to {C:attention}-$10{}",
-            }
-        }
-    },
+    order = 6,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.odds, card.ability.extra.odds/2, G.GAME.probabilities.normal } }
     end,

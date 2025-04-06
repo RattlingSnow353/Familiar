@@ -2,22 +2,12 @@ local forge = {
     object_type = "Consumable",
     key = 'forge',
     set = 'Familiar_Spectrals',
-    config = { extra = {mod_conv = "fam_gilded_seal"} },
+    config = { extra = {mod_conv = "fam_gilded_seal", odds = 4 } },
     atlas = 'Consumables',
     pos = { x = 3, y = 4 },
-    in_shop = true,
-    loc_txt = {
-        ['en-us'] = {
-            name = "Forge",
-            text = {
-                "Add a {C:money}Gilded Seal",
-                "to 2 {C:attention}selected cards{}",
-                "in your hand",
-            }
-        }
-    },
+    order = 4,
     loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = G.P_CENTERS.fam_sapphire_seal
+        info_queue[#info_queue+1] = {key = 'fam_gilded_seal_seal', set = 'Other', vars = { self.config.extra.odds, '' .. (G.GAME and G.GAME.probabilities.normal or 1) }}
         return { vars = { } }
     end,
     can_use = function(self, card, area, copier)

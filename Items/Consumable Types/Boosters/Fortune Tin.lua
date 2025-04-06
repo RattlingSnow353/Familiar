@@ -4,16 +4,8 @@ local forture_booster_2 = {
 	key = "forture_booster_2",
     group_key = "forture_booster",
 	atlas = 'Booster',
+    order = 2,
 	pos = {x = 0, y = 2},
-    loc_txt = {
-        ['en-us'] = {
-            name = "Fortune Booster Tin",
-            text = {
-                "Choose {C:attention}#1#{} of up to",
-				"{C:attention}#2#{} Fortune Cards"
-            }
-        }
-    },
 	weight = 0.7 * 2,
 	cost = 7,
 	config = {draw_hand = true, extra = 5, choose = 1},

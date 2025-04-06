@@ -5,16 +5,7 @@ local overlap = {
     config = { extra = { minus_hand = 2 } },
     atlas = 'Consumables',
     pos = { x = 6, y = 4 },
-    loc_txt = {
-        ['en-us'] = {
-            name = "Overlap",
-            text = {
-                "Applies a {C:attention}selected suit{} to all",
-                "cards in hand, {C:mult}-#1#{} hand size",
-                "{C:inactive}(does not override previous suit)",
-            }
-        }
-    },
+    order = 7,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.minus_hand } }
     end,

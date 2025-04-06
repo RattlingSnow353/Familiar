@@ -8,7 +8,6 @@ local Familiar_SpectralsConsumableType = {
     loc_txt = {
         collection = 'Memento Cards',
         name = 'Mementos',
-        label = 'Mementos',
         undiscovered = {
 			name = "Not Discovered",
 			text = {
@@ -27,6 +26,7 @@ local Familiar_SpectralsUndiscoveredSprite = {
 	pos = {
 		x = 5,
 		y = 2,
-	}
+	},
+    no_overlay = true
 }
 return {name = "Memento Cards", items = {Familiar_SpectralsConsumableType, Familiar_SpectralsUndiscoveredSprite}}

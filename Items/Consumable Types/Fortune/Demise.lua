@@ -2,25 +2,18 @@ local demise = {
     object_type = "Consumable",
     key = 'demise',
     set = 'Familiar_Tarots',
-    config = { },
+    config = { max_highlighted = 3 },
     atlas = 'Consumables',
     pos = { x = 3, y = 1 },
     cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "Demise",
-            text = {
-                "Select {C:attention}3{} cards,",
-                "convert {C:attention}them{} into",
-                "a {C:attention}random{} selected card",
-            }
-        }
-    },
+    order = 14,
+    discovered = false,
+    familiar = "c_death",
     loc_vars = function(self, info_queue)
-        return { vars = { } }
+        return { vars = { self.config.max_highlighted } }
     end,
     can_use = function(self, card, area, copier)
-        if G.hand and (#G.hand.highlighted == 3) then
+        if G.hand and (#G.hand.highlighted == card.ability.max_highlighted) then
             return true 
         end
     end,
