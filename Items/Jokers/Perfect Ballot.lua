@@ -6,20 +6,11 @@ local perfect_ballot = {
     },
     atlas = 'Joker',
     pos = { x = 9, y = 6 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Perfect Ballot',
-            text = {
-                "Retrigger {C:attention}all{} played",
-                "cards used in scoring {C:attention}once",
-                "{C:inactive}(If you have a perfect hand){}",
-            }
-        }
-    },
     rarity = 2,
     cost = 5,
     blueprint_compat = false,
     familiar = "j_hanging_chad",
+    order = 115,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

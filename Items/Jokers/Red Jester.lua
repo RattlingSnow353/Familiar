@@ -6,20 +6,11 @@ local red_jester = {
     },
     atlas = 'Joker',
     pos = { x = 7, y = 10 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Red Jester',
-            text = {
-                "{C:mult}+#1#{} Mult for every two",
-                "remaining cards in {C:attention}deck",
-                "{C:inactive}(Currently {C:mult}+#2#{} {C:inactive}Mult)",
-            }
-        }
-    },
     rarity = 1,
     cost = 5,
     blueprint_compat = true,
     familiar = "j_blue_joker",
+    order = 53,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.deckcards } }
     end,
@@ -30,6 +21,7 @@ local red_jester = {
                 message = localize{type='variable', key='a_mult', vars={card.ability.extra.mult * (#G.deck.cards/2)}},
                 mult_mod = card.ability.extra.mult * (#G.deck.cards/2), 
                 colour = G.C.MULT,
+                card = self
             }
         end
     end

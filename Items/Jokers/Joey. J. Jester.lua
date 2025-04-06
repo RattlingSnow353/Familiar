@@ -6,14 +6,6 @@ local joey_j_jester = {
     },
     atlas = 'Joker',
     pos = { x = 0, y = 0 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Joey. J. Jester',
-            text = {
-                "{X:chips,C:white}X#1#{} Chips",
-            }
-        }
-    },
     rarity = 1,
     cost = 4,
     order = 1,

@@ -6,23 +6,11 @@ local con_man = {
     },
     atlas = 'Joker',
     pos = { x = 6, y = 5 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Con Man',
-            text = {
-                "At the end of the shop, lose {C:money}$#1#{}",
-                "and create a random copy of",
-                "a {C:attention}Joker{} or {C:tarot}Consumable{} in your possession",
-                "Price increases by {C:money}$2{} on activation",
-                "{C:inactive}(Must have room){}"
-
-            }
-        }
-    },
     rarity = 3,
     cost = 7,
     blueprint_compat = false,
     familiar = "j_ring_master",
+    order = 121,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.money } }
     end,

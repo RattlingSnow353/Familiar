@@ -6,20 +6,11 @@ local archibald = {
     },
     atlas = 'Joker',
     pos = { x = 7, y = 8 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Archibald',
-            text = {
-                "Gives {C:money}$#2#{} for every",
-                "{C:attention}2{} consumables in hand.",
-                "{C:inactive}(Gain {C:money}$#1#{} {C:inactive}at end of round)",
-            }
-        }
-    },
     rarity = 4,
     cost = 20,
     blueprint_compat = false,
     familiar = "j_perkeo",
+    order = 150,
     soul_pos = {x = 7, y = 9},
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.current_money, card.ability.extra.money } }

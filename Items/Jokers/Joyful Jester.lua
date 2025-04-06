@@ -6,16 +6,6 @@ local joyful_jester = {
     },
     atlas = 'Joker',
     pos = { x = 2, y = 0 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Joyful Jester',
-            text = {
-                "Gain {C:money}$#2#{} if played",
-                "hand contains",
-                "a {C:attention}#1#",
-            }
-        }
-    },
     rarity = 1,
     cost = 4,
     order = 6,

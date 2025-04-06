@@ -6,21 +6,11 @@ local debit_card = {
     },
     atlas = 'Joker',
     pos = { x = 5, y = 1 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Debit Card',
-            text = {
-                "Store half of cash-out money",
-                "earn {C:money}$1{} more interest",
-                "for every {C:money}$#2#{}",
-                "{C:inactive}(Current balance: {C:money}$#1#{}){}"
-            }
-        }
-    },
     rarity = 2,
     cost = 1,
     blueprint_compat = false,
     familiar = "j_credit_card",
+    order = 20,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.cash, card.ability.extra.interest } }
     end,

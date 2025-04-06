@@ -6,22 +6,15 @@ local troublesome_triangle = {
     },
     atlas = 'Joker',
     pos = { x = 9, y = 11 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Troublesome Triangle',
-            text = {
-                "Whenever a {C:attention}3{} is played,",
-                "{C:dark_edition,E:1}Chaos reigns supreme!{}",
-            }
-        }
-    },
     rarity = 2,
     cost = 6,
     blueprint_compat = true,
     familiar = "j_square",
+    order = 65,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,
+    pixel_size = { w = 71, h = 71 },
     calculate = function(self, card, context)
         if to_big(G.GAME.dollars) > to_big(0) then
             if to_big(G.GAME.dollars) % to_big(5) and to_big(G.GAME.dollars) ~= to_big(0) then

@@ -6,20 +6,11 @@ local ham_radio = {
     },
     atlas = 'Joker',
     pos = { x = 8, y = 15 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'H.A.M Radio',
-            text = {
-                "Each {C:attention}10{} or {C:attention}4{} held",
-                "in hand gives",
-                "{C:mult}X#1#{} Mult",
-            }
-        }
-    },
     rarity = 1,
     cost = 5,
     blueprint_compat = true,
     familiar = "j_walkie_talkie",
+    order = 101,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.h_x_mult } }
     end,

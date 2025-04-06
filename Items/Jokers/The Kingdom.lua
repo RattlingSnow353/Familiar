@@ -6,18 +6,9 @@ local the_kingdom = {
     },
     atlas = 'Joker',
     pos = { x = 9, y = 4 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'The Kingdom',
-            text = {
-                "{X:chips,C:white}X#1#{} Chips if played",
-                "hand contains",
-                "a {C:attention}#2#",
-            }
-        }
-    },
     rarity = 3,
     cost = 8,
+    order = 135,
     blueprint_compat = true,
     familiar = "j_tribe",
     loc_vars = function(self, info_queue, card)

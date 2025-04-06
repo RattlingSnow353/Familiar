@@ -6,20 +6,11 @@ local dryerase_board = {
     },
     atlas = 'Joker',
     pos = { x = 2, y = 10 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Dry-Erase Board',
-            text = {
-                "{X:chips,C:white}X#1#{} Chips if",
-                "all cards scored",
-                "are {C:hearts}Hearts{} and {C:diamonds}Diamonds",
-            }
-        }
-    },
     rarity = 2,
     cost = 8,
     blueprint_compat = true,
     familiar = "j_blackboard",
+    order = 48,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.Xchips } }
     end,

@@ -6,19 +6,10 @@ local neopolitan = {
     },
     atlas = 'Joker',
     pos = { x = 14, y = 10 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Neopolitan',
-            text = {
-                "{C:blue}+#3#{} Chips or {C:mult}+#1#{} Mult or {C:money}+$#5#{}",
-                "{C:blue}-#4#{} Chips, {C:mult}-#2#{} Mult, and {C:money}-$#6#{}",
-                "for every hand played",
-            }
-        }
-    },
     rarity = 2,
     cost = 6,
     familiar = "j_ice_cream",
+    order = 50,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult, card.ability.extra.mult_mod, card.ability.extra.chips, card.ability.extra.chip_mod, card.ability.extra.money, card.ability.extra.money_mod} }
     end,
@@ -71,6 +62,7 @@ local neopolitan = {
                     message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
                     mult_mod = card.ability.extra.mult, 
                     colour = G.C.RED,
+                    card = self,
                 }
             elseif pseudorandom('neopolitan') < G.GAME.probabilities.normal/2 then
                 return {
@@ -82,6 +74,7 @@ local neopolitan = {
                     message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
                     chip_mod = card.ability.extra.chips, 
                     colour = G.C.CHIPS,
+                    card = self,
                 }
             end
         end

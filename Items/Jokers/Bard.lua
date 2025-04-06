@@ -6,20 +6,11 @@ local bard =  {
     },
     atlas = 'Joker',
     pos = { x = 0, y = 2 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Bard',
-            text = {
-                "{C:attention}#1#{} hand size,",
-                "{C:mult}+#2#{} discards",
-                ""
-            }
-        }
-    },
     rarity = 1,
     cost = 7,
     blueprint_compat = false,
     familiar = "j_troubadour",
+    order = 111,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.hand_size, card.ability.extra.discard_size} }
     end,

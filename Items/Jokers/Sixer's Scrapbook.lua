@@ -6,19 +6,11 @@ local sixers_scrapbook = {
     },
     atlas = 'Joker',
     pos = { x = 6, y = 6 },
-    loc_txt = {
-        ['en-us'] = {
-            name = "Sixer's Scrapbook",
-            text = {
-                "All hands can have",
-                "{C:attention}#1#{} more card selected"
-            }
-        }
-    },
     rarity = 3,
     cost = 8,
     blueprint_compat = false,
     familiar = "j_four_fingers",
+    order = 18,
     loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra.highlighted_limit } }
 	end,

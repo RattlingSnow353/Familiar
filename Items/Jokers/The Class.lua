@@ -6,20 +6,11 @@ local the_class = {
     },
     atlas = 'Joker',
     pos = { x = 8, y = 4 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'The Class',
-            text = {
-                "{X:chips,C:white}X#1#{} Chips if played",
-                "hand contains",
-                "a {C:attention}#2#",
-            }
-        }
-    },
     rarity = 3,
     cost = 8,
     blueprint_compat = true,
     familiar = "j_order",
+    order = 134,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.Xchips, localize(card.ability.poker_hand, 'poker_hands') } }
     end,

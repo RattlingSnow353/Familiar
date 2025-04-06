@@ -6,21 +6,11 @@ local purple_card = {
     },
     atlas = 'Joker',
     pos = { x = 7, y = 11 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Purple Card',
-            text = {
-                "This Joker gains",
-                "{C:blue}+#2#{} Chips when any",
-                "{C:attention}Booster Pack{} is skipped",
-                "{C:inactive}(Currently {C:blue}+#1#{} {C:inactive}Chips)",
-            }
-        }
-    },
     rarity = 1,
     cost = 5,
     blueprint_compat = true,
     familiar = "j_red_card",
+    order = 63,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.chips, card.ability.extra.chip_mod } }
     end,
@@ -33,6 +23,7 @@ local purple_card = {
                         message = localize{type = 'variable', key = 'a_chips', vars = {card.ability.extra.chip_mod}},
                         colour = G.C.CHIPS,
                         delay = 0.45, 
+                        card = self
                     }) 
                     return true
                 end}))

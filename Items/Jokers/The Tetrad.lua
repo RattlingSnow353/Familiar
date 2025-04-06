@@ -6,20 +6,11 @@ local the_tetrad = {
     },
     atlas = 'Joker',
     pos = { x = 7, y = 4 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'The Tetrad',
-            text = {
-                "{X:chips,C:white}X#1#{} Chips if played",
-                "hand contains",
-                "a {C:attention}#2#",
-            }
-        }
-    },
     rarity = 3,
     cost = 8,
     blueprint_compat = true,
     familiar = "j_family",
+    order = 133,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.Xchips, localize(card.ability.poker_hand, 'poker_hands') } }
     end,
