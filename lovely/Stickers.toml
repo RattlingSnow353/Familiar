@@ -1,0 +1,161 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# sample
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.sell_cost_label = self.facing == 'back' and '?' or self.sell_cost"
+position = "before"
+payload = '''
+if (self.ability.fam_sample) then
+    self.cost = 0
+    self.extra_value = 0
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.set == "Joker" and not self.debuff then'''
+position = "after"
+payload = '''
+if (self.ability.fam_sample) then
+    if self.ability.fam_sample_trigger == nil then
+        fam_ability_calulate(self, "/", 3)
+        self.ability.fam_sample_trigger = 0
+    end
+end
+'''
+match_indent = true
+
+# locked
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.set == "Joker" and not self.debuff then'''
+position = "after"
+payload = '''
+if self.ability.fam_locked then 
+    self.states.drag.can = false
+
+    if self.ability.fam_lock_trigger == nil then
+        local occupied_positions = {}
+        for _, card in ipairs(G.jokers.cards) do
+            if card.ability.fam_locked and card.ability.fam_lock_position then
+                occupied_positions[card.ability.fam_lock_position] = true
+            end
+        end
+
+        local target_pos = nil
+        local target_position = nil
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i] == self then
+                if not occupied_positions[i] then
+                    target_pos = i
+                end
+                target_position = i
+                break
+            end
+        end
+
+        if not target_pos then
+            local closest_distance = math.huge 
+            for i = 1, #G.jokers.cards do
+                if not occupied_positions[i] then
+                    local distance = math.abs(i - target_position) 
+                    if distance < closest_distance then
+                        closest_distance = distance
+                        target_pos = i
+                    end
+                end
+            end
+        end
+
+        self.ability.fam_lock_position = target_pos
+        self.ability.fam_lock_trigger = 0
+    end
+end
+
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''Moveable.move(self, dt)'''
+position = "after"
+payload = '''
+if G.jokers ~= nil then
+    local occupied_positions = {}  -- Track which positions are taken
+    local locked_jokers = {}  -- Store locked Jokers for sorting
+
+    for i, card in ipairs(G.jokers.cards) do
+        if card.ability.fam_locked and card.ability.fam_lock_position then
+            table.insert(locked_jokers, card)  -- Store locked Jokers
+        end
+    end
+
+    table.sort(locked_jokers, function(a, b)
+        return a.ability.fam_lock_position < b.ability.fam_lock_position
+    end)
+
+    local max_position = 0  -- The highest position before shrinking
+    for _, card in ipairs(locked_jokers) do
+        if card.ability.fam_lock_position > max_position then
+            max_position = card.ability.fam_lock_position
+        end
+    end
+    local shrink_amount = math.max(0, max_position - #G.jokers.cards) 
+
+    for _, card in ipairs(locked_jokers) do
+        local target_pos = card.ability.fam_lock_position
+
+        if shrink_amount > 0 then
+            target_pos = target_pos - shrink_amount
+        end
+
+        if target_pos < 1 then
+            target_pos = 1
+        end
+
+        card.ability.fam_lock_current_position = target_pos
+        occupied_positions[target_pos] = true
+    end
+
+    local available_positions = {}
+    for i = 1, #G.jokers.cards do
+        if not occupied_positions[i] then
+            table.insert(available_positions, i)
+        end
+    end
+
+    for _, card in ipairs(G.jokers.cards) do
+        if not card.ability.fam_locked then
+            local new_pos = table.remove(available_positions, 1)
+            card.ability.fam_lock_current_position = new_pos
+        end
+    end
+
+    table.sort(G.jokers.cards, function(a, b)
+        return a.ability.fam_lock_current_position < b.ability.fam_lock_current_position
+    end)
+end
+'''
+match_indent = true
+
+# bonded
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if self.ability.set == "Joker" and not self.debuff then'''
+position = "after"
+payload = '''
+if self.ability.fam_bonded then 
+    
+end
+'''
+match_indent = true

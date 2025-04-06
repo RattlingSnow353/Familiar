@@ -27,7 +27,7 @@ function shakecard(self)
     }))
 end
 
-function create_consumable(card_type,tag,messae,extra, thing1, thing2)
+function create_consumable(card_type,tag,message,extra, thing1, thing2)
     extra=extra or {}
     
     G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
@@ -56,7 +56,7 @@ function create_consumable(card_type,tag,messae,extra, thing1, thing2)
                 G.consumeables:emplace(card)
                 G.GAME.consumeable_buffer = 0
                 if message~=nil then
-                    card_eval_status_text(card,'extra',nil,nil,nil,{message=messae})
+                    card_eval_status_text(card,'extra',nil,nil,nil,{message=message})
                 end
         return true
     end)}))
@@ -97,6 +97,18 @@ function create_joker(card_type,tag,message,extra, rarity)
     end)}))
 end
 
+local set_ed = Card.set_edition
+function Card:set_edition(edition, immediate, silent)
+    if SMODS.has_enhancement(self, 'm_fam_stainless') then
+        return set_ed(self, nil, immediate, silent)
+    end
+    local temped = edition
+    if G.GAME.modifiers.fam_neg_common and self.config.center.rarity == 1 then
+        temped = {negative = true}
+    end
+    return set_ed(self, temped, immediate, silent)
+end
+
 local Backapply_to_runRef = Back.apply_to_run
 function Back.apply_to_run(self)
     Backapply_to_runRef(self)
@@ -119,6 +131,9 @@ function Back.apply_to_run(self)
     end
     local se = Card.set_edition
     function Card:set_edition(edition, y, z)
+        if G.GAME.modifiers.fam_neg_common and self.config.center.rarity == 1 then
+            edition = 'negative'
+        end
         return se(self, G.GAME.modifiers.fam_force_edition and {[G.GAME.modifiers.fam_force_edition]=true} or edition, y, z)
     end
     if self.effect.config.shop_rate then
@@ -245,19 +260,11 @@ end
 local get_idref = Card.get_id
 function Card:get_id(base)
     local id = get_idref(self)
+    if SMODS.has_no_rank(self) then
+        return 0
+    end
     if base == true then
         return self.base.id
-    end
-    if self.config.center == G.P_CENTERS.m_fam_split then
-        for i = 1, #G.hand.highlighted do
-            if G.hand.highlighted[i] == self then
-                if i ~= 1 then
-                    return G.hand.highlighted[i-1]:get_id(base)
-                else
-                    return 0
-                end
-            end
-        end
     end
     if G.jokers then
         for i = 1, #G.jokers.cards do
@@ -277,59 +284,92 @@ end
 
 local is_suitref = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
-    local ref=is_suitref(self)
-    if self.config.center == G.P_CENTERS.m_fam_split then
-        for i = 1, #G.hand.highlighted do
-            if G.hand.highlighted[i] == self then
-                if i ~= #G.hand.highlighted then
-                    return G.hand.highlighted[i+1]:is_suit(suit, bypass_debuff, flush_calc)
-                else
-                    return false
-                end
-            end
-        end
-    end
-    if self.ability.suitless == true then
+    if SMODS.has_no_suit(self) then
         return false
     end
-    if next(find_joker('Smeared Joker')) then
-        if (self.base.suit == 'Spades' or self.ability.is_spade == true) or (self.base.suit == 'Clubs' or self.ability.is_club == true) then
-            if suit == 'Spades' or suit == 'Clubs' then
-                return true
-            end
-        end
-        if (self.base.suit == 'Hearts' or self.ability.is_heart == true) or (self.base.suit == 'Diamonds' or self.ability.is_diamond == true) then
-            if suit == 'Hearts' or suit == 'Diamonds' then
-                return true
-            end
-        end
-    else
-        if self.ability.is_spade == true then
-            set_sprite_suits(self, false)
-            if suit == 'Spades' then
-                return true
-            end
-        end
-        if self.ability.is_heart == true then
-            set_sprite_suits(self, false)
-            if suit == 'Hearts' then
-                return true
-            end
-        end
-        if self.ability.is_club == true then
-            set_sprite_suits(self, false)
-            if suit == 'Clubs' then
-                return true
-            end
-        end
-        if self.ability.is_diamond == true then
-            set_sprite_suits(self, false)
-            if suit == 'Diamonds' then
-                return true
-            end
-        end
+    local ref=is_suitref(self)
+    if next(find_joker('Smeared Joker')) and (self.base.suit == 'Hearts' or self.base.suit == 'Diamonds') == (suit == 'Hearts' or suit == 'Diamonds') then
+            return true
     end
     return (self.base.suit == suit) or ref
+end
+
+fam_ability_calulate = function(card, equation, extra_value, exclusions, inclusions, do_round)
+  if do_round == nil then
+    do_round = true
+  end
+
+  local operators = {
+    ["+"] = function(a, b) return a + b end,
+    ["-"] = function(a, b) return a - b end,
+    ["*"] = function(a, b) return a * b end,
+    ["/"] = function(a, b) return a / b end,
+    ["%"] = function(a, b) return a % b end,
+  }
+  
+  local function process_value(val)
+    if type(val) == "number" then
+      local res = operators[equation](val, extra_value)
+      if do_round then
+        return math.floor(res)
+      else
+        return res
+      end
+    else
+      return val
+    end
+  end
+
+  local function should_process(key, value)
+    if type(key) ~= "string" then
+      return true  
+    end
+    if inclusions and next(inclusions) then
+      local valid = false
+      for _, prefix in ipairs(inclusions) do
+        if key:sub(1, #prefix) == prefix then
+          valid = true
+          break
+        end
+      end
+      if not valid then
+        return false
+      end
+    end
+    if exclusions and exclusions[key] ~= nil then
+        if exclusions[key] == true or value == exclusions[key] then
+            return false
+        end
+    end
+    return true
+  end
+
+  if card.ability and card.ability.extra then
+    if type(card.ability.extra) == "number" then
+      card.ability.prev_calc_value = card.ability.extra
+      card.ability.extra = process_value(card.ability.extra)
+    elseif type(card.ability.extra) == "table" then
+      for key, value in pairs(card.ability.extra) do
+        if value ~= nil and should_process(key, value) then
+          card.ability.extra[key] = process_value(value)
+        end
+      end
+    else
+      card.ability.extra = process_value(card.ability.extra)
+    end
+  end
+
+  if card.ability then
+    if type(card.ability) == "number" then
+      card.ability = process_value(card.ability)
+    elseif type(card.ability) == "table" then
+      for key, value in pairs(card.ability) do
+        if value ~= nil and should_process(key, value) then
+          card.ability[key] = process_value(value)
+        end
+      end
+    end
+  end
 end
 
 local is_faceref = Card.is_face
@@ -444,14 +484,50 @@ function Card:draw(layer)
     return card_drawref
 end
 
-function SMODS.current_mod.process_loc_text()
-    G.localization.misc.labels.unstable = "Unstable"
+local set_spritesref = Card.set_sprites
+function Card:set_sprites(_center, _front)
+    set_spritesref(self, _center, _front);
+    if _center and _center.fifth_layer then
+        if _center then
+            self.children.floating_sprite4 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fifth_layer)
+            self.children.floating_sprite4.role.draw_major = self
+            self.children.floating_sprite4.states.hover.can = false
+            self.children.floating_sprite4.states.click.can = false
+        end
+    end
+    if _center and _center.fouth_layer then
+        if _center then
+            self.children.floating_sprite3 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.fouth_layer)
+            self.children.floating_sprite3.role.draw_major = self
+            self.children.floating_sprite3.states.hover.can = false
+            self.children.floating_sprite3.states.click.can = false
+        end
+    end
+    if _center and _center.third_layer then
+        if _center then
+            self.children.floating_sprite2 = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center.atlas or _center.set], _center.third_layer)
+            self.children.floating_sprite2.role.draw_major = self
+            self.children.floating_sprite2.states.hover.can = false
+            self.children.floating_sprite2.states.click.can = false
+        end
+    end
 end
+
+SMODS.optional_features.quantum_enhancements = true
+
+--SMODS.Shader {
+--    key = 'statics', 
+--    path = 'statics.fs'
+--}
 
 SMODS.Atlas { key = 'Joker', path = 'JokersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Consumables', path = 'TarotsFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Enhancers', path = 'EnhancersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'SuitEffects', path = 'Double_Suit_CardsFam.png', px = 71, py = 95 }
+SMODS.Atlas { key = 'Suits', path = '8BitDeckFam.png', px = 71, py = 95 }
+SMODS.Atlas { key = 'SuitsHc', path = '8BitDeckFam_opt2.png', px = 71, py = 95 }
+SMODS.Atlas { key = 'UI', path = 'ui_assets.png', px = 34, py = 34 }
+SMODS.Atlas { key = 'UIHc', path = 'ui_assets_opt2.png', px = 34, py = 34 }
 SMODS.Atlas { key = 'Booster', path = 'BoostersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'Tags', path = 'TagsFam.png', px = 34, py = 34 }
 SMODS.Atlas { key = 'Stickers', path = 'StickersFam.png', px = 71, py = 95 }
@@ -459,6 +535,13 @@ SMODS.Atlas { key = 'Voucher', path = 'VouchersFam.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'modicon', path = 'ModIcon.png', px = 18, py = 18 }
 if (SMODS.Mods["CardSleeves"] or {}).can_load then
     SMODS.Atlas { key = 'cardsleeves', path = 'CardSleevesFam.png', px = 71, py = 95}
+end
+
+local lc = loc_colour
+function loc_colour(_c, _default)
+    if not G.ARGS.LOC_COLOURS then lc() end
+    G.ARGS.LOC_COLOURS.web = HEX("55d2be") 
+    return lc(_c, _default)
 end
 
 local folders = NFS.getDirectoryItems(mod_path.."Items")
@@ -484,9 +567,10 @@ local function load_items(curr_obj, Familiar_config)
     if type(curr_obj.name) == "string" then
         should_load = Familiar_config[curr_obj.name]
     elseif type(curr_obj.name) == "table" then
+        should_load = true
         for _, name in ipairs(curr_obj.name) do
-            if Familiar_config[name] then
-                should_load = true
+            if not Familiar_config[name] then
+                should_load = false
                 break
             end
         end
@@ -498,10 +582,17 @@ local function load_items(curr_obj, Familiar_config)
             print("Warning: curr_obj has no items")
         else
             for _, item in ipairs(curr_obj.items) do
-                item.discovered = true
-                if SMODS[item.object_type] then
+                if item.unlocked == true then
+                    item.discovered = true
+                else
+                    item.discovered = false
+                end
+                if item.ignore == nil then
+                    item.ignore = false
+                end
+                if SMODS[item.object_type] and not item.ignore then
                     SMODS[item.object_type](item) 
-                elseif CardSleeves and CardSleeves[item.object_type] then
+                elseif CardSleeves and CardSleeves[item.object_type] and not item.ignore then
                     CardSleeves[item.object_type](item)
                 else
                     print("Error loading item "..item.key.." of unknown type "..item.object_type)
@@ -510,52 +601,68 @@ local function load_items(curr_obj, Familiar_config)
         end
     end
 end
+local objects = {}
 for _, folder in ipairs(folders) do
     if folder == "Consumable Types" then
         for _, folder2 in ipairs(folders2) do
             local files = NFS.getDirectoryItems(mod_path.."Items/Consumable Types/"..folder2)
-            
+
             for _, file in ipairs(files) do
                 local f, err = SMODS.load_file("Items/Consumable Types/"..folder2.."/"..file)
                 if err then
                     print("Error loading file: "..err)
                 else
                     local curr_obj = f()
-                    load_items(curr_obj, Familiar_config)
+                    table.insert(objects, curr_obj) 
                 end
             end
         end
-
     elseif folder == "Cross Mod Content" then
         if (SMODS.Mods["CardSleeves"] or {}).can_load then
             for _, folder3 in ipairs(folders3) do
                 local files = NFS.getDirectoryItems(mod_path.."Items/Cross Mod Content/"..folder3)
-                
+
                 for _, file in ipairs(files) do
                     local f, err = SMODS.load_file("Items/Cross Mod Content/"..folder3.."/"..file)
                     if err then
                         print("Error loading file: "..err)
                     else
                         local curr_obj = f()
-                        load_items(curr_obj, Familiar_config)
+                        table.insert(objects, curr_obj)
                     end
                 end
             end
         end
-
     else
         local files = NFS.getDirectoryItems(mod_path.."Items/"..folder)
-        
+
         for _, file in ipairs(files) do
             local f, err = SMODS.load_file("Items/"..folder.."/"..file)
             if err then
                 print("Error loading file: "..err)
             else
                 local curr_obj = f()
-                load_items(curr_obj, Familiar_config)
+                table.insert(objects, curr_obj)
             end
         end
     end
+end
+table.sort(objects, function(a, b)
+    local function get_lowest_order(obj)
+        if not obj.items then return math.huge end
+        local lowest = math.huge
+        for _, item in ipairs(obj.items) do
+            if item.order and item.order < lowest then
+                lowest = item.order
+            end
+        end
+        return lowest
+    end
+
+    return get_lowest_order(a) < get_lowest_order(b)
+end)
+for _, curr_obj in ipairs(objects) do
+    load_items(curr_obj, Familiar_config)
 end
 
 local familiarTabs = {

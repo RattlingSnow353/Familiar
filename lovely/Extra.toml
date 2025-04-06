@@ -167,7 +167,6 @@ for k, joker in pairs(G.P_CENTER_POOLS['Joker']) do
         for key, _ in pairs(jester_table) do
             if key == joker.familiar then
                 table.insert(jester_table[joker.familiar], joker.key)
-                print(joker.key.." has been added to "..key)
             end
         end 
     end
@@ -175,7 +174,60 @@ end
 '''
 match_indent = true 
 
-# Suitless cards
+# Oligarch
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "check_for_unlock({type = 'blind_discoveries'})"
+position = "after"
+payload = '''
+fam_comsumable_table = {
+    ["c_strength"] = {},
+    ["c_hanged_man"] = {},
+    ["c_death"] = {},
+    ["c_judgement"] = {},
+    ["c_hermit"] = {},
+    ["c_tower"] = {},
+    ["c_lovers"] = {},
+    ["c_moon"] = {},
+    ["c_sun"] = {},
+    ["c_star"] = {},
+    ["c_world"] = {},
+    ["c_emperor"] = {},
+    ["c_empress"] = {},
+    ["c_high_priestess"] = {},
+    ["c_hierophant"] = {},
+    ["c_chariot"] = {},
+    ["c_fool"] = {},
+    ["c_magician"] = {},
+    ["c_wheel_of_fortune"] = {},
+    ["c_devil"] = {},
+    ["c_justice"] = {},
+    ["c_temperance"] = {},
+    ["c_ceres"] = {},
+    ["c_earth"] = {},
+    ["c_eris"] = {},
+    ["c_jupiter"] = {},
+    ["c_mars"] = {},
+    ["c_mercury"] = {},
+    ["c_neptune"] = {},
+    ["c_planet_x"] = {},
+    ["c_pluto"] = {},
+    ["c_saturn"] = {},
+    ["c_uranus"] = {},
+    ["c_venus"] = {},
+}
+for k, joker in pairs(G.P_CENTER_POOLS['Consumeables']) do
+    if joker.familiar then 
+        for key, _ in pairs(fam_comsumable_table) do
+            if key == joker.familiar then
+                table.insert(fam_comsumable_table[joker.familiar], joker.key)
+            end
+        end 
+    end
+end
+'''
+match_indent = true 
 
 # Sixers Scrapbook
 [[patches]]
@@ -227,6 +279,103 @@ end
 '''
 match_indent = true 
 
+# Rug Pull
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "dollars = dollars + G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)"
+position = "after"
+payload = '''
+for i = 1, #G.jokers.cards do
+    if G.jokers.cards[i].ability.name == "j_fam_rug_pull" then
+        local var = math.ceil((G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)))
+        dollars = dollars - var*2
+        G.jokers.cards[i].ability.extra.cash = G.jokers.cards[i].ability.extra.cash + math.ceil(var)
+        G.jokers.cards[i].ability.extra.mult = G.jokers.cards[i].ability.extra.mult_mod * G.jokers.cards[i].ability.extra.cash 
+        add_round_eval_row({bonus = true, name='interest', pitch = pitch, dollars = -math.ceil(var)})
+    end
+end
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua" 
+pattern = "add_round_eval_row({bonus = true, name='interest', pitch = pitch, dollars = G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)})"
+position = "before"
+payload = '''
+local rug_pull = false
+for i = 1, #G.jokers.cards do
+    if G.jokers.cards[i].ability.name == "j_fam_rug_pull" then
+        rug_pull = true
+    end
+end
+if not rug_pull then
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua" 
+pattern = "add_round_eval_row({bonus = true, name='interest', pitch = pitch, dollars = G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)})"
+position = "after"
+payload = '''
+end
+'''
+match_indent = true  
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "if (G.P_CENTERS[(card.edition or {}).key] or {}).never_scores then return true end"
+position = "before"
+payload = '''
+if card.ability.never_scores then
+    return true
+end
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "if (G.P_CENTERS[(card.edition or {}).key] or {}).always_scores then return true end"
+position = "before"
+payload = '''
+if card.ability.always_scores then
+    return true
+end
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "return is_stone and not is_wild"
+position = "before"
+payload = '''
+if card.ability.no_suit then
+    return true
+end
+'''
+match_indent = true  
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = '''
+for k, _ in pairs(SMODS.get_enhancements(card)) do
+    if k == 'm_stone' or G.P_CENTERS[k].no_rank then return true end
+end
+'''
+position = "before"
+payload = '''
+if card.ability.no_rank then
+    return true
+end
+'''
+match_indent = true  
+
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -253,6 +402,68 @@ elseif self.ability.name == 'j_fam_thinktank' then
     } or nil
 '''
 match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'Hologram' then"
+position = "before"
+payload = '''
+if self.ability.set == 'tekana' then
+	self.hover_tilt = self.hover_tilt*1.5
+    self.children.floating_sprite2:draw_shader('hologram', nil, self.ARGS.send_to_shader, nil, self.children.center, 0.2*scale_mod, 0*rotate_mod)
+    self.hover_tilt = self.hover_tilt/1.5
+	local scale_mod = 0.07-- + 0.02*math.cos(1.8*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
+    local rotate_mod = 0--0.05*math.cos(1.219*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
+	self.children.floating_sprite3:draw_shader('dissolve',0, nil, nil, self.children.center, 0.25*scale_mod, rotate_mod,nil, 0.1--[[ + 0.03*math.cos(1.8*G.TIMERS.REAL)--]],nil, 0.6)
+	self.children.floating_sprite3:draw_shader('dissolve', nil, nil, nil, self.children.center, 0.25*scale_mod, rotate_mod) 
+	self.children.floating_sprite4:draw_shader('hologram', nil, self.ARGS.send_to_shader, nil, self.children.center, 1*scale_mod, 0*rotate_mod)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.config.center.soul_pos and (self.config.center.discovered or self.bypass_discovery_center) then"
+position = "after"
+payload = '''
+if self.config.center.third_layer and (self.config.center.discovered or self.bypass_discovery_center) then
+    local scale_mod = 0.07-- + 0.02*math.cos(1.8*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
+    local rotate_mod = 0--0.05*math.cos(1.219*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
+	if self.ability.set == 'tekana' then
+		local scale_mod = 0.07 + 0.02*math.sin(1.8*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
+        local rotate_mod = 0.05*math.sin(1.219*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
+		self.children.floating_sprite2:draw_shader('dissolve',0, nil, nil, self.children.center, 0.5*scale_mod, rotate_mod,nil, 0.1--[[ + 0.03*math.cos(1.8*G.TIMERS.REAL)--]],nil, 0.6)
+		self.children.floating_sprite2:draw_shader('dissolve', nil, nil, nil, self.children.center, 0.5*scale_mod, rotate_mod) 
+	else
+		self.children.floating_sprite2:draw_shader('dissolve',0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1--[[ + 0.03*math.cos(1.8*G.TIMERS.REAL)--]],nil, 0.6)
+		self.children.floating_sprite2:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod, rotate_mod) 
+	end
+end
+if self.config.center.fouth_layer and (self.config.center.discovered or self.bypass_discovery_center) then
+    local scale_mod = 0.07-- + 0.02*math.cos(1.8*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
+    local rotate_mod = 0--0.05*math.cos(1.219*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
+	if self.ability.set == 'tekana' then
+		local scale_mod = 0.07 + 0.02*math.sin(1.8*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
+        local rotate_mod = 0.05*math.sin(1.219*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
+	else
+		self.children.floating_sprite3:draw_shader('dissolve',0, nil, nil, self.children.center, 0.5*scale_mod, rotate_mod,nil, 0.1--[[ + 0.03*math.cos(1.8*G.TIMERS.REAL)--]],nil, 0.6)
+		self.children.floating_sprite3:draw_shader('dissolve', nil, nil, nil, self.children.center, 0.5*scale_mod, rotate_mod) 
+	end
+end
+if self.config.center.fifth_layer and (self.config.center.discovered or self.bypass_discovery_center) then
+    local scale_mod = 0.07-- + 0.02*math.cos(1.8*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
+    local rotate_mod = 0--0.05*math.cos(1.219*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
+	if self.ability.set == 'tekana' then
+		local scale_mod = 0.07 + 0.02*math.sin(1.8*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
+        local rotate_mod = 0.05*math.sin(1.219*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
+	end
+    self.children.floating_sprite4:draw_shader('dissolve',0, nil, nil, self.children.center, 0.5*scale_mod, rotate_mod,nil, 0.1--[[ + 0.03*math.cos(1.8*G.TIMERS.REAL)--]],nil, 0.6)
+	self.children.floating_sprite4:draw_shader('dissolve', nil, nil, nil, self.children.center, 0.5*scale_mod, rotate_mod)
+end
+'''
+match_indent = true
 
 [[patches]]
 [patches.pattern]
