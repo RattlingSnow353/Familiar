@@ -21,7 +21,7 @@ local flag_of_surrender = {
                 message = localize{type='variable', key='a_mult', vars={card.ability.extra.mult}},
                 mult_mod = card.ability.extra.mult, 
                 colour = G.C.MULT,
-                card = self
+                card = card
             }
         end
     end
