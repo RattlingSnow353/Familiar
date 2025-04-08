@@ -15,11 +15,11 @@ local rna = {
         return { vars = { card.ability.extra.odds, '' .. (G.GAME and G.GAME.probabilities.normal or 1) } }
     end,
     calculate = function(self, card, context)
-        if G.GAME.current_round.discards_used <= 0 then
+        if G.GAME.current_round.discards_used <= 0  then
             local eval = function()
-                return G.GAME.current_round.discards_used <= 0
+                return G.GAME.current_round.discards_used <= 0 and not G.RESET_JIGGLES
             end
-            juice_card_until(card, eval, true)
+            -- juice_card_until(card, eval, true) -- Wasn't working so i just removed it
         end
         if G.GAME.current_round.discards_used <= 0 and context.discard then
             if pseudorandom('perfect_ballot') < G.GAME.probabilities.normal/card.ability.extra.odds then
@@ -41,7 +41,7 @@ local rna = {
                     return {
                         message = localize('k_copied_ex'),
                         colour = G.C.RED,
-                        card = self,
+                        card = card,
                         playing_cards_created = {true}
                     }
                 end
