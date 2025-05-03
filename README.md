@@ -1,7 +1,6 @@
 # FAMILIAR: THE ALTERNATE EXPANSION
 ![familiar](https://github.com/user-attachments/assets/58498779-25bc-4128-8a35-6cda1e17a795)
 
-
 ## Optional mods (not required, but you're missing out on content):
 
 *[CardSleeves](https://github.com/larswijn/CardSleeves)*
