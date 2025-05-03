@@ -2,25 +2,18 @@ local the_galaxy = {
     object_type = "Consumable",
     key = 'the_galaxy',
     set = 'Familiar_Tarots',
-    config = { },
+    config = { max_highlighted = 3 },
     atlas = 'Consumables',
     pos = { x = 7, y = 1 },
     cost = 4,
-    loc_txt = {
-        ['en-us'] = {
-            name = "The Galaxy",
-            text = {
-                "Adds {C:diamonds}Diamonds{} to up",
-                "to {C:attention}3{} selected cards.",
-                "{C:inactive}(Does not remove other suit(s))",
-            }
-        }
-    },
+    order = 18,
+    familiar = "c_star",
+    unlocked = false,
     loc_vars = function(self, info_queue)
-        return { vars = { } }
+        return { vars = { self.config.max_highlighted } }
     end,
     can_use = function(self, card, area, copier)
-        if G.hand and (#G.hand.highlighted <= 3) and #G.hand.highlighted ~= 0 then
+        if G.hand and (#G.hand.highlighted <= card.ability.max_highlighted) and #G.hand.highlighted ~= 0 then
             return true 
         end
     end,

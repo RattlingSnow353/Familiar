@@ -19,14 +19,6 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
                 }
             }
         end,
-        loc_txt = {
-            name = "Silver Sleeve",
-            text = {
-                "{C:attention}+2{} joker slots,",
-                "{C:blue}-1{} hand every round,",
-                "{C:red}-1{} discard every round",
-            }
-        }
     }
     return {name = "Card Sleeves", items = {silversleeve}}
 end

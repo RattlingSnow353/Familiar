@@ -2,32 +2,29 @@ local trapeze_artist = {
     object_type = "Joker",
     key = 'trapeze_artist',
     config = {
-        extra = { x_chips = 2 },
+        Xchips = 2 ,
     },
     atlas = 'Joker',
     pos = { x = 2, y = 1 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Trapeze Artist',
-            text = {
-                "{X:chips,C:white}X#1#{} Chips on {C:attention}first",
-                "{C:attention}hand{} of round",
-            }
-        }
-    },
     rarity = 2,
     cost = 8,
     blueprint_compat = true,
+    familiar = "j_acrobat",
+    order = 108,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips } }
+        return { vars = { card.ability.Xchips } }
     end,
     calculate = function(self, card, context)
         if context.joker_main and G.GAME.current_round.hands_played == 0 then
-            return {
-                message = "X"..number_format(card.ability.extra.x_chips),
-                Xchip_mod = card.ability.extra.x_chips,
-                colour = G.C.CHIPS
-            }
+            return {func = function()
+                local xchips = G.P_CENTERS.j_fam_trapeze_artist.config.Xchips
+                hand_chips = mod_chips(hand_chips * xchips)
+                update_hand_text({delay = 0}, {chips = hand_chips})
+                card_eval_status_text(card, 'extra', nil, percent, nil,
+                {message = 'X'..number_format(xchips),
+                edition = true,
+                x_chips = true})
+            end}
         end
     end
 }

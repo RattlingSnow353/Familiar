@@ -6,19 +6,11 @@ local taromancer = {
     },
     atlas = 'Joker',
     pos = { x = 2, y = 7 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Taromancer',
-            text = {
-                "All {C:tarot}Tarot{} cards and",
-                "{C:tarot}Arcana Packs{} in",
-                "the shop are {C:attention}free",
-            }
-        }
-    },
     rarity = 2,
     cost = 8,
     blueprint_compat = false,
+    familiar = "j_astronomer",
+    order = 143,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

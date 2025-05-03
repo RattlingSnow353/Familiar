@@ -1,23 +1,23 @@
 # FAMILIAR: THE ALTERNATE EXPANSION
 ![familiar](https://github.com/user-attachments/assets/58498779-25bc-4128-8a35-6cda1e17a795)
 
-## PLEASE PLEASE PLEASE USE THE [BETTER CALC FORK!!!! ](https://github.com/RattlingSnow353/Familiar/tree/BetterCalc-Fixes)
 ## Optional mods (not required, but you're missing out on content):
 
 *[CardSleeves](https://github.com/larswijn/CardSleeves)*
 
 ## Currently Adds:
-### 29 Jokers
+### 35 Jokers
 ### 10 Decks
 ### 7 [Card Sleeves](https://github.com/larswijn/CardSleeves)
 ### 2 Vouchers (Tickets)
 ### 3 new consumable types
 > **16 Fortune Cards** <br>
-> **10 Ethereal Cards** <br>
+> **7 Ethereal Cards** <br>
 > **12 Sacred Cards**
+### 1 Spectral
 ### 4 new enhancements
 ### 4 Seals
-### 3 Ediitons
+### 3 Editions
 ### 9 Booster Packs
 ### 6 Tags 
         

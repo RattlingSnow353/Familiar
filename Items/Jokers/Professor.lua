@@ -5,18 +5,12 @@ local professor =  {
        extra = 1
     },
     atlas = 'Joker',
-    pos = { x = 0, y = 0 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Professor',
-            text = {
-                "{C:blue}+#1#{} hand each round",
-            }
-        }
-    },
+    pos = { x = 1, y = 1},
     rarity = 1,
     cost = 7,
     blueprint_compat = false,
+    familiar = "j_drunkard",
+    order = 88,
     loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
 	end,

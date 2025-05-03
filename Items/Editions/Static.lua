@@ -7,14 +7,8 @@ local statics = {
     object_type = "Edition",
     key = 'statics', 
     atlas = 'Joker',
+    order = 2,
     pos = { x = 0, y = 0 },
-    loc_txt = {
-        name = "Static",
-        label = "Static",
-        text = {
-            "{X:chips,C:white} X#1# {} Chips"
-        }
-    },
     config = { Xchips = 1.5 },
     loc_vars = function(self, info_queue)
         return {vars = {self.config.Xchips}}

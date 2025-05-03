@@ -1,17 +1,9 @@
 local statics = {
     object_type = "Tag",
     key = 'statics', 
-    loc_txt = {
-        name = "Static Pin",
-        text = {
-            'Next base edition shop',
-            'Jester is free and',
-            'becomes {C:dark_edition}Static'
-        }
-    },
     pos = { x = 0, y = 1},
     atlas = 'Tags',
-
+    order = 5,
     config = {type = 'store_joker_modify', edition = 'fam_statics', odds = 4},
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = G.P_CENTERS.e_fam_statics

@@ -7,14 +7,7 @@ local maroon_seal = {
     atlas = 'Enhancers',
     pos = { x = 5, y = 4 },
     badge_colour = HEX("8a0a0a"),
-    loc_txt = {
-        label = 'Maroon Seal',
-        name = 'Maroon Seal',
-        text = {
-            'Retrigger leftmost',
-            'card {C:attention}1{} time',
-        }
-    },
+    order = 1,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

@@ -2,33 +2,29 @@ local the_class = {
     object_type = "Joker",
     key = 'the_class',
     config = {
-        extra = {poker_hand = "Straight", x_chips = 3},
+        poker_hand = "Straight", Xchips = 3,
     },
     atlas = 'Joker',
     pos = { x = 8, y = 4 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'The Class',
-            text = {
-                "{X:chips,C:white}X#1#{} Chips if played",
-                "hand contains",
-                "a {C:attention}#2#",
-            }
-        }
-    },
     rarity = 3,
     cost = 8,
     blueprint_compat = true,
+    familiar = "j_order",
+    order = 134,
     loc_vars = function(self, info_queue, card)
-        return { vars = { card.ability.extra.x_chips, localize(card.ability.extra.poker_hand, 'poker_hands') } }
+        return { vars = { card.ability.Xchips, localize(card.ability.poker_hand, 'poker_hands') } }
     end,
     calculate = function(self, card, context)
-        if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.extra.poker_hand]) then
-            return {
-                message = "X"..number_format(card.ability.extra.x_chips),
-                Xchip_mod = card.ability.extra.x_chips,
-                colour = G.C.CHIPS
-            }
+        if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.poker_hand]) then
+            return {func = function()
+                local xchips = G.P_CENTERS.j_fam_the_class.config.Xchips
+                hand_chips = mod_chips(hand_chips * xchips)
+                update_hand_text({delay = 0}, {chips = hand_chips})
+                card_eval_status_text(card, 'extra', nil, percent, nil,
+                {message = 'X'..number_format(xchips),
+                edition = true,
+                x_chips = true})
+            end}
         end
     end
 }

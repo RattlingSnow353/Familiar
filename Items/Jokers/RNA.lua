@@ -6,29 +6,20 @@ local rna = {
     },
     atlas = 'Joker',
     pos = { x = 5, y = 10 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'RNA',
-            text = {
-                "If {C:attention}first discard{} of round",
-                "has only {C:attention}1{} card {C:green,E:1,S:1.1}#2# in #1#{}",
-                "chance to add a permanent",
-                "copy to deck",
-            }
-        }
-    },
     rarity = 3,
     cost = 8,
     blueprint_compat = true,
+    familiar = "j_dna",
+    order = 51,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.odds, '' .. (G.GAME and G.GAME.probabilities.normal or 1) } }
     end,
     calculate = function(self, card, context)
-        if G.GAME.current_round.discards_used <= 0 then
+        if G.GAME.current_round.discards_used <= 0  then
             local eval = function()
-                return G.GAME.current_round.discards_used <= 0
+                return G.GAME.current_round.discards_used <= 0 and not G.RESET_JIGGLES
             end
-            juice_card_until(card, eval, true)
+            -- juice_card_until(card, eval, true) -- Wasn't working so i just removed it
         end
         if G.GAME.current_round.discards_used <= 0 and context.discard then
             if pseudorandom('perfect_ballot') < G.GAME.probabilities.normal/card.ability.extra.odds then
@@ -50,7 +41,7 @@ local rna = {
                     return {
                         message = localize('k_copied_ex'),
                         colour = G.C.RED,
-                        card = self,
+                        card = card,
                         playing_cards_created = {true}
                     }
                 end

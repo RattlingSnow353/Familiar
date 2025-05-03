@@ -1,15 +1,9 @@
 local pickpocket = {
     object_type = "Voucher",
     key = 'pickpocket',
-    loc_txt = {
-        name = 'Pickpocket',
-        text = {
-            "{C:attention}+#1#{} hand size",
-            "{C:mult}-#2#{} discards",
-        }
-    },
     cost = 10,
     atlas = 'Voucher',
+    order = 13,
     pos = { x = 5, y = 0 },
     config = { extra = {hand_size = 2, discards = -1}},
     loc_vars = function(self, info_queue, card)

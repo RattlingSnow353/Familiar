@@ -8,18 +8,11 @@ local speckle = {
     key = 'speckle', 
     atlas = 'Joker',
     pos = { x = 0, y = 0 },
-    loc_txt = {
-        name = "Speckled",
-        label = "Speckled",
-        text = {
-            "{C:blue}+null{} Chips",
-            "{C:red}+null{} Mult"
-        }
-    },
     config = { mmin = 1, mmax = 5, cmin = 1, cmax = 25 },
     in_shop = true,
     weight = 12,
     extra_cost = 2,
+	order = 1,
     get_weight = function(self)
         return G.GAME.edition_rate * self.weight
     end,

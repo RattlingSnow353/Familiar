@@ -4,14 +4,8 @@ local mezmerize_tag = {
     pos = { x = 2, y = 2},
     config = {type = 'new_blind_choice'},
     key = "mezmerize_tag",
+    order = 11,
     min_ante = 3,
-    loc_txt = {
-        name = "Mezmerize Pin",
-        text = {
-            "Gives a free",
-            "Fortune Chest"
-        }
-    },
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = {set = "Other", key = "p_fam_forture_booster_3", vars = {2, 5}}
         return {vars = {}}

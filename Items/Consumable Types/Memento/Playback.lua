@@ -5,19 +5,9 @@ local playback = {
     config = { extra = {mod_conv = "fam_maroon_seal"} },
     atlas = 'Consumables',
     pos = { x = 1, y = 5 },
-    in_shop = true,
-    loc_txt = {
-        ['en-us'] = {
-            name = "Playback",
-            text = {
-                "Add a {C:red}Maroon Seal",
-                "to one {C:attention}selected card{}",
-                "in your hand",
-            }
-        }
-    },
+    order = 12,
     loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = G.P_CENTERS.fam_maroon_seal
+        info_queue[#info_queue+1] = {key = 'fam_maroon_seal_seal', set = 'Other'}
         return { vars = { } }
     end,
     can_use = function(self, card, area, copier)

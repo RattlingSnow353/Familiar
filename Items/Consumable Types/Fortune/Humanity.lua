@@ -6,15 +6,8 @@ local humanity = {
     atlas = 'Consumables',
     pos = { x = 5, y = 1 },
     cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "Humanity",
-            text = {
-                "Enhances {C:attention}2{} selected card",
-                "into a {C:attention}Gilded card{}.",
-            }
-        }
-    },
+    order = 16,
+    familiar = "c_devil",
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = G.P_CENTERS.m_fam_gilded
 

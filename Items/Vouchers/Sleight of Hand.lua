@@ -1,15 +1,9 @@
 local sleight_of_hand = {
     object_type = "Voucher",
     key = 'sleight_of_hand',
-    loc_txt = {
-        name = 'Sleight of Hand',
-        text = {
-            "{C:blue}+#1#{} hand",
-            "{C:mult}-#2#{} discard",
-        }
-    },
     cost = 15,
     atlas = 'Voucher',
+    order = 14,
     pos = { x = 5, y = 1 },
     config = { extra = {hands = 1, discards = -1}},
     loc_vars = function(self, info_queue, card)

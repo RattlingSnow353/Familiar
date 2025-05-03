@@ -6,18 +6,11 @@ local crimsonotype = {
     },
     atlas = 'Joker',
     pos = { x = 0, y = 3 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Crimsonotype',
-            text = {
-                "Copies ability of",
-                "{C:attention}Joker{} to the left",
-            }
-        }
-    },
     rarity = 3,
     cost = 10,
     blueprint_compat = true,
+    familiar = "j_blueprint",
+	order = 123,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

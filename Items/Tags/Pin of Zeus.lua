@@ -4,14 +4,8 @@ local Zeus_tag = {
     pos = { x = 3, y = 2},
     config = {type = 'new_blind_choice'},
     key = "Zeus_tag",
+    order = 12,
     min_ante = 4,
-    loc_txt = {
-        name = "Pin of Zeus",
-        text = {
-            "Gives a free",
-            "Pantheon Chest"
-        }
-    },
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = {set = "Other", key = "p_fam_pantheon_booster_3", vars = {2, 5}}
         return {vars = {}}

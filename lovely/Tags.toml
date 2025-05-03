@@ -1,0 +1,50 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# Dumpster Fire
+[[patches]]
+[patches.pattern]
+target = "tag.lua"
+pattern = "elseif _context.type == 'round_start_bonus' then"
+position = "before"
+payload = '''
+elseif _context.type == 'ante_start_bonus' then 
+    if self.key == 'dumpster_fire_tag' then
+        self:yep('+', G.C.RED,function() 
+            return true
+        end)
+        ease_discard(self.config.discards) 
+        G.GAME.round_resets.ante.temp_discard = (G.GAME.round_resets.ante.temp_discard or 0) + self.config.discards
+        self.triggered = true
+        return true
+    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "ease_background_colour_blind(G.STATES.DRAW_TO_HAND)"
+position = "before"
+payload = '''
+for i = 1, #G.GAME.tags do
+    G.GAME.tags[i]:apply_to_run({type = 'ante_start_bonus'})
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if G.GAME.blind and G.boss_throw_hand and self.STATE == self.STATES.SELECTING_HAND then"
+position = "before"
+payload = '''
+if G.GAME.blind and self.STATE == self.STATES.SELECTING_HAND then
+    if G.GAME.round_resets.temp_discards and G.GAME.round_resets.ante == G.GAME.round_resets.fam_temp_discards_ante then
+        ease_discard(2)
+    end
+end
+'''
+match_indent = true

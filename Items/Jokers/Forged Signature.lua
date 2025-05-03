@@ -6,20 +6,11 @@ local forged_signature = {
     },
     atlas = 'Joker',
     pos = { x = 8, y = 8 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Forged Signature',
-            text = {
-                "When round begins,",
-                "add a random {C:attention}playing",
-                "{C:attention}card{} with a random",
-                "{C:attention}edition{} to your hand",
-            }
-        }
-    },
     rarity = 2,
     cost = 7,
     blueprint_compat = true,
+    familiar = "j_certificate",
+    order = 112,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

@@ -4,16 +4,8 @@ local forture_booster_1 = {
 	key = "forture_booster_1",
     group_key = "pantheon_booster",
 	atlas = 'Booster',
+    order = 1,
 	pos = {x = 0, y = 0},
-    loc_txt = {
-        ['en-us'] = {
-            name = "Fortune Pack",
-            text = {
-                "Choose {C:attention}#2#{} of up to",
-				"{C:attention}#3#{} Fortune Cards"
-            }
-        }
-    },
 	weight = 0.7 * 4,
 	cost = 4,
 	config = {draw_hand = true, extra = 3, choose = 1},

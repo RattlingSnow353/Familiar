@@ -1,16 +1,9 @@
 local duality_deck = {
     object_type = "Back",
     key = "duality_deck",
-    loc_txt = {
-        ['en-us'] = {
-            name = "Duality Deck",
-            text = {
-                "Start with 26",
-                "{C:attention}dual-suit{} cards",
-            }
-        }
-    },
     atlas = 'Enhancers',
+    order = 10,
+    unlocked = false,
     pos = { x = 1, y = 3 },
     config = {fam_force_dual = true},
     apply = function(self, card, context)

@@ -6,19 +6,11 @@ local flag_of_surrender = {
     },
     atlas = 'Joker',
     pos = { x = 1, y = 2 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Flag of Surrender',
-            text = {
-                "{C:mult}+#1#{} Mult",
-                "for each played",
-                "{C:attention}hand{} this round",
-            }
-        }
-    },
     rarity = 1,
     cost = 5,
     blueprint_compat = true,
+    familiar = "j_banner",
+    order = 22,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.mult_mod } }
     end,
@@ -29,7 +21,7 @@ local flag_of_surrender = {
                 message = localize{type='variable', key='a_mult', vars={card.ability.extra.mult}},
                 mult_mod = card.ability.extra.mult, 
                 colour = G.C.MULT,
-                card = self
+                card = card
             }
         end
     end

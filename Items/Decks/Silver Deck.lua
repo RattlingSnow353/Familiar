@@ -1,18 +1,10 @@
 local silver_deck = {
     object_type = "Back",
     key = "silver_deck",
-    loc_txt = {
-        ['en-us'] = {
-            name = "Silver Deck",
-            text = {
-                "{C:attention}+2{} joker slots,",
-                "{C:blue}-1{} hand every round,",
-                "{C:red}-1{} discard every round",
-            }
-        }
-    },
     atlas = 'Enhancers',
+    order = 5,
     pos = { x = 3, y = 2 },
+    unlocked = false,
     config = {},
     apply = function(self, card, context)
         G.E_MANAGER:add_event(Event({

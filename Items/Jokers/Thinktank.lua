@@ -6,18 +6,11 @@ local thinktank = {
     },
     atlas = 'Joker',
     pos = { x = 7, y = 7 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Thinktank',
-            text = {
-                "Copies the ability",
-                "of rightmost {C:attention}Joker{}",
-            }
-        }
-    },
     rarity = 3,
     cost = 10,
     blueprint_compat = true,
+    familiar = "j_brainstorm",
+	order = 138,
     loc_vars = function(self, info_queue, card)
         return { vars = {  } }
     end,

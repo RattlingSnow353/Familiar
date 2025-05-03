@@ -4,16 +4,8 @@ local pantheon_booster_3 = {
 	key = "pantheon_booster_3",
     group_key = "pantheon_booster",
 	atlas = 'Booster',
+    order = 6,
 	pos = {x = 2, y = 3},
-    loc_txt = {
-        ['en-us'] = {
-            name = "Pantheon Chest",
-            text = {
-                "Choose {C:attention}#1#{} of up to",
-				"{C:attention}#2#{} Sacred Cards"
-            }
-        }
-    },
 	weight = 0.5 * 0.5,
 	cost = 12,
 	config = { extra = 5, choose = 2},
@@ -24,6 +16,56 @@ local pantheon_booster_3 = {
 	create_card = function(self, card)
 		return create_card("Familiar_Planets", G.pack_cards, nil, nil, true, true, nil, 'fam_pantheon')
 	end,
+        update_pack = function(self, dt)
+        if G.buttons then self.buttons:remove(); G.buttons = nil end
+        if G.shop then G.shop.alignment.offset.y = G.ROOM.T.y+11 end
+        
+        if not G.STATE_COMPLETE then
+            G.STATE_COMPLETE = true
+            G.CONTROLLER.interrupt.focus = true
+            G.E_MANAGER:add_event(Event({
+                trigger = 'immediate',
+                func = function()
+                    if self.sparkles then
+                        G.booster_pack_sparkles = Particles(1, 1, 0,0, {
+                            timer = self.sparkles.timer or 0.015,
+                            scale = self.sparkles.scale or 0.1,
+                            initialize = true,
+                            lifespan = self.sparkles.lifespan or 3,
+                            speed = self.sparkles.speed or 0.2,
+                            padding = self.sparkles.padding or -1,
+                            attach = G.ROOM_ATTACH,
+                            colours = self.sparkles.colours or {G.C.WHITE, lighten(G.C.GOLD, 0.2)},
+                            fill = true
+                        })
+                    end
+                    G.booster_pack = UIBox{
+                        definition = self:pack_uibox(),
+                        config = {align="tmi", offset = {x=0,y=G.ROOM.T.y + 9}, major = G.hand, bond = 'Weak'}
+                    }
+                    G.booster_pack.alignment.offset.y = -2.2
+                    G.ROOM.jiggle = G.ROOM.jiggle + 3
+                    self:ease_background_colour()
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'immediate',
+                        func = function()
+                            G.FUNCS.draw_from_deck_to_hand()
+        
+                            G.E_MANAGER:add_event(Event({
+                                trigger = 'after',
+                                delay = 0.5,
+                                func = function()
+                                    G.CONTROLLER:recall_cardarea_focus('pack_cards')
+                                    return true
+                                end}))
+                            return true
+                        end
+                    }))  
+                    return true
+                end
+            }))  
+        end
+    end,
     pack_uibox = function(self)
         local _size = SMODS.OPENED_BOOSTER.ability.extra
         G.pack_cards = CardArea(

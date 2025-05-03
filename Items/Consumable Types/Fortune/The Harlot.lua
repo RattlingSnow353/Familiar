@@ -6,16 +6,8 @@ local the_harlot = {
     atlas = 'Consumables',
     pos = { x = 2, y = 0 },
     cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "The Harlot",
-            text = {
-                "Creates a {C:attention}planet{} card",
-                "of your {C:attention}most{} used poker hand",
-                "{C:inactive}(Must have room){}"
-            }
-        }
-    },
+    order = 3,
+    familiar = "c_high_priestess",
     loc_vars = function(self, info_queue)
         return { vars = { } }
     end,

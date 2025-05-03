@@ -4,14 +4,8 @@ local specter_tag = {
     pos = { x = 3, y = 3},
     config = {type = 'new_blind_choice'},
     key = "specter_tag",
+    order = 16,
     min_ante = 2,
-    loc_txt = {
-        name = "Specter Pin",
-        text = {
-            "Gives a free",
-            "{C:red}Ethereal Pack"
-        }
-    },
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = {set = "Other", key = "p_fam_ethereal_booster_1", vars = {1, 2}}
         return {vars = {}}

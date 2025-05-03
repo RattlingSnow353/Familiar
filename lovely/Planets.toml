@@ -7,10 +7,10 @@ priority = 0
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = "elseif v.set == 'Planet' then"
+pattern = "if v.set == 'Voucher' then"
 position = "before"
 payload = '''
-elseif v.set == 'Familiar_Planets' then
+if v.set == 'Familiar_Planets' then
     local softlocked = true
     if not v.config.extra.softlock then
         softlocked = false
@@ -20,5 +20,6 @@ elseif v.set == 'Familiar_Planets' then
     if not softlocked then
         add = true
     end
+end
 '''
 match_indent = true

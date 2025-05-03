@@ -11,12 +11,6 @@ if (SMODS.Mods["CardSleeves"] or {}).can_load then
         loc_vars = function(self)
             return { vars = {self.config.hand_size} }
         end,
-        loc_txt = {
-            name = "Amethyst Sleeve",
-            text = {
-                "{C:attention}+5{} hand size"
-            }
-        }
     }
     return {name = "Card Sleeves", items = {amethystsleeve}}
 end

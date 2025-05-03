@@ -1,15 +1,8 @@
 local amethyst_deck = {
     object_type = "Back",
     key = "amethyst_deck",
-    loc_txt = {
-        ['en-us'] = {
-            name = "Amethyst Deck",
-            text = {
-                "{C:attention}+5{} hand size",
-            }
-        }
-    },
     atlas = 'Enhancers',
+    order = 1,
     pos = { x = 0, y = 0 },
     config = {},
     apply = function(self, card, context)

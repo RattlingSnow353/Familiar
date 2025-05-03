@@ -6,15 +6,8 @@ local the_illusionist = {
     atlas = 'Consumables',
     pos = { x = 1, y = 0 },
     cost = 3,
-    loc_txt = {
-        ['en-us'] = {
-            name = "The Illusionist",
-            text = {
-                "Enhances {C:attention}2{} selected card",
-                "into a {C:attention}Charmed Card{}.",
-            }
-        }
-    },
+    order = 2,
+    familiar = "c_magician",
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = G.P_CENTERS.m_fam_charmed
 

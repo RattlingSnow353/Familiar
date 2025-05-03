@@ -1,16 +1,8 @@
 local andys_deck = {
     object_type = "Back",
     key = "andys_deck",
-    loc_txt = {
-        ['en-us'] = {
-            name = "Merry Andy's Deck",
-            text = {
-                "{C:attention}+3{} discards,",
-                "{C:blue}-1{} hand size."
-            }
-        }
-    },
     atlas = 'Enhancers',
+    order = 1,
     pos = { x = 7, y = 0 },
     config = {},
     apply = function(self, card, context)

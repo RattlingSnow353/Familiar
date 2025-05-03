@@ -5,19 +5,9 @@ local oracle = {
     config = { extra = {mod_conv = "fam_familiar_seal"} },
     atlas = 'Consumables',
     pos = { x = 4, y = 5 },
-    in_shop = true,
-    loc_txt = {
-        ['en-us'] = {
-            name = "Oracle",
-            text = {
-                "Add a Familiar Seal",
-                "to one {C:attention}selected card{}",
-                "in your hand",
-            }
-        }
-    },
+    order = 15,
     loc_vars = function(self, info_queue)
-        info_queue[#info_queue+1] = G.P_CENTERS.fam_familiar_seal
+        info_queue[#info_queue+1] = {key = 'fam_familiar_seal_seal', set = 'Other'}
         return { vars = { } }
     end,
     can_use = function(self, card, area, copier)

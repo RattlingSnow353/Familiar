@@ -5,20 +5,12 @@ local bard =  {
         extra =  {hand_size = -2, discard_size = 1},
     },
     atlas = 'Joker',
-    pos = { x = 0, y = 0 },
-    loc_txt = {
-        ['en-us'] = {
-            name = 'Bard',
-            text = {
-                "{C:attention}#1#{} hand size,",
-                "{C:mult}+#2#{} discards",
-                ""
-            }
-        }
-    },
+    pos = { x = 0, y = 2 },
     rarity = 1,
     cost = 7,
     blueprint_compat = false,
+    familiar = "j_troubadour",
+    order = 111,
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.hand_size, card.ability.extra.discard_size} }
     end,

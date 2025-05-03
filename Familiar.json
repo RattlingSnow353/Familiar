@@ -1,0 +1,14 @@
+{
+	"id": "familiar",
+	"name": "Familiar",
+	"display_name": "Familiar",
+	"author": ["RattlingSnow353", "humplydinkle"],
+	"description": "Adds different variations to everything in-game",
+	"prefix": "fam",
+	"main_file": "Familiar.lua",
+	"priority": 1,
+	"badge_colour": "005b94",
+	"badge_text_colour": "99f0ca",
+	"version": "0.2.0",
+	"dependencies": []
+}

@@ -1,17 +1,8 @@
 local topaz_deck = {
     object_type = "Back",
     key = "topaz_deck",
-    loc_txt = {
-        ['en-us'] = {
-            name = "Topaz Deck",
-            text = {
-                "{C:blue}+1{} hand every round,",
-                "{C:red}+1{} discard every round",
-                "{C:attention}-2{} hand size",
-            }
-        }
-    },
     atlas = 'Enhancers',
+    order = 2,
     pos = { x = 0, y = 2 },
     config = {},
     apply = function(self, card, context)

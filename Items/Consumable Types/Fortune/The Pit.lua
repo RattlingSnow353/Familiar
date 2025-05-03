@@ -2,31 +2,25 @@ local the_pit = {
     object_type = "Consumable",
     key = 'the_pit',
     set = 'Familiar_Tarots',
-    config = { },
+    config = { max_highlighted = 3 },
     atlas = 'Consumables',
     pos = { x = 6, y = 1 },
     cost = 4,
-    loc_txt = {
-        ['en-us'] = {
-            name = "The Pit",
-            text = {
-                "Turns up to {C:attention}3{} selected",
-                "cards to {C:GREY}Suitless",
-                "{C:inactive}(Suitless cards always score)",
-            }
-        }
-    },
+    order = 17,
+    familiar = "c_tower",
     loc_vars = function(self, info_queue)
-        return { vars = { } }
+        return { vars = { self.config.max_highlighted } }
     end,
     can_use = function(self, card, area, copier)
-        if G.hand and (#G.hand.highlighted <= 3) and #G.hand.highlighted ~= 0 then
+        if G.hand and (#G.hand.highlighted <= card.ability.max_highlighted) and #G.hand.highlighted ~= 0 then
             return true 
         end
     end,
     use = function(self, card)
         for i = 1, #G.hand.highlighted do
             G.hand.highlighted[i].ability.suitless = true
+            G.hand.highlighted[i].ability.always_scores = true
+            G.hand.highlighted[i].ability.no_suit = true
             set_sprite_suits(G.hand.highlighted[i], true)
         end
     end,

@@ -1,17 +1,9 @@
 local speckle = {
     object_type = "Tag",
     key = 'speckle', 
-    loc_txt = {
-        name = "Speckled Pin",
-        text = {
-            'Next base edition shop',
-            'Jester is free and',
-            'becomes {C:dark_edition}Speckled'
-        }
-    },
     pos = { x = 3, y = 0},
     atlas = 'Tags',
-
+    order = 4,
     config = {type = 'store_joker_modify', edition = 'fam_speckle', odds = 4},
     loc_vars = function(self, info_queue)
         info_queue[#info_queue+1] = G.P_CENTERS.e_fam_speckle
