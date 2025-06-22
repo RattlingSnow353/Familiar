@@ -10,7 +10,6 @@ local exclusive_deck = {
             func = function()
                 local rank = pseudorandom_element(SMODS.Ranks, pseudoseed('exclusive_deck'))
                 local suit = pseudorandom_element(SMODS.Suits, pseudoseed('exclusive_deck'))
-
                 for i = #G.playing_cards, 1, -1 do 
                     assert(SMODS.change_base(G.playing_cards[i], suit.key, rank.key))
                 end

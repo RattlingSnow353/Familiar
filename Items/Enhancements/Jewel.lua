@@ -4,6 +4,7 @@ local jewel = {
     pos = {x = 5, y = 0}, 
     atlas = 'Enhancers', 
     order = 6,
+    replace_base_card = true,
     no_rank = true,
     no_suit = true,
     always_scores = true,

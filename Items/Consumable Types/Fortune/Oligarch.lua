@@ -30,7 +30,7 @@ local oligarch = {
         local temp = 0
         for ind, k_ in pairs(G.consumeables.cards) do
             for key, _ in pairs(fam_comsumable_table) do
-                if key == k_.config.center_key and temp ~= 1 then
+                if key == k_.config.center_key and temp ~= 2 then
                     local new_joke = fam_comsumable_table[key]
 
                     local jester_key = new_joke[math.random(1, #new_joke)]

@@ -4,6 +4,7 @@ local stained_glass = {
     pos = {x = 5, y = 1}, 
     atlas = 'Enhancers', 
     order = 4,
+    shatters = true,
     config = { extra = { odds = 4, editions = {} } },
     loc_vars = function(self, info_queue, card)
         return { vars = {self.config.extra.odds, '' .. (G.GAME and G.GAME.probabilities.normal or 1)} }
@@ -24,7 +25,6 @@ local stained_glass = {
                 for i = #editions, 1, -1 do
                     delay(0.2)
                     SMODS.calculate_effect(editions[i],card)
-                    print(editions[i])
                 end
                 return
             end
