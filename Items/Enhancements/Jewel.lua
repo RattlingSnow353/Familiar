@@ -14,15 +14,9 @@ local jewel = {
     end,
     calculate = function(self, card, context)
         if context.post_joker or (context.main_scoring and context.cardarea == G.play) then
-            return {func = function()
-                local xchips = G.P_CENTERS.m_fam_jewel.config.extra.Xchips
-                hand_chips = mod_chips(hand_chips * xchips)
-                update_hand_text({delay = 0}, {chips = hand_chips})
-                card_eval_status_text(card, 'extra', nil, percent, nil,
-                {message = 'X'..xchips..' Chips',
-                edition = true,
-                x_chips = true})
-            end}
+            return {
+                xchips = card.ability.extra.Xchips
+            }
         end
 	end,
 }
