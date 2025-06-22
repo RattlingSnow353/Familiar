@@ -3,6 +3,7 @@ local con_man = {
     key = 'con_man',
     config = {
         money = 10,
+        money_mod = 2,
     },
     atlas = 'Joker',
     pos = { x = 6, y = 5 },
@@ -18,10 +19,11 @@ local con_man = {
         if context.ending_shop and not context.blueprint then
             if G.GAME.dollars >= to_big(0) then
                 local random = math.random(1,2)
-                if #G.consumeables.cards == 0 then
+                if #G.consumeables.cards == 0 and #G.jokers.cards == 1 then
+                    return
+                elseif #G.consumeables.cards == 0 and random == 1 then
                     random = 2
-                end
-                if #G.jokers.cards == 0 then
+                elseif #G.jokers.cards == 1 and random == 2 then
                     random = 1
                 end
                 if #G.consumeables.cards > 0 and #G.consumeables.cards < G.consumeables.config.card_limit and random == 1 then
@@ -40,9 +42,11 @@ local con_man = {
                         end
                     }))
                     card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
-                    card.ability.money = card.ability.money + 2
+                    local temp_money_mod = card.ability.money_mod
+                    card.ability.money = card.ability.money + card.ability.money_mod
+                    card.ability.money_mod = card.ability.money_mod + 2
                     return {
-                        dollars = -(card.ability.money-2),
+                        dollars = -(card.ability.money-temp_money_mod),
                     }
                 end
                 if #G.jokers.cards > 1 and #G.jokers.cards < G.jokers.config.card_limit and random == 2 then
@@ -61,9 +65,11 @@ local con_man = {
                         end
                     }))
                     card_eval_status_text(context.blueprint_card or card, 'extra', nil, nil, nil, {message = localize('k_duplicated_ex')})
-                    card.ability.money = card.ability.money + 2
+                    local temp_money_mod = card.ability.money_mod
+                    card.ability.money = card.ability.money + card.ability.money_mod
+                    card.ability.money_mod = card.ability.money_mod + 2
                     return {
-                        dollars = -(card.ability.money-2),
+                        dollars = -(card.ability.money-temp_money_mod),
                     }
                 end
             end

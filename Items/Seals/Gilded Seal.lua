@@ -2,7 +2,7 @@ local gilded_seal = {
     object_type = "Seal",
     key = 'gilded_seal',
     config = {
-        extra = { odds = 4 },
+        extra = { odds = 4, money = 5 },
     },
     atlas = 'Enhancers',
     pos = { x = 2, y = 0 },
@@ -13,16 +13,14 @@ local gilded_seal = {
     end,
     calculate = function(self, card, context)
         if context.main_scoring and context.cardarea == G.play then
-            if pseudorandom('gilded_seal') < G.GAME.probabilities.normal/4 then
-                ease_dollars(-5)
-                G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) - 5
-                G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
-                return
+            if pseudorandom('gilded_seal') < G.GAME.probabilities.normal/card.ability.extra.odds then
+                return {
+                    dollars = -card.ability.extra.money,
+                }
             else
-                ease_dollars(5)
-                G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + 5
-                G.E_MANAGER:add_event(Event({func = (function() G.GAME.dollar_buffer = 0; return true end)}))
-                return
+                return {
+                    dollars = card.ability.extra.money,
+                }
             end
         end
     end

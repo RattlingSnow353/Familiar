@@ -16,8 +16,8 @@ local astrophysicist = {
     end,
     calculate = function(self, card, context)
         if context.setting_blind and not self.getting_sliced then
-            if G.consumeables.config.card_limit > #G.consumeables.cards then
-                create_consumable("Planet", nil, {localize('k_plus_tarot'), colour = G.C.blue})
+            if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                create_consumable("Planet", nil, {localize('k_fam_plus_planet'), colour = G.C.blue})
             end 
         end
     end

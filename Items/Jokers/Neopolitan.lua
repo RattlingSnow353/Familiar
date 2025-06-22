@@ -14,7 +14,7 @@ local neopolitan = {
         return { vars = { card.ability.extra.mult, card.ability.extra.mult_mod, card.ability.extra.chips, card.ability.extra.chip_mod, card.ability.extra.money, card.ability.extra.money_mod} }
     end,
     calculate = function(self, card, context)
-        if context.after and not context.blueprint then
+        if context.after and context.scoring_hand and not context.blueprint then
             if card.ability.extra.mult - card.ability.extra.mult_mod <= 0 or card.ability.extra.chips - card.ability.extra.chip_mod <= 0 or card.ability.extra.money - card.ability.extra.money_mod <= 0 then 
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -62,7 +62,7 @@ local neopolitan = {
                     message = localize{type='variable',key='a_mult',vars={card.ability.extra.mult}},
                     mult_mod = card.ability.extra.mult, 
                     colour = G.C.RED,
-                    card = self,
+                    card = card,
                 }
             elseif pseudorandom('neopolitan') < G.GAME.probabilities.normal/2 then
                 return {
@@ -74,7 +74,7 @@ local neopolitan = {
                     message = localize{type='variable',key='a_chips',vars={card.ability.extra.chips}},
                     chip_mod = card.ability.extra.chips, 
                     colour = G.C.CHIPS,
-                    card = self,
+                    card = card,
                 }
             end
         end

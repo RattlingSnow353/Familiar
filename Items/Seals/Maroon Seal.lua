@@ -22,7 +22,7 @@ local maroon_seal = {
             else 
                 return {
                     card_eval_status_text(context.scoring_hand[1], 'extra', nil, nil, nil, {
-                        message = 'Again!',
+                        message = localize('k_again_ex'),
                         colour = G.C.MONEY,
                     }),
                     SMODS.score_card(context.scoring_hand[1], {cardarea = G.play, full_hand = context.full_hand, scoring_hand = context.scoring_hand, scoring_name = context.scoring_name, poker_hands = context.poker_hands})

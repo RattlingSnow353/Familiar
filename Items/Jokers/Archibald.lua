@@ -16,7 +16,7 @@ local archibald = {
         return { vars = { card.ability.extra.current_money, card.ability.extra.money } }
     end,
     calculate = function(self, card, context)
-        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+        if context.end_of_round and context.cardarea == G.jokers then
             if #G.consumeables.cards % 2 == 0 and #G.consumeables.cards ~= 0 then
                 return {
                     dollars = card.ability.extra.money,
@@ -24,8 +24,14 @@ local archibald = {
                 }
             end
         end
-        if #G.consumeables.cards % 2 == 0 and #G.consumeables.cards ~= 0 then
-            card.ability.extra.current_money = card.ability.extra.money * (#G.consumeables.cards/2)
+    end,
+    update = function(self, card, dt)
+        if G.consumeables then
+            if #G.consumeables.cards % 2 == 0 and #G.consumeables.cards ~= 0 then
+                card.ability.extra.current_money = card.ability.extra.money * (#G.consumeables.cards/2)
+            elseif #G.consumeables.cards < 2 then
+                card.ability.extra.current_money = 0
+            end
         end
     end
 }

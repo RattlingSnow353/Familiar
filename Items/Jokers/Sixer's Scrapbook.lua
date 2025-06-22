@@ -17,9 +17,13 @@ local sixers_scrapbook = {
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.highlighted_limit = math.floor(card.ability.extra.highlighted_limit)
 		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + card.ability.extra.highlighted_limit
+        G.GAME.starting_params.play_limit = G.GAME.starting_params.play_limit + card.ability.extra.highlighted_limit
+        G.GAME.starting_params.discard_limit = G.GAME.starting_params.discard_limit + card.ability.extra.highlighted_limit
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - card.ability.extra.highlighted_limit
+        G.GAME.starting_params.play_limit = G.GAME.starting_params.play_limit - card.ability.extra.highlighted_limit
+        G.GAME.starting_params.discard_limit = G.GAME.starting_params.discard_limit - card.ability.extra.highlighted_limit
 		if G.hand.config.highlighted_limit < 5 then G.hand.config.highlighted_limit = 5 end
 		G.hand:unhighlight_all()
 	end,
