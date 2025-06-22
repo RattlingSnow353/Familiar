@@ -32,6 +32,10 @@ function loc_colour(_c, _default)
     return lc(_c, _default)
 end
 
+assert(SMODS.load_file('Utils/functions.lua'))()
+assert(SMODS.load_file('Utils/overrides.lua'))()
+assert(SMODS.load_file('Utils/ui.lua'))()
+
 local folders = NFS.getDirectoryItems(mod_path.."Items")
 local objects = {}
 
