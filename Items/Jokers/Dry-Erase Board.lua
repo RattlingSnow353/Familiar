@@ -24,15 +24,9 @@ local dryerase_board = {
                 end
             end
             if context.joker_main and red_suits == all_cards then
-                return {func = function()
-                local xchips = G.P_CENTERS.j_fam_dry_erase_board.config.Xchips
-                hand_chips = mod_chips(hand_chips * xchips)
-                update_hand_text({delay = 0}, {chips = hand_chips})
-                card_eval_status_text(card, 'extra', nil, percent, nil,
-                {message = 'X'..number_format(xchips),
-                edition = true,
-                x_chips = true})
-            end}
+                return {
+                    xchips = card.ability.extra.Xchips
+                }
             end
         end
     end
