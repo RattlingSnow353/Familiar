@@ -1175,7 +1175,7 @@ return {
   },
   misc = {
     dictionary = {
-      
+        k_fam_plus_planet = "+1 Planet",
     },
     v_dictionary = {
       a_stock = "+#1# Stock"
