@@ -17,7 +17,7 @@ local the_twins = {
     calculate = function(self, card, context)
         if context.joker_main and context.cardarea == G.jokers and next(context.poker_hands[card.ability.poker_hand]) then
             return {
-                xchips = card.ability.extra.Xchips
+                xchips = card.ability.Xchips
             }
         end
     end

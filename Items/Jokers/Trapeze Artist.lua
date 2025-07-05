@@ -17,7 +17,7 @@ local trapeze_artist = {
     calculate = function(self, card, context)
         if context.joker_main and G.GAME.current_round.hands_played == 0 then
             return {
-                xchips = card.ability.extra.Xchips
+                xchips = card.ability.Xchips
             }
         end
     end

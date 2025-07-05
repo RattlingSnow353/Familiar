@@ -25,7 +25,7 @@ local dryerase_board = {
             end
             if context.joker_main and red_suits == all_cards then
                 return {
-                    xchips = card.ability.extra.Xchips
+                    xchips = card.ability.Xchips
                 }
             end
         end
